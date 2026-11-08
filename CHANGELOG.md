@@ -5,6 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+### Planned
+- 003 Davos: replace the WEF credit line with "Source: Office of the Prime Minister" and re-render the end card.
+- Host full-quality renders as GitHub Release assets instead of in-tree.
+- More test episodes: another historical speech or two.
+
+## [0.7.0] - 2026-11-08
+
 ### Added
 - Episode 008, *Special Order: The Full Hour*: the 60-minute version of 007 (~7,100 words, 59:59). New sections on prices and the court-ordered tariff refunds, the 2027 debt limit, where "lame duck" comes from and the 20th Amendment, war powers votes, FISA 702, how a bill really becomes law, and constituent mail. The C-SPAN clock runs in real time and the chair's time warnings match it. The full video (~266 MB) is not stored in git; a 1:44 highlight (`clips/two_gift_shops.mp4`) and the script are.
 
@@ -13,11 +20,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ### Fixed
 - Hour-long episodes ran out of memory (killed at ~7 GB): the audio mixer built several full-length float arrays. It now renders the mix in one-minute blocks with seamless, deterministic noise (identical output at any block size) and tracks each speaker's mouth movement from per-frame loudness instead of full voice tracks. Peak memory for a 60-minute mix: ~775 MB.
-
-### Planned
-- 003 Davos: replace the WEF credit line with "Source: Office of the Prime Minister" and re-render the end card.
-- Host full-quality renders as GitHub Release assets instead of in-tree.
-- More test episodes: another historical speech or two.
 
 ## [0.6.0] - 2026-11-08
 
@@ -87,7 +89,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
   Repo copy is re-encoded to 540p to stay under the push size limit; render locally for 720p.
 - Versioning: `VERSION`, this changelog, semver git tags.
 
-[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.3.0...v0.4.0
