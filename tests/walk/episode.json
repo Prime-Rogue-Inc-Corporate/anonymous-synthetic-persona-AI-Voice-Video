@@ -1,0 +1,7 @@
+{"subtitle": "walk smoke test", "credits": ["ci"],
+ "cast": {"A": {"mask": "chief", "x": 0.37, "walk": true},
+          "B": {"mask": "counsel", "x": 0.63, "walk": true},
+          "C": {"mask": "clerk", "x": 0.11, "walk": true, "enter": "left", "scale": 0.86, "top": 175}},
+ "layout": {"scale": 1.02, "top": 128},
+ "set": {"corridor": {"speed": 1.5}},
+ "light": {"line": "The light"}}

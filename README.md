@@ -13,6 +13,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 003 | [Middle Powers](episodes/003-davos-middle-powers) | Mark Carney, Davos, Jan 20 2026 (full) | 18:16 |
 | 004 | [Record Extremes](episodes/004-record-extremes) | Original two-hander on the 2026 State of the Climate report · `anchor` + `expert` | ~2:45 |
 | 005 | [Staff Level](episodes/005-staff-level) | Fictional SCIF recreation of the reported Alberta separatist / State Department meetings · 4 speakers + narrator | ~3:40 |
+| 006 | [The Lame Duck](episodes/006-lame-duck) | Original walk-and-talk: Senate staffers vs. the Nov. 2026 lame-duck session · corridor, 2 walkers + 2 walk-ons | ~2:37 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
@@ -30,6 +31,9 @@ The persona's head changes per episode and moves with the voice.
 | `organizer` | curly hair, cat-eye glasses, earrings, scarf | mouth opens with the voice |
 | `official` | grey side part, heavy brows, flag lapel pin | mouth opens with the voice |
 | `aide` | ponytail (sways), lanyard and badge | mouth opens with the voice |
+| `chief` | silver pixie cut, readers pushed up on her head, pearls | mouth opens with the voice |
+| `counsel` | dark curls, stubble, loosened tie | mouth opens with the voice |
+| `clerk` | buzz cut, flushed round face, headset | mouth opens with the voice |
 
 Add one by writing a function in `persona/masks.py` decorated with `@mask("name")`. It gets the frame's voice loudness (`amp`, 0–1) and time (`t`), and draws on a 520×520 canvas with the suit's collar at y=300.
 
@@ -106,6 +110,24 @@ Any number of speakers works; the layout scales for 3 and 4+. A cast member with
 ```
 
 `signoff_lines` is how many closing lines count as the sign-off (default 5); raise it if the sign-off has an extra button.
+
+### Walk-and-talk
+
+A moving corridor, two leads walking toward camera, and walk-ons who cut in from the side:
+
+```json
+"cast": {
+  "GWEN":  {"mask": "chief",   "x": 0.37, "walk": true, "cadence": 1.9},
+  "THEO":  {"mask": "counsel", "x": 0.63, "walk": true, "cadence": 2.0},
+  "RUDY":  {"mask": "clerk",   "x": 0.11, "walk": true, "enter": "left",  "scale": 0.86, "top": 175},
+  "PRIYA": {"mask": "aide",    "x": 0.89, "walk": true, "enter": "right", "scale": 0.86, "top": 175}
+},
+"layout": {"scale": 1.02, "top": 128},
+"set": {"corridor": {"speed": 1.5, "plaques": ["S-219", "CLOAKROOM", "PARLIAMENTARIAN"]}},
+"gaps": {"default": 0.22}
+```
+
+Walk-ons appear for each burst of their lines and leave afterwards. A short `gaps.default` and faster voice `speed` give it the pace.
 
 ## Loop clips
 

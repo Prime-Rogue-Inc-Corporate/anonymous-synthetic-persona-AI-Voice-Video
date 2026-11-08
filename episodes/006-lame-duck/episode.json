@@ -1,0 +1,141 @@
+{
+  "subtitle": "walk and talk: the lame duck",
+  "cast": {
+    "GWEN": {
+      "name": "Gwen Albright, chief of staff, outgoing Senate majority (fictional)",
+      "mask": "chief",
+      "x": 0.37,
+      "walk": true,
+      "cadence": 1.9,
+      "color": [
+        235,
+        150,
+        140
+      ],
+      "voice": {
+        "voice": "en-us+f1",
+        "speed": 178,
+        "pitch": 46,
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.03,aecho=0.8:0.4:25:0.15,highpass=f=120,lowpass=f=6500,volume=1.6"
+      }
+    },
+    "THEO": {
+      "name": "Theo Park, senior counsel, incoming Senate majority (fictional)",
+      "mask": "counsel",
+      "x": 0.63,
+      "walk": true,
+      "cadence": 2.0,
+      "color": [
+        140,
+        180,
+        245
+      ],
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 184,
+        "pitch": 44,
+        "filter": "asetrate=22050*0.93,aresample=44100,atempo=1.04,aecho=0.8:0.4:25:0.15,highpass=f=90,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "RUDY": {
+      "name": "Rudy Kowalczyk, cloakroom floor aide (fictional)",
+      "mask": "clerk",
+      "x": 0.11,
+      "walk": true,
+      "cadence": 2.6,
+      "enter": "left",
+      "scale": 0.86,
+      "top": 175,
+      "color": [
+        230,
+        200,
+        120
+      ],
+      "voice": {
+        "voice": "en-us+m4",
+        "speed": 196,
+        "pitch": 74,
+        "filter": "asetrate=22050*0.98,aresample=44100,atempo=1.02,aecho=0.8:0.4:25:0.15,highpass=f=100,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "PRIYA": {
+      "name": "Priya Raman, press secretary (fictional)",
+      "mask": "aide",
+      "x": 0.89,
+      "walk": true,
+      "cadence": 2.2,
+      "enter": "right",
+      "scale": 0.86,
+      "top": 175,
+      "color": [
+        180,
+        220,
+        190
+      ],
+      "voice": {
+        "voice": "en-us+f2",
+        "speed": 180,
+        "pitch": 72,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.02,aecho=0.8:0.4:25:0.15,highpass=f=140,lowpass=f=7000,volume=1.6"
+      }
+    }
+  },
+  "layout": {
+    "scale": 1.02,
+    "top": 128
+  },
+  "set": {
+    "corridor": {
+      "speed": 1.5,
+      "plaques": [
+        "S-219",
+        "CLOAKROOM",
+        "S-230",
+        "APPROPRIATIONS",
+        "S-207",
+        "PARLIAMENTARIAN",
+        "S-128",
+        "FLOOR →"
+      ]
+    }
+  },
+  "signoff_lines": 6,
+  "gaps": {
+    "default": 0.22,
+    "after_greeting": 0.4,
+    "after_intro": 1.0,
+    "after": {
+      "It's on fire.": 0.5,
+      "It counts as December.": 0.6,
+      "They're the same bill.": 0.7,
+      "That's the building.": 0.6,
+      "Whoever's losing.": 0.6,
+      "Don't say it.": 0.6,
+      "It just keeps getting renamed.": 0.6,
+      "trying to solve.": 0.7,
+      "I was following you.": 0.5,
+      "We've been walking in a circle": 1.0,
+      "Expect us.": 0.6
+    }
+  },
+  "light": {
+    "line": "We've been walking in a circle",
+    "color": [
+      255,
+      200,
+      120
+    ],
+    "ramp": 0.4,
+    "tint": [
+      0.36,
+      0.28,
+      0.12
+    ]
+  },
+  "credits": [
+    "An original sketch. All characters are fictional.",
+    "Context: Nov. 2026 lame-duck session; stopgap funding expires Dec. 11, 2026",
+    "(States Newsroom; Rio Times)"
+  ],
+  "output": "lame_duck.mp4"
+}

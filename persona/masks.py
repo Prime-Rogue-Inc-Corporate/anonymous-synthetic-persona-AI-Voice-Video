@@ -292,3 +292,69 @@ def aide(d, amp, t):
     d.rectangle([cx - 24, 394, cx + 24, 450], fill=(240, 240, 240, 255))
     d.rectangle([cx - 24, 394, cx + 24, 406], fill=(40, 70, 150, 255))
     d.rectangle([cx - 14, 414, cx + 14, 438], fill=(180, 180, 186, 255))
+
+
+@mask("chief", tie=False)
+def chief(d, amp, t):
+    """Senate chief of staff: silver pixie cut, readers pushed up on her head, pearls."""
+    cx = CX
+    skin, hair = (234, 226, 214, 255), (186, 184, 182, 255)
+    jaw = 6 * amp
+    d.ellipse([cx - 70, 100, cx + 70, 200], fill=hair)
+    d.ellipse([cx - 64, 118, cx + 64, 294 + jaw], fill=skin)
+    d.polygon([(cx - 66, 170), (cx - 60, 116), (cx - 10, 100), (cx + 50, 108), (cx + 68, 150), (cx + 40, 132), (cx - 10, 136), (cx - 46, 150)], fill=hair)
+    for s in (-1, 1):   # readers parked on the head
+        d.ellipse([cx + s * 26 - 18, 108, cx + s * 26 + 18, 128], outline=(40, 40, 46, 255), width=3)
+    d.line([(cx - 8, 118), (cx + 8, 118)], fill=(40, 40, 46, 255), width=3)
+    for s in (-1, 1):
+        d.line([(cx + s * 14, 180), (cx + s * 46, 172)], fill=(110, 108, 106, 255), width=4)
+    _eyes(d, cx, 198, 28)
+    d.polygon([(cx - 4, 204), (cx + 4, 204), (cx + 9, 240), (cx - 9, 240)], fill=(214, 204, 190, 255))
+    _mouth(d, cx, 264 + jaw * 0.4, amp, 15, (140, 70, 76, 255), (100, 40, 48, 255))
+    for k in range(9):  # pearls
+        a = math.pi * (0.15 + 0.7 * k / 8)
+        px, py = cx - 46 * math.cos(a), 300 + 30 * math.sin(a)
+        d.ellipse([px - 5, py - 5, px + 5, py + 5], fill=(240, 236, 226, 255))
+
+
+@mask("counsel", tie=True)
+def counsel(d, amp, t):
+    """Young senior counsel: dark curls, five o'clock shadow, permanently loosened tie."""
+    cx = CX
+    skin, hair = (232, 222, 206, 255), (34, 28, 26, 255)
+    jaw = 7 * amp
+    for s in (-1, 1):
+        d.ellipse([cx + s * 72 - 12, 190, cx + s * 72 + 12, 234], fill=(206, 196, 180, 255))
+    d.ellipse([cx - 68, 116, cx + 68, 298 + jaw], fill=skin)
+    d.chord([cx - 58, 228 + jaw, cx + 58, 302 + jaw], 0, 180, fill=(200, 190, 176, 255))   # stubble
+    for (x, y, r) in [(-56, 132, 22), (-30, 112, 24), (0, 104, 24), (30, 110, 24), (56, 130, 22), (-66, 158, 16), (66, 156, 16)]:
+        d.ellipse([cx + x - r, y - r, cx + x + r, y + r], fill=hair)
+    for s in (-1, 1):
+        d.line([(cx + s * 12, 178), (cx + s * 48, 176)], fill=hair, width=6)
+    _eyes(d, cx, 198)
+    d.polygon([(cx - 5, 204), (cx + 5, 204), (cx + 11, 244), (cx - 11, 244)], fill=(212, 200, 184, 255))
+    _mouth(d, cx, 268 + jaw * 0.4, amp, 17)
+    d.polygon([(cx - 22, 304), (cx + 22, 304), (cx + 14, 318), (cx - 14, 318)], fill=(225, 225, 225, 255))   # open collar
+
+
+@mask("clerk", tie=True)
+def clerk(d, amp, t):
+    """Cloakroom floor aide: buzz cut, round face, headset, perpetually out of breath."""
+    cx = CX
+    skin, hair = (236, 220, 204, 255), (120, 96, 70, 255)
+    jaw = 7 * amp
+    for s in (-1, 1):
+        d.ellipse([cx + s * 80 - 13, 190, cx + s * 80 + 13, 236], fill=(214, 194, 178, 255))
+    d.ellipse([cx - 78, 126, cx + 78, 300 + jaw], fill=skin)
+    d.chord([cx - 76, 124, cx + 76, 220], 180, 360, fill=hair)
+    for s in (-1, 1):   # flushed cheeks
+        d.ellipse([cx + s * 46 - 16, 232, cx + s * 46 + 16, 252], fill=(232, 180, 170, 255))
+        d.line([(cx + s * 14, 182), (cx + s * 44, 180)], fill=hair, width=5)
+    _eyes(d, cx, 200, 30)
+    d.ellipse([cx - 10, 214, cx + 10, 244], fill=(222, 202, 186, 255))
+    _mouth(d, cx, 270 + jaw * 0.4, amp, 16)
+    # headset band + mic
+    d.arc([cx - 86, 120, cx + 86, 260], 190, 350, fill=(40, 40, 44, 255), width=6)
+    d.ellipse([cx - 92, 196, cx - 72, 226], fill=(40, 40, 44, 255))
+    d.line([(cx - 82, 222), (cx - 50, 262), (cx - 26, 268)], fill=(40, 40, 44, 255), width=4)
+    d.ellipse([cx - 30, 263, cx - 20, 273], fill=(70, 70, 76, 255))
