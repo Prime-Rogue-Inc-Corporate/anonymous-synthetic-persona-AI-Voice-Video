@@ -1,0 +1,27 @@
+name: check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: sudo apt-get update && sudo apt-get install -y espeak-ng ffmpeg fonts-dejavu-core
+      - run: pip install -r requirements.txt
+      - name: Compile
+        run: python -m py_compile persona/*.py tools/*.py
+      - name: Version file is semver
+        run: grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$' VERSION
+      - name: Smoke render (preview frames, every mask)
+        run: python tools/smoke.py
+      - name: Release bookkeeping
+        run: python tools/release.py --check || true

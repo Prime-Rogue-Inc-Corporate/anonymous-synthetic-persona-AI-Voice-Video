@@ -9,10 +9,21 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | # | Episode | Source | Length |
 |---|---------|--------|--------|
 | 001 | [Greetings, Podiatrist](episodes/001-greetings-podiatrist) | The moth joke, for Norm | 2:44 |
-| 002 | [Lyceum Address](episodes/002-lyceum-address) | Abraham Lincoln, Springfield, 1838 (cut) | 4:12 |
+| 002 | [Lyceum Address](episodes/002-lyceum-address) | Abraham Lincoln, Springfield, 1838 (cut) · `lincoln` mask | 4:12 |
 | 003 | [Middle Powers](episodes/003-davos-middle-powers) | Mark Carney, Davos, Jan 20 2026 (full) | 18:16 |
 
-Each episode folder holds `script.txt`, `episode.json` and the rendered `.mp4`.
+Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
+
+## Masks
+
+The persona's head changes per episode and moves with the voice.
+
+| mask | look | animation |
+|------|------|-----------|
+| `moth` (default) | moth-in-a-suit, the Prime Rogue emblem | wings flutter with the voice |
+| `lincoln` | pale Lincoln mask, stovepipe hat, chin-curtain beard | jaw opens with the voice |
+
+Add one by writing a function in `persona/masks.py` decorated with `@mask("name")`. It gets the frame's voice loudness (`amp`, 0–1) and time (`t`), and draws on a 520×520 canvas with the suit's collar at y=300.
 
 ## Requirements
 
@@ -30,6 +41,7 @@ Each episode folder holds `script.txt`, `episode.json` and the rendered `.mp4`.
 ```json
 {
   "subtitle": "message to podiatry",
+  "mask": "moth",
   "credits": ["for Norm"],
   "voice": {"speed": 138},
   "pronounce": {"Qatar": "Kuh-tar"},
@@ -53,13 +65,14 @@ Rendering runs at roughly 2× real time per core, so an 18-minute speech takes a
 
 ## Versioning
 
-Semantic versioning, tracked in `VERSION`, `CHANGELOG.md` and git tags (`v0.1.0`, …):
+Branches, pull requests, a changelog and semver tags. See [`CONTRIBUTING.md`](CONTRIBUTING.md). Short version:
 
-- **patch** (`0.1.x`): fixes, re-renders, credit/caption corrections
-- **minor** (`0.x.0`): new episodes, new renderer features
-- **major** (`x.0.0`): breaking changes to the `episode.json` format or output style
-
-To release: update `VERSION`, move the `Unreleased` notes into a new dated section of `CHANGELOG.md`, commit, then `git tag -a vX.Y.Z -m "vX.Y.Z" && git push --follow-tags`.
+```bash
+git checkout -b feat/my-thing           # never commit straight to main
+# ...work, add a line under [Unreleased] in CHANGELOG.md, open a PR...
+python tools/release.py minor           # bump VERSION, roll the changelog, tag
+git push origin HEAD --follow-tags
+```
 
 ## Licence
 

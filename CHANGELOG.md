@@ -5,9 +5,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+### Added
+- Mask system (`persona/masks.py`): each episode picks its head with `"mask"` in `episode.json`; masks animate with the voice.
+- `lincoln` mask: pale Lincoln face with stovepipe hat, hollow eyes, chin-curtain beard and a jaw that talks.
+- `moth` mask now flutters its wings with the voice.
+- Version control process: `CONTRIBUTING.md` (branches, conventional commits, semver), `tools/release.py` (bump, changelog roll, tag, `--check`), PR template, `episodes/_template/`.
+- Output provenance: renderer version + commit stamped into MP4 metadata; `render.json` manifest written beside each video.
+- CI (`.github/workflows/check.yml`): compile, VERSION check, preview smoke test for every mask (`tools/smoke.py`).
+
+### Changed
+- Episode 002 (*Lyceum Address*) re-rendered with the `lincoln` mask.
+
 ### Planned
-- Host full-quality renders as GitHub Release assets instead of in-tree once release uploads are set up.
 - 003 Davos: replace the WEF credit line with "Source: Office of the Prime Minister" and re-render the end card.
+- Host full-quality renders as GitHub Release assets instead of in-tree.
+- More test episodes: another historical speech or two and a comedy bit.
 
 ## [0.1.0] - 2026-11-07
 
