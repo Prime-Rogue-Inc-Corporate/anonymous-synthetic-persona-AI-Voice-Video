@@ -5,6 +5,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+### Added
+- Walk-and-talk scenes: `"set": {"corridor": {...}}` draws a one-point-perspective hallway with the camera tracking backward: doors with brass room plaques, ceiling lights, a runner and a chair rail all recede as the cast walks. `speed`, `plaques` and `color` are configurable.
+- Cast `"walk": true` adds a walking gait (step bounce and sway, `cadence` in steps/s).
+- Cast `"enter": "left"|"right"` makes a walk-on: the character slides into frame for each burst of their lines and peels off afterwards (`linger` sets how long a gap still counts as the same burst).
+- Per-cast `scale`/`top` and episode-level `"layout"` for waist-up framing.
+- Masks: `chief`, `counsel`, `clerk`.
+- Episode 006, *The Lame Duck*: an original walk-and-talk. Two senior Senate staffers (outgoing and incoming majority) speed-walk the Capitol through the Nov. 2026 lame-duck session while a floor aide and a press secretary cut in.
+- Walk-and-talk smoke test (`tests/walk`).
+
 ### Planned
 - 003 Davos: replace the WEF credit line with "Source: Office of the Prime Minister" and re-render the end card.
 - Host full-quality renders as GitHub Release assets instead of in-tree.
