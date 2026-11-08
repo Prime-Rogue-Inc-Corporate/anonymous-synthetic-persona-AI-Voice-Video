@@ -1,0 +1,4 @@
+**/build/
+*.tmp.mp4
+__pycache__/
+*.pyc

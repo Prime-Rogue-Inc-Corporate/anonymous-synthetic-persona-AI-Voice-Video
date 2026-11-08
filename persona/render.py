@@ -1,0 +1,299 @@
+#!/usr/bin/env python3
+"""Anonymous-style synthetic persona renderer.
+
+Turns an episode folder (script.txt + episode.json) into a captioned,
+robot-voiced MP4: title card, moth-in-a-suit emblem, glitch/grain, a light cue
+on a chosen line, and an "EXPECT US." end card.
+
+Usage:
+    python persona/render.py episodes/<slug>             # full render
+    python persona/render.py episodes/<slug> --preview   # a few PNG frames only
+    python persona/render.py episodes/<slug> --jobs 4    # parallel chunks
+
+Requires ffmpeg and espeak-ng on PATH, plus numpy, scipy and Pillow.
+"""
+import argparse, glob, json, math, os, shutil, subprocess, sys, wave
+from concurrent.futures import ProcessPoolExecutor
+
+import numpy as np
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from scipy.ndimage import gaussian_filter
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+W, H, FPS, SR = 1280, 720, 30, 44100
+
+DEFAULTS = {
+    "title": "ANONYMOUS",
+    "subtitle": "message",
+    "credits": [],
+    "voice": {"voice": "en-us+m3", "speed": 138, "pitch": 22,
+              "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.6:40:0.25,highpass=f=90,lowpass=f=6000,volume=1.6"},
+    "pronounce": {},
+    "gaps": {"default": 0.45, "after_greeting": 0.6, "after_intro": 1.4, "signoff": 0.7, "after": {}},
+    "light": {"line": None, "color": [255, 210, 120], "ramp": 0.15, "tint": [0.45, 0.38, 0.18]},
+    "signoff_lines": 5,
+    "output": "out.mp4",
+    "crf": 28,
+}
+
+FONT_DIR = "/usr/share/fonts/truetype/dejavu"
+
+
+def merge(a, b):
+    out = dict(a)
+    for k, v in b.items():
+        out[k] = merge(a[k], v) if isinstance(v, dict) and isinstance(a.get(k), dict) else v
+    return out
+
+
+# ---------------------------------------------------------------- voice
+def synth(ep_dir, cfg, lines):
+    work = os.path.join(ep_dir, "build", "voice")
+    os.makedirs(work, exist_ok=True)
+    v = cfg["voice"]
+    clips = []
+    for i, line in enumerate(lines):
+        spoken = line.replace('"', "")
+        for k, rep in cfg["pronounce"].items():
+            spoken = spoken.replace(k, rep)
+        raw, out = f"{work}/raw_{i:03d}.wav", f"{work}/v_{i:03d}.wav"
+        subprocess.run(["espeak-ng", "-v", v["voice"], "-s", str(v["speed"]), "-p", str(v["pitch"]), "-w", raw, spoken], check=True)
+        subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", raw, "-af", v["filter"], "-ar", str(SR), "-ac", "1", out], check=True)
+        with wave.open(out) as w:
+            clips.append(np.frombuffer(w.readframes(w.getnframes()), np.int16).astype(np.float32) / 32768)
+    return clips
+
+
+def timeline(cfg, lines, clips):
+    g = cfg["gaps"]
+    t, starts = 2.5, []
+    n = len(lines)
+    for i, c in enumerate(clips):
+        starts.append(t)
+        t += len(c) / SR
+        gap = g["default"]
+        if i == 0: gap = g["after_greeting"]
+        if i == 1: gap = g["after_intro"]
+        for prefix, sec in g["after"].items():
+            if lines[i].startswith(prefix): gap = sec
+        if i >= n - cfg["signoff_lines"]: gap = g["signoff"]
+        t += gap
+    return starts, t + 2.5
+
+
+def mix_audio(path, clips, starts, total):
+    rng = np.random.default_rng(7)
+    N = int(total * SR)
+    voice = np.zeros(N, np.float32)
+    for s, c in zip(starts, clips):
+        a = int(s * SR); voice[a:a + len(c)] += c
+    tt = np.arange(N) / SR
+    drone = np.zeros(N, np.float32)
+    for f, amp in [(55, .5), (55.4, .4), (82.4, .25), (110.2, .12)]:
+        drone += amp * (2 * ((tt * f) % 1) - 1)
+    drone = gaussian_filter(drone, 6)
+    drone = (drone + gaussian_filter(rng.standard_normal(N).astype(np.float32), 40) * 3) * (0.6 + 0.4 * np.sin(2 * np.pi * tt / 11))
+    drone *= 0.27 / (np.abs(drone).max() + 1e-9)
+    drone *= np.clip(tt / 2.0, 0, 1) * np.clip((total - tt) / 2.0, 0, 1)
+    mix = voice * 0.9 + drone
+    mix /= max(1.0, np.abs(mix).max() / 0.95)
+    with wave.open(path, "w") as w:
+        w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR)
+        w.writeframes((mix * 32767).astype(np.int16).tobytes())
+
+
+# ---------------------------------------------------------------- visuals
+def emblem():
+    """Moth-headed suit. Original Prime Rogue emblem — see TRADEMARKS.md."""
+    im = Image.new("RGBA", (520, 520), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    cx = 260
+    d.polygon([(cx - 190, 520), (cx - 170, 360), (cx - 70, 300), (cx + 70, 300), (cx + 170, 360), (cx + 190, 520)], fill=(14, 14, 18, 255))
+    d.polygon([(cx - 40, 300), (cx + 40, 300), (cx, 420)], fill=(225, 225, 225, 255))
+    d.polygon([(cx - 70, 300), (cx - 40, 300), (cx, 420), (cx - 55, 380), (cx - 95, 330)], fill=(32, 32, 38, 255))
+    d.polygon([(cx + 70, 300), (cx + 40, 300), (cx, 420), (cx + 55, 380), (cx + 95, 330)], fill=(32, 32, 38, 255))
+    d.polygon([(cx - 12, 312), (cx + 12, 312), (cx + 18, 420), (cx, 445), (cx - 18, 420)], fill=(20, 20, 24, 255))
+    mc, my = cx, 195
+    wing, wing2 = (205, 200, 185, 255), (150, 145, 132, 255)
+    for s in (-1, 1):
+        d.polygon([(mc, my - 10), (mc + s * 150, my - 95), (mc + s * 175, my - 30), (mc + s * 120, my + 25), (mc, my + 15)], fill=wing)
+        d.polygon([(mc, my + 5), (mc + s * 110, my + 30), (mc + s * 95, my + 95), (mc + s * 25, my + 70)], fill=wing2)
+        d.ellipse([mc + s * 95 - 18, my - 55, mc + s * 95 + 18, my - 19], fill=(60, 55, 50, 255))
+        d.ellipse([mc + s * 95 - 7, my - 44, mc + s * 95 + 7, my - 30], fill=(220, 215, 200, 255))
+        d.line([(mc + s * 6, my - 58), (mc + s * 45, my - 120), (mc + s * 70, my - 128)], fill=(90, 82, 72, 255), width=4)
+    d.ellipse([mc - 16, my - 40, mc + 16, my + 85], fill=(70, 62, 55, 255))
+    d.ellipse([mc - 18, my - 62, mc + 18, my - 28], fill=(80, 72, 64, 255))
+    return im
+
+
+class Renderer:
+    def __init__(self, cfg, lines, clips, starts, total):
+        self.cfg, self.lines, self.starts, self.total = cfg, lines, starts, total
+        self.durs = [len(c) / SR for c in clips]
+        self.mono = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono.ttf", 30)
+        self.big = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 64)
+        self.small = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono.ttf", 20)
+        rng = np.random.default_rng(7)
+        cw = W * 2
+        a = gaussian_filter(rng.random((H // 4, cw // 4)).astype(np.float32), 6, mode="wrap") * 0.6
+        b = gaussian_filter(rng.random((H // 4, cw // 4)).astype(np.float32), 2, mode="wrap") * 0.4
+        cl = a + b; cl = (cl - cl.min()) / (cl.max() - cl.min())
+        self.cloud = np.array(Image.fromarray((cl * 255).astype(np.uint8)).resize((cw, H), Image.BICUBIC)).astype(np.float32) / 255
+        self.cw = cw
+        X, Y = np.meshgrid(np.linspace(-1, 1, W), np.linspace(-1, 1, H))
+        self.vign = np.clip(1.15 - 0.75 * (X ** 2 + Y ** 2), 0, 1).astype(np.float32)
+        self.beam = np.clip(1 - (X ** 2 + (Y + 0.9) ** 2) / 1.2, 0, 1).astype(np.float32)
+        self.emb = emblem()
+        lt = cfg["light"]["line"]
+        self.light_t = next((starts[i] for i, l in enumerate(lines) if lt and l.startswith(lt)), None)
+        self.sign_t = starts[len(lines) - cfg["signoff_lines"]]
+
+    def wrap(self, text):
+        out, cur = [], ""
+        for w_ in text.split():
+            t = (cur + " " + w_).strip()
+            if self.mono.getlength(t) <= W - 200: cur = t
+            else: out.append(cur); cur = w_
+        return out + ([cur] if cur else [])
+
+    def caption(self, t):
+        for i, s in enumerate(self.starts):
+            if s - 0.05 <= t <= s + self.durs[i] + 0.35:
+                return self.lines[i]
+        return None
+
+    def centered(self, layer_draw, text, font, y, fill):
+        layer_draw.text(((W - font.getlength(text)) / 2, y), text, font=font, fill=fill)
+
+    def frame(self, fi):
+        cfg = self.cfg
+        rng = np.random.default_rng(fi)
+        t = fi / FPS
+        off = int(t * 22) % self.cw
+        sky = np.concatenate([self.cloud[:, off:], self.cloud[:, :off]], 1)[:, :W]
+        base = sky * 0.22 + 0.03
+        flick = 1 + 0.05 * math.sin(t * 37) * (rng.random() < 0.3)
+        glow = 0.0
+        if self.light_t is not None and t >= self.light_t:
+            glow = min(1, (t - self.light_t) / cfg["light"]["ramp"]) * (0.85 + 0.15 * (rng.random() > 0.1))
+            if t >= self.sign_t: glow *= max(0, 1 - (t - self.sign_t) / 1.5)
+        tr, tg, tb = cfg["light"]["tint"]
+        img = np.stack([base * 0.8 + glow * tr * self.beam, base * 0.85 + glow * tg * self.beam, base + glow * tb * self.beam], -1)
+        img = img * self.vign[..., None] * flick
+        im = Image.fromarray((np.clip(img, 0, 1) * 255).astype(np.uint8))
+
+        if t < 2.4:
+            a = int(255 * min(1, t / 0.6) * min(1, (2.4 - t) / 0.4))
+            layer = Image.new("RGBA", (W, H), (0, 0, 0, 0)); ld = ImageDraw.Draw(layer)
+            self.centered(ld, cfg["title"], self.big, H / 2 - 60, (235, 235, 235, a))
+            self.centered(ld, cfg["subtitle"], self.small, H / 2 + 20, (170, 170, 170, a))
+            im.paste(layer, (0, 0), layer)
+        else:
+            s = 1 + 0.015 * math.sin(t * 0.4)
+            e = self.emb.resize((int(520 * s), int(520 * s)), Image.BICUBIC)
+            ex, ey = (W - e.width) // 2, 40 + int(4 * math.sin(t * 1.3))
+            if glow > 0:
+                halo = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                ImageDraw.Draw(halo).ellipse([W / 2 - 230, ey + 50, W / 2 + 230, ey + 360], fill=(*cfg["light"]["color"], int(85 * glow)))
+                halo = halo.filter(ImageFilter.GaussianBlur(60))
+                im.paste(halo, (0, 0), halo)
+            im.paste(e, (ex, ey), e)
+            cap = self.caption(t)
+            if cap:
+                rows = self.wrap(cap)
+                yb = H - 40 - len(rows) * 40
+                band = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                ImageDraw.Draw(band).rectangle([0, yb - 18, W, H], fill=(0, 0, 0, 150))
+                im.paste(band, (0, 0), band)
+                d = ImageDraw.Draw(im)
+                for k, row in enumerate(rows):
+                    d.text(((W - self.mono.getlength(row)) / 2, yb + k * 40), row, font=self.mono, fill=(238, 238, 238))
+            if t > self.total - 4.2:
+                a = int(255 * min(1, (t - (self.total - 4.2)) / 0.5) * min(1, (self.total - t) / 0.6))
+                layer = Image.new("RGBA", (W, H), (0, 0, 0, 0)); ld = ImageDraw.Draw(layer)
+                ld.rectangle([0, 0, W, H], fill=(0, 0, 0, int(a * 0.85)))
+                self.centered(ld, "EXPECT US.", self.big, H / 2 - 50, (235, 235, 235, a))
+                for k, line in enumerate(cfg["credits"]):
+                    shade = 160 if k == 0 else 120
+                    self.centered(ld, line, self.small, H / 2 + 40 + 32 * k, (shade, shade, shade, a))
+                im.paste(layer, (0, 0), layer)
+
+        arr = np.asarray(im).astype(np.int16)
+        arr += rng.integers(-14, 15, (H, W, 1), dtype=np.int16)
+        arr[::3] = (arr[::3] * 0.82).astype(np.int16)
+        near_light = self.light_t is not None and abs(t - self.light_t) < 0.12
+        if rng.random() < 0.06 or near_light:
+            for _ in range(rng.integers(2, 7)):
+                y0 = rng.integers(0, H - 40); h = rng.integers(4, 40)
+                arr[y0:y0 + h] = np.roll(arr[y0:y0 + h], rng.integers(-40, 41), 1)
+            arr[..., 0] = np.roll(arr[..., 0], 4, 1)
+        return np.clip(arr, 0, 255).astype(np.uint8)
+
+
+# ---------------------------------------------------------------- driver
+_R = None
+
+
+def _init(state):
+    global _R
+    _R = Renderer(*state)
+
+
+def _chunk(args):
+    lo, hi, path, crf = args
+    tmp = path[:-4] + ".tmp.mp4"
+    p = subprocess.Popen(["ffmpeg", "-loglevel", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
+                          "-r", str(FPS), "-i", "-", "-vf", "hqdn3d=2:1:3:3", "-c:v", "libx264", "-preset", "veryfast",
+                          "-crf", str(crf), "-pix_fmt", "yuv420p", tmp], stdin=subprocess.PIPE)
+    for fi in range(lo, hi):
+        p.stdin.write(_R.frame(fi).tobytes())
+    p.stdin.close()
+    if p.wait() != 0:
+        raise RuntimeError(f"ffmpeg failed on {path}")
+    os.replace(tmp, path)
+    return path
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("episode", help="episode folder containing script.txt and episode.json")
+    ap.add_argument("--preview", action="store_true", help="write a few PNG frames to build/ and stop")
+    ap.add_argument("--jobs", type=int, default=os.cpu_count() or 2)
+    a = ap.parse_args()
+
+    ep = os.path.abspath(a.episode)
+    cfg = merge(DEFAULTS, json.load(open(os.path.join(ep, "episode.json"))))
+    lines = [l.strip() for l in open(os.path.join(ep, "script.txt"), encoding="utf-8") if l.strip()]
+    build = os.path.join(ep, "build"); os.makedirs(build, exist_ok=True)
+
+    clips = synth(ep, cfg, lines)
+    starts, total = timeline(cfg, lines, clips)
+    audio = os.path.join(build, "mix.wav")
+    mix_audio(audio, clips, starts, total)
+    state = (cfg, lines, clips, starts, total)
+    print(f"{len(lines)} lines, {total:.1f}s")
+
+    if a.preview:
+        r = Renderer(*state)
+        moments = [1.2, starts[min(3, len(starts) - 1)] + 0.5, (r.light_t or total / 2) + 0.8, total - 2]
+        for m in moments:
+            Image.fromarray(r.frame(int(m * FPS))).save(os.path.join(build, f"preview_{m:07.1f}.png"))
+        print("previews in", build)
+        return
+
+    nf = int(total * FPS)
+    K = max(1, a.jobs)
+    jobs = [(nf * k // K, nf * (k + 1) // K, os.path.join(build, f"part{k}.mp4"), cfg["crf"]) for k in range(K)]
+    with ProcessPoolExecutor(K, initializer=_init, initargs=(state,)) as ex:
+        parts = list(ex.map(_chunk, jobs))
+    lst = os.path.join(build, "parts.txt")
+    open(lst, "w").write("".join(f"file '{p}'\n" for p in parts))
+    out = os.path.join(ep, cfg["output"]); tmp = out[:-4] + ".tmp.mp4"
+    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-i", audio,
+                    "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "160k", "-shortest",
+                    "-movflags", "+faststart", tmp], check=True)
+    os.replace(tmp, out)
+    print("wrote", out)
+
+
+if __name__ == "__main__":
+    main()

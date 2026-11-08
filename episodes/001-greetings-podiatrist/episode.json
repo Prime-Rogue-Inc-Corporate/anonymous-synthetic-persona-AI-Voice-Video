@@ -1,0 +1,8 @@
+{
+  "subtitle": "message to podiatry",
+  "credits": ["for Norm"],
+  "voice": {"speed": 138},
+  "gaps": {"after": {"And the moth says": 1.1, "\"'Cause": 2.2}},
+  "light": {"line": "\"'Cause", "color": [255, 210, 120], "ramp": 0.15, "tint": [0.45, 0.38, 0.18]},
+  "output": "greetings_podiatrist.mp4"
+}

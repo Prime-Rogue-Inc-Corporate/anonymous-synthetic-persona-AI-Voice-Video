@@ -1,0 +1,9 @@
+{
+  "subtitle": "message to the middle powers",
+  "credits": ["Mark Carney  ·  Davos  ·  January 20, 2026", "Transcript: World Economic Forum, CC BY-NC-ND 4.0"],
+  "voice": {"speed": 140},
+  "pronounce": {"Václav": "Vaatslav", "Qatar": "Kuh-tar", "ASEAN": "Ah-see-ann", "COP": "cop", "hyper-scalers": "hyper scalers"},
+  "gaps": {"after": {"It calls for honesty": 1.2, "We are taking the sign": 1.2, "That is Canada's path": 2.0, "and it is a path": 2.0}},
+  "light": {"line": "We are taking the sign", "color": [255, 245, 225], "ramp": 1.5, "tint": [0.42, 0.40, 0.36]},
+  "output": "davos_middle_powers_anonymous.mp4"
+}
