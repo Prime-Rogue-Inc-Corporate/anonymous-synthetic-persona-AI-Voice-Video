@@ -12,7 +12,7 @@ Usage:
 
 Requires ffmpeg and espeak-ng on PATH, plus numpy, scipy and Pillow.
 """
-import argparse, datetime, json, math, os, subprocess, sys, wave
+import argparse, datetime, json, math, os, re, subprocess, sys, wave
 from concurrent.futures import ProcessPoolExecutor
 
 import numpy as np
@@ -31,6 +31,7 @@ DEFAULTS = {
     "title": "ANONYMOUS",
     "subtitle": "message",
     "mask": "moth",
+    "cast": {},
     "credits": [],
     "voice": {"voice": "en-us+m3", "speed": 138, "pitch": 22,
               "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.6:40:0.25,highpass=f=90,lowpass=f=6000,volume=1.6"},
@@ -52,15 +53,50 @@ def merge(a, b):
     return out
 
 
+# ---------------------------------------------------------------- script
+SPEAKER = re.compile(r"^([A-Z][A-Z0-9 .'-]{0,24}):\s+(.*)$")
+
+
+def load_episode(ep):
+    """Read episode.json + script.txt. Returns (cfg, lines, speakers).
+
+    Dialogue: prefix lines with an upper-case speaker tag defined in cfg["cast"],
+    e.g. ``ANCHOR: Welcome.`` Untagged lines go to the first cast member (or the solo persona).
+    """
+    cfg = merge(DEFAULTS, json.load(open(os.path.join(ep, "episode.json"))))
+    lines, speakers = [], []
+    first = next(iter(cfg["cast"]), None)
+    for raw in open(os.path.join(ep, "script.txt"), encoding="utf-8"):
+        raw = raw.strip()
+        if not raw:
+            continue
+        m = SPEAKER.match(raw)
+        if m and cfg["cast"]:
+            if m.group(1) not in cfg["cast"]:
+                raise SystemExit(f"speaker {m.group(1)!r} is not in cast: {', '.join(cfg['cast'])}")
+            speakers.append(m.group(1)); lines.append(m.group(2))
+        else:
+            speakers.append(first); lines.append(raw)
+    return cfg, lines, speakers
+
+
+def voice_for(cfg, speaker):
+    if speaker is None:
+        return cfg["voice"], cfg["pronounce"]
+    c = cfg["cast"][speaker]
+    return merge(cfg["voice"], c.get("voice", {})), {**cfg["pronounce"], **c.get("pronounce", {})}
+
+
 # ---------------------------------------------------------------- voice
-def synth(ep_dir, cfg, lines):
+def synth(ep_dir, cfg, lines, speakers=None):
     work = os.path.join(ep_dir, "build", "voice")
     os.makedirs(work, exist_ok=True)
-    v = cfg["voice"]
+    speakers = speakers or [None] * len(lines)
     clips = []
     for i, line in enumerate(lines):
+        v, pron = voice_for(cfg, speakers[i])
         spoken = line.replace('"', "")
-        for k, rep in cfg["pronounce"].items():
+        for k, rep in pron.items():
             spoken = spoken.replace(k, rep)
         raw, out = f"{work}/raw_{i:03d}.wav", f"{work}/v_{i:03d}.wav"
         subprocess.run(["espeak-ng", "-v", v["voice"], "-s", str(v["speed"]), "-p", str(v["pitch"]), "-w", raw, spoken], check=True)
@@ -87,12 +123,15 @@ def timeline(cfg, lines, clips):
     return starts, t + 2.5
 
 
-def mix_audio(path, clips, starts, total):
+def mix_audio(path, clips, starts, total, speakers=None):
+    """Write the final mix; return {speaker: voice track} for per-speaker mask animation."""
     rng = np.random.default_rng(7)
     N = int(total * SR)
-    voice = np.zeros(N, np.float32)
-    for s, c in zip(starts, clips):
-        a = int(s * SR); voice[a:a + len(c)] += c
+    speakers = speakers or [None] * len(clips)
+    tracks = {sp: np.zeros(N, np.float32) for sp in set(speakers)}
+    for s, c, sp in zip(starts, clips, speakers):
+        a = int(s * SR); tracks[sp][a:a + len(c)] += c
+    voice = sum(tracks.values())
     tt = np.arange(N) / SR
     drone = np.zeros(N, np.float32)
     for f, amp in [(55, .5), (55.4, .4), (82.4, .25), (110.2, .12)]:
@@ -106,7 +145,7 @@ def mix_audio(path, clips, starts, total):
     with wave.open(path, "w") as w:
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR)
         w.writeframes((mix * 32767).astype(np.int16).tobytes())
-    return voice
+    return tracks
 
 
 def envelope(voice, total):
@@ -125,9 +164,10 @@ def envelope(voice, total):
 
 # ---------------------------------------------------------------- visuals
 class Renderer:
-    def __init__(self, cfg, lines, durs, starts, total, env):
-        self.cfg, self.lines, self.starts, self.total, self.env = cfg, lines, starts, total, env
+    def __init__(self, cfg, lines, speakers, durs, starts, total, envs):
+        self.cfg, self.lines, self.speakers, self.starts, self.total, self.envs = cfg, lines, speakers, starts, total, envs
         self.durs = durs
+        self.label = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 20)
         self.mono = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono.ttf", 30)
         self.big = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 64)
         self.small = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono.ttf", 20)
@@ -141,10 +181,16 @@ class Renderer:
         X, Y = np.meshgrid(np.linspace(-1, 1, W), np.linspace(-1, 1, H))
         self.vign = np.clip(1.15 - 0.75 * (X ** 2 + Y ** 2), 0, 1).astype(np.float32)
         self.beam = np.clip(1 - (X ** 2 + (Y + 0.9) ** 2) / 1.2, 0, 1).astype(np.float32)
-        if cfg["mask"] not in MASKS:
-            raise SystemExit(f"unknown mask {cfg['mask']!r}; available: {', '.join(MASKS)}")
-        self.mask = MASKS[cfg["mask"]]
-        self.suit = suit(self.mask.tie)
+        # figures: one solo persona, or one per cast member (left to right in cast order)
+        if cfg["cast"]:
+            n = len(cfg["cast"])
+            self.figures = [(sp, c["mask"], c.get("x", (k + 1) / (n + 1))) for k, (sp, c) in enumerate(cfg["cast"].items())]
+        else:
+            self.figures = [(None, cfg["mask"], 0.5)]
+        for _, m, _ in self.figures:
+            if m not in MASKS:
+                raise SystemExit(f"unknown mask {m!r}; available: {', '.join(MASKS)}")
+        self.suits = {m: suit(MASKS[m].tie) for _, m, _ in self.figures}
         lt = cfg["light"]["line"]
         self.light_t = next((starts[i] for i, l in enumerate(lines) if lt and l.startswith(lt)), None)
         self.sign_t = starts[len(lines) - cfg["signoff_lines"]]
@@ -158,10 +204,23 @@ class Renderer:
         return out + ([cur] if cur else [])
 
     def caption(self, t):
+        """Index of the line on screen at time t, or None."""
         for i, s in enumerate(self.starts):
             if s - 0.05 <= t <= s + self.durs[i] + 0.35:
-                return self.lines[i]
+                return i
         return None
+
+    def active_speaker(self, t):
+        """Whoever spoke most recently (so the highlight holds through pauses)."""
+        last = None
+        for i, s in enumerate(self.starts):
+            if s - 0.05 <= t: last = self.speakers[i]
+            else: break
+        return last
+
+    def amp(self, speaker, fi):
+        env = self.envs.get(speaker)
+        return 0.0 if env is None else float(env[min(fi, len(env) - 1)])
 
     def centered(self, layer_draw, text, font, y, fill):
         layer_draw.text(((W - font.getlength(text)) / 2, y), text, font=font, fill=fill)
@@ -190,25 +249,41 @@ class Renderer:
             self.centered(ld, cfg["subtitle"], self.small, H / 2 + 20, (170, 170, 170, a))
             im.paste(layer, (0, 0), layer)
         else:
-            s = 1 + 0.015 * math.sin(t * 0.4)
-            head = self.suit.copy()
-            self.mask(ImageDraw.Draw(head), float(self.env[min(fi, len(self.env) - 1)]), t)
-            e = head.resize((int(520 * s), int(520 * s)), Image.BICUBIC)
-            ex, ey = (W - e.width) // 2, 40 + int(4 * math.sin(t * 1.3))
+            duo = len(self.figures) > 1
+            base_scale = 0.74 if duo else 1.0
+            top = 78 if duo else 40
+            active = self.active_speaker(t)
             if glow > 0:
                 halo = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-                ImageDraw.Draw(halo).ellipse([W / 2 - 230, ey + 50, W / 2 + 230, ey + 360], fill=(*cfg["light"]["color"], int(85 * glow)))
+                ImageDraw.Draw(halo).ellipse([W / 2 - 330, top + 50, W / 2 + 330, top + 360], fill=(*cfg["light"]["color"], int(85 * glow)))
                 halo = halo.filter(ImageFilter.GaussianBlur(60))
                 im.paste(halo, (0, 0), halo)
-            im.paste(e, (ex, ey), e)
-            cap = self.caption(t)
-            if cap:
-                rows = self.wrap(cap)
+            for k, (sp, m, xf) in enumerate(self.figures):
+                s = base_scale * (1 + 0.015 * math.sin(t * 0.4 + k * 1.7))
+                head = self.suits[m].copy()
+                MASKS[m](ImageDraw.Draw(head), self.amp(sp, fi), t + k * 0.9)
+                if duo and sp != active:                       # dim whoever isn't speaking
+                    r_, g_, b_, a_ = head.split()
+                    dimmed = Image.merge("RGB", (r_, g_, b_)).point(lambda v: int(v * 0.62))
+                    head = Image.merge("RGBA", (*dimmed.split(), a_))
+                e = head.resize((int(520 * s), int(520 * s)), Image.BICUBIC)
+                ex = int(xf * W - e.width / 2)
+                ey = top + int(4 * math.sin(t * 1.3 + k * 2.1))
+                im.paste(e, (ex, ey), e)
+            ci = self.caption(t)
+            if ci is not None:
+                rows = self.wrap(self.lines[ci])
+                sp = self.speakers[ci]
+                name = cfg["cast"][sp].get("name", sp) if duo and sp else None
                 yb = H - 40 - len(rows) * 40
                 band = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-                ImageDraw.Draw(band).rectangle([0, yb - 18, W, H], fill=(0, 0, 0, 150))
+                ImageDraw.Draw(band).rectangle([0, yb - (46 if name else 18), W, H], fill=(0, 0, 0, 150))
                 im.paste(band, (0, 0), band)
                 d = ImageDraw.Draw(im)
+                if name:
+                    col = tuple(cfg["cast"][sp].get("color", [200, 200, 200]))
+                    label = name.upper()
+                    d.text(((W - self.label.getlength(label)) / 2, yb - 34), label, font=self.label, fill=col)
                 for k, row in enumerate(rows):
                     d.text(((W - self.mono.getlength(row)) / 2, yb + k * 40), row, font=self.mono, fill=(238, 238, 238))
             if t > self.total - 4.2:
@@ -266,16 +341,17 @@ def main():
 
     ep = os.path.abspath(a.episode)
     commit = git_commit()  # capture before rendering so the stamp matches the code that ran
-    cfg = merge(DEFAULTS, json.load(open(os.path.join(ep, "episode.json"))))
-    lines = [l.strip() for l in open(os.path.join(ep, "script.txt"), encoding="utf-8") if l.strip()]
+    cfg, lines, speakers = load_episode(ep)
     build = os.path.join(ep, "build"); os.makedirs(build, exist_ok=True)
 
-    clips = synth(ep, cfg, lines)
+    clips = synth(ep, cfg, lines, speakers)
     starts, total = timeline(cfg, lines, clips)
     audio = os.path.join(build, "mix.wav")
-    voice = mix_audio(audio, clips, starts, total)
-    state = (cfg, lines, [len(c) / SR for c in clips], starts, total, envelope(voice, total))
-    print(f"persona v{__version__} | {len(lines)} lines, {total:.1f}s, mask={cfg['mask']}")
+    tracks = mix_audio(audio, clips, starts, total, speakers)
+    envs = {sp: envelope(v, total) for sp, v in tracks.items()}
+    state = (cfg, lines, speakers, [len(c) / SR for c in clips], starts, total, envs)
+    who = ", ".join(f"{sp}={c['mask']}" for sp, c in cfg["cast"].items()) if cfg["cast"] else f"mask={cfg['mask']}"
+    print(f"persona v{__version__} | {len(lines)} lines, {total:.1f}s, {who}")
 
     if a.preview:
         r = Renderer(*state)
@@ -306,7 +382,8 @@ def main():
         "rendered_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
         "duration_s": round(total, 2),
         "lines": len(lines),
-        "mask": cfg["mask"],
+        "mask": cfg["mask"] if not cfg["cast"] else None,
+        "cast": {sp: c["mask"] for sp, c in cfg["cast"].items()} or None,
         "resolution": f"{W}x{H}@{FPS}",
     }
     json.dump(manifest, open(os.path.join(ep, "render.json"), "w"), indent=2)

@@ -37,9 +37,8 @@ def main():
     a = ap.parse_args()
 
     ep = os.path.abspath(a.episode)
-    cfg = render.merge(render.DEFAULTS, json.load(open(os.path.join(ep, "episode.json"))))
-    lines = [l.strip() for l in open(os.path.join(ep, "script.txt"), encoding="utf-8") if l.strip()]
-    clips = render.synth(ep, cfg, lines)          # same voice + timeline as the render
+    cfg, lines, speakers = render.load_episode(ep)
+    clips = render.synth(ep, cfg, lines, speakers)  # same voice + timeline as the render
     starts, _ = render.timeline(cfg, lines, clips)
     i, j = find(lines, a.first), find(lines, a.last or a.first)
     t0 = starts[i] - a.pad

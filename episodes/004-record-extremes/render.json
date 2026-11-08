@@ -1,0 +1,14 @@
+{
+  "output": "record_extremes.mp4",
+  "renderer_version": "0.3.0",
+  "renderer_commit": "fcde371",
+  "rendered_at": "2026-11-08T07:40:08+00:00",
+  "duration_s": 164.91,
+  "lines": 36,
+  "mask": null,
+  "cast": {
+    "ANCHOR": "anchor",
+    "WREN": "expert"
+  },
+  "resolution": "1280x720@30"
+}

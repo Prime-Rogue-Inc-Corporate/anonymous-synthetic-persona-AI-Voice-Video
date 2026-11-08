@@ -1,0 +1,29 @@
+{
+  "subtitle": "evening report: record extremes",
+  "cast": {
+    "ANCHOR": {
+      "name": "Dana Kerr, anchor",
+      "mask": "anchor",
+      "x": 0.3,
+      "color": [150, 190, 255],
+      "voice": {"voice": "en-us+f3", "speed": 150, "pitch": 40,
+                "filter": "asetrate=22050*0.94,aresample=44100,atempo=1.04,aecho=0.8:0.6:40:0.25,highpass=f=120,lowpass=f=6500,volume=1.6"}
+    },
+    "WREN": {
+      "name": "Dr. Ellis Wren, Federal Office of Climate Positivity",
+      "mask": "expert",
+      "x": 0.7,
+      "color": [255, 205, 120],
+      "voice": {"voice": "en-us+m7", "speed": 162, "pitch": 58,
+                "filter": "asetrate=22050*0.9,aresample=44100,atempo=1.06,aecho=0.8:0.5:30:0.2,highpass=f=90,lowpass=f=6000,volume=1.6"}
+    }
+  },
+  "pronounce": {"El Niño": "El Neenyo"},
+  "gaps": {"after": {"Proud.": 0.8, "Everything's a stock": 0.9, "A different slide": 1.0, "Could be. We don't": 1.0,
+                     "That things are at record": 1.6, "Thank you, Dana. Stay": 1.2}},
+  "light": {"line": "That things are at record", "color": [255, 200, 120], "ramp": 0.4, "tint": [0.40, 0.30, 0.14]},
+  "credits": ["An original sketch. Dr. Wren and his office are fictional.",
+              "Facts: 2026 State of the Climate report (BioScience);",
+              "Indicators of Global Climate Change 2025 (Earth System Science Data)"],
+  "output": "record_extremes.mp4"
+}

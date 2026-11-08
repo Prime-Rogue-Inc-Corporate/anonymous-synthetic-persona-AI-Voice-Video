@@ -1,0 +1,4 @@
+{"subtitle": "dialogue smoke test", "credits": ["ci"],
+ "cast": {"A": {"mask": "anchor", "voice": {"voice": "en-us+f3", "pitch": 40}},
+          "B": {"mask": "expert", "voice": {"voice": "en-us+m7", "pitch": 58}}},
+ "light": {"line": "The light"}}
