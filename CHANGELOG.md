@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+### Added
+- Episode 008 video in the repo: the full hour at 540p in four ~15-minute parts (`episodes/008-special-order-full-hour/video/`, 27–28 MB each). The 720p original (266 MB) exceeds GitHub's 100 MB per-file limit, and Git LFS uploads are blocked from the authoring environment.
+
 ### Planned
 - 003 Davos: replace the WEF credit line with "Source: Office of the Prime Minister" and re-render the end card.
 - Host full-quality renders as GitHub Release assets instead of in-tree.

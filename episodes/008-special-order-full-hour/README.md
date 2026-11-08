@@ -3,7 +3,9 @@
 The 60-minute version of [007](../007-special-order): Rep. Clay Whitlow (fictional), a lame-duck congressman who lost his primary, uses a full special-order hour in the first week of the November 2026 lame duck.
 
 - `script.txt` is assembled from `parts/` (in the order listed below); edit the parts, then rebuild the script.
-- The full render (~280 MB) is too large to keep in git. Render it locally:
+- **Watch it:** the full hour is in `video/`, re-encoded at 540p and split into four ~15-minute parts (27–28 MB each) so each fits under GitHub's file limit and this repo's push size:
+  `special_order_full_hour_540p_part1of4.mp4` … `part4of4.mp4`. Play them in order.
+- The original 720p render (266 MB) is over GitHub's 100 MB per-file limit, so it isn't stored here. To rebuild it locally:
 
 ```bash
 cat parts/01-opening.txt parts/02-calendar.txt parts/03-spending.txt parts/03b-prices.txt parts/03c-debt-limit.txt \
