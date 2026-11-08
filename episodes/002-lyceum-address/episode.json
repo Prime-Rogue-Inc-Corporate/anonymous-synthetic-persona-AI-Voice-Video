@@ -1,9 +1,34 @@
 {
   "subtitle": "message to america",
-  "credits": ["Abraham Lincoln  ·  Springfield, Illinois  ·  January 27, 1838"],
-  "voice": {"speed": 136},
-  "pronounce": {"Buonaparte": "Bonaparte"},
-  "gaps": {"after": {"Passion has helped": 1.0, "and as truly": 2.0}},
-  "light": {"line": "Reason, cold", "color": [120, 190, 255], "ramp": 1.5, "tint": [0.10, 0.28, 0.48]},
-  "output": "lyceum_address_anonymous.mp4"
+  "credits": [
+    "Abraham Lincoln  ·  Springfield, Illinois  ·  January 27, 1838"
+  ],
+  "voice": {
+    "speed": 136
+  },
+  "pronounce": {
+    "Buonaparte": "Bonaparte"
+  },
+  "gaps": {
+    "after": {
+      "Passion has helped": 1.0,
+      "and as truly": 2.0
+    }
+  },
+  "light": {
+    "line": "Reason, cold",
+    "color": [
+      120,
+      190,
+      255
+    ],
+    "ramp": 1.5,
+    "tint": [
+      0.1,
+      0.28,
+      0.48
+    ]
+  },
+  "output": "lyceum_address_anonymous.mp4",
+  "mask": "lincoln"
 }

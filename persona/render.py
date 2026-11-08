@@ -12,7 +12,7 @@ Usage:
 
 Requires ffmpeg and espeak-ng on PATH, plus numpy, scipy and Pillow.
 """
-import argparse, glob, json, math, os, shutil, subprocess, sys, wave
+import argparse, datetime, json, math, os, subprocess, sys, wave
 from concurrent.futures import ProcessPoolExecutor
 
 import numpy as np
@@ -20,11 +20,17 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from scipy.ndimage import gaussian_filter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+sys.path.insert(0, HERE)
+from masks import MASKS, suit  # noqa: E402
+
 W, H, FPS, SR = 1280, 720, 30, 44100
+__version__ = open(os.path.join(ROOT, "VERSION")).read().strip()
 
 DEFAULTS = {
     "title": "ANONYMOUS",
     "subtitle": "message",
+    "mask": "moth",
     "credits": [],
     "voice": {"voice": "en-us+m3", "speed": 138, "pitch": 22,
               "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.6:40:0.25,highpass=f=90,lowpass=f=6000,volume=1.6"},
@@ -100,35 +106,28 @@ def mix_audio(path, clips, starts, total):
     with wave.open(path, "w") as w:
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR)
         w.writeframes((mix * 32767).astype(np.int16).tobytes())
+    return voice
+
+
+def envelope(voice, total):
+    """Per-frame voice loudness 0..1 with fast attack / slow release, for mask animation."""
+    nf = int(total * FPS)
+    hop = SR // FPS
+    rms = np.array([np.sqrt(np.mean(voice[i * hop:(i + 1) * hop] ** 2) + 1e-12) for i in range(nf)])
+    ref = np.percentile(rms[rms > 1e-4], 90) if (rms > 1e-4).any() else 1.0
+    raw = np.clip(rms / ref, 0, 1)
+    env = np.zeros(nf, np.float32)
+    for i in range(1, nf):
+        a = 0.6 if raw[i] > env[i - 1] else 0.25
+        env[i] = env[i - 1] + a * (raw[i] - env[i - 1])
+    return env
 
 
 # ---------------------------------------------------------------- visuals
-def emblem():
-    """Moth-headed suit. Original Prime Rogue emblem — see TRADEMARKS.md."""
-    im = Image.new("RGBA", (520, 520), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
-    cx = 260
-    d.polygon([(cx - 190, 520), (cx - 170, 360), (cx - 70, 300), (cx + 70, 300), (cx + 170, 360), (cx + 190, 520)], fill=(14, 14, 18, 255))
-    d.polygon([(cx - 40, 300), (cx + 40, 300), (cx, 420)], fill=(225, 225, 225, 255))
-    d.polygon([(cx - 70, 300), (cx - 40, 300), (cx, 420), (cx - 55, 380), (cx - 95, 330)], fill=(32, 32, 38, 255))
-    d.polygon([(cx + 70, 300), (cx + 40, 300), (cx, 420), (cx + 55, 380), (cx + 95, 330)], fill=(32, 32, 38, 255))
-    d.polygon([(cx - 12, 312), (cx + 12, 312), (cx + 18, 420), (cx, 445), (cx - 18, 420)], fill=(20, 20, 24, 255))
-    mc, my = cx, 195
-    wing, wing2 = (205, 200, 185, 255), (150, 145, 132, 255)
-    for s in (-1, 1):
-        d.polygon([(mc, my - 10), (mc + s * 150, my - 95), (mc + s * 175, my - 30), (mc + s * 120, my + 25), (mc, my + 15)], fill=wing)
-        d.polygon([(mc, my + 5), (mc + s * 110, my + 30), (mc + s * 95, my + 95), (mc + s * 25, my + 70)], fill=wing2)
-        d.ellipse([mc + s * 95 - 18, my - 55, mc + s * 95 + 18, my - 19], fill=(60, 55, 50, 255))
-        d.ellipse([mc + s * 95 - 7, my - 44, mc + s * 95 + 7, my - 30], fill=(220, 215, 200, 255))
-        d.line([(mc + s * 6, my - 58), (mc + s * 45, my - 120), (mc + s * 70, my - 128)], fill=(90, 82, 72, 255), width=4)
-    d.ellipse([mc - 16, my - 40, mc + 16, my + 85], fill=(70, 62, 55, 255))
-    d.ellipse([mc - 18, my - 62, mc + 18, my - 28], fill=(80, 72, 64, 255))
-    return im
-
-
 class Renderer:
-    def __init__(self, cfg, lines, clips, starts, total):
-        self.cfg, self.lines, self.starts, self.total = cfg, lines, starts, total
-        self.durs = [len(c) / SR for c in clips]
+    def __init__(self, cfg, lines, durs, starts, total, env):
+        self.cfg, self.lines, self.starts, self.total, self.env = cfg, lines, starts, total, env
+        self.durs = durs
         self.mono = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono.ttf", 30)
         self.big = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 64)
         self.small = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono.ttf", 20)
@@ -142,7 +141,10 @@ class Renderer:
         X, Y = np.meshgrid(np.linspace(-1, 1, W), np.linspace(-1, 1, H))
         self.vign = np.clip(1.15 - 0.75 * (X ** 2 + Y ** 2), 0, 1).astype(np.float32)
         self.beam = np.clip(1 - (X ** 2 + (Y + 0.9) ** 2) / 1.2, 0, 1).astype(np.float32)
-        self.emb = emblem()
+        if cfg["mask"] not in MASKS:
+            raise SystemExit(f"unknown mask {cfg['mask']!r}; available: {', '.join(MASKS)}")
+        self.mask = MASKS[cfg["mask"]]
+        self.suit = suit(self.mask.tie)
         lt = cfg["light"]["line"]
         self.light_t = next((starts[i] for i, l in enumerate(lines) if lt and l.startswith(lt)), None)
         self.sign_t = starts[len(lines) - cfg["signoff_lines"]]
@@ -189,7 +191,9 @@ class Renderer:
             im.paste(layer, (0, 0), layer)
         else:
             s = 1 + 0.015 * math.sin(t * 0.4)
-            e = self.emb.resize((int(520 * s), int(520 * s)), Image.BICUBIC)
+            head = self.suit.copy()
+            self.mask(ImageDraw.Draw(head), float(self.env[min(fi, len(self.env) - 1)]), t)
+            e = head.resize((int(520 * s), int(520 * s)), Image.BICUBIC)
             ex, ey = (W - e.width) // 2, 40 + int(4 * math.sin(t * 1.3))
             if glow > 0:
                 halo = Image.new("RGBA", (W, H), (0, 0, 0, 0))
@@ -268,9 +272,9 @@ def main():
     clips = synth(ep, cfg, lines)
     starts, total = timeline(cfg, lines, clips)
     audio = os.path.join(build, "mix.wav")
-    mix_audio(audio, clips, starts, total)
-    state = (cfg, lines, clips, starts, total)
-    print(f"{len(lines)} lines, {total:.1f}s")
+    voice = mix_audio(audio, clips, starts, total)
+    state = (cfg, lines, [len(c) / SR for c in clips], starts, total, envelope(voice, total))
+    print(f"persona v{__version__} | {len(lines)} lines, {total:.1f}s, mask={cfg['mask']}")
 
     if a.preview:
         r = Renderer(*state)
@@ -288,11 +292,32 @@ def main():
     lst = os.path.join(build, "parts.txt")
     open(lst, "w").write("".join(f"file '{p}'\n" for p in parts))
     out = os.path.join(ep, cfg["output"]); tmp = out[:-4] + ".tmp.mp4"
+    commit = git_commit()
+    stamp = f"anonymous-synthetic-persona v{__version__} ({commit}) | episode {os.path.basename(ep)}"
     subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-i", audio,
                     "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "160k", "-shortest",
+                    "-metadata", f"comment={stamp}", "-metadata", f"title={cfg['subtitle']}",
                     "-movflags", "+faststart", tmp], check=True)
     os.replace(tmp, out)
-    print("wrote", out)
+    manifest = {
+        "output": cfg["output"],
+        "renderer_version": __version__,
+        "renderer_commit": commit,
+        "rendered_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
+        "duration_s": round(total, 2),
+        "lines": len(lines),
+        "mask": cfg["mask"],
+        "resolution": f"{W}x{H}@{FPS}",
+    }
+    json.dump(manifest, open(os.path.join(ep, "render.json"), "w"), indent=2)
+    print("wrote", out, "|", stamp)
+
+
+def git_commit():
+    try:
+        return subprocess.run(["git", "-C", ROOT, "rev-parse", "--short", "HEAD"], capture_output=True, text=True, check=True).stdout.strip()
+    except Exception:
+        return "unknown"
 
 
 if __name__ == "__main__":
