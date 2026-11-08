@@ -5,6 +5,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+### Added
+- Barn podcast scenes: `"set": {"barn": {...}}` draws a converted-barn studio (planks, beam, a dusk window onto pines, a moose mount, a framed "prime time" headshot drawn from the host's own mask, bookshelf, lantern glow). `"desk"` adds a plank anchor desk with a boom-arm broadcast mic and a mug; `"dog"` adds a dog that barks on cue.
+- Remote guests: cast `"screen": true` shows a speaker inside a TV monitor (head-and-shoulders crop, blue cast, scanlines, red name label, blinking LIVE dot).
+- Sound cues generalized: `[gavel]`, `[bark]`, `[cackle]`. Cues before a line's words play first, cues after play after, and a line can be cues only (`DALE: [bark]`, no caption shown). Cackles move the speaker's mouth; barks move the dog's.
+- Mask: `pundit`.
+- Episode 009, *The Barn*: a fictional ex-cable anchor turned barn podcaster, who broke with the President over the Iran war, reacts to the midterms and brings Rep. Whitlow on by satellite. Same universe as 006–008.
+- Barn smoke test (`tests/barn`).
+
 ### Planned
 - 003 Davos: replace the WEF credit line with "Source: Office of the Prime Minister" and re-render the end card.
 - Host full-quality renders as GitHub Release assets instead of in-tree.
