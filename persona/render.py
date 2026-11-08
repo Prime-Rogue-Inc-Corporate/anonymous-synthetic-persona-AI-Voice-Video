@@ -213,8 +213,11 @@ class Renderer:
         cl = a + b; cl = (cl - cl.min()) / (cl.max() - cl.min())
         self.cloud = np.array(Image.fromarray((cl * 255).astype(np.uint8)).resize((cw, H), Image.BICUBIC)).astype(np.float32) / 255
         self.cw = cw
+        gr = np.random.default_rng(11)
+        self.grain = [gr.integers(-14, 15, (H, W, 1), dtype=np.int16) for _ in range(12)]   # reused film grain
         X, Y = np.meshgrid(np.linspace(-1, 1, W), np.linspace(-1, 1, H))
         self.vign = np.clip(1.15 - 0.75 * (X ** 2 + Y ** 2), 0, 1).astype(np.float32)
+        self.vign3 = self.vign[..., None]
         self.beam = np.clip(1 - (X ** 2 + (Y + 0.9) ** 2) / 1.2, 0, 1).astype(np.float32)
         # figures: one solo persona, or one per cast member (left to right in cast order)
         if cfg["cast"]:
@@ -400,15 +403,16 @@ class Renderer:
         tr, tg, tb = cfg["light"]["tint"]
         if hasattr(self, "chamber_bg"):
             hall = self.chamber_bg
-            base3 = hall * (0.86 + 0.14 * sky[..., None])
-            img = base3 + glow * np.stack([tr * self.beam, tg * self.beam, tb * self.beam], -1)
+            img = hall * (0.86 + 0.14 * sky[..., None])
+            if glow > 0:
+                img = img + glow * np.stack([tr * self.beam, tg * self.beam, tb * self.beam], -1)
         elif hasattr(self, "corridor"):
             hall = self.corridor.draw(t)
             base3 = hall * (0.82 + 0.18 * sky[..., None])
             img = base3 + glow * np.stack([tr * self.beam, tg * self.beam, tb * self.beam], -1)
         else:
             img = np.stack([base * 0.8 + glow * tr * self.beam, base * 0.85 + glow * tg * self.beam, base + glow * tb * self.beam], -1)
-        img = img * self.vign[..., None] * flick
+        img = img * (self.vign3 * np.float32(flick))
         im = Image.fromarray((np.clip(img, 0, 1) * 255).astype(np.uint8))
 
         if t < 2.4:
@@ -490,7 +494,7 @@ class Renderer:
                 im.paste(layer, (0, 0), layer)
 
         arr = np.asarray(im).astype(np.int16)
-        arr += rng.integers(-14, 15, (H, W, 1), dtype=np.int16)
+        arr += self.grain[fi % len(self.grain)]
         arr[::3] = (arr[::3] * 0.82).astype(np.int16)
         near_light = self.light_t is not None and abs(t - self.light_t) < 0.12
         if rng.random() < 0.06 or near_light:
