@@ -5,6 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+### Added
+- Ensemble scenes: any number of on-screen speakers with automatic layout (sized for 1, 2, 3 or 4+).
+- Voice-only cast members: `"mask": null` (e.g. a narrator) speaks with a caption label but no figure; on-screen figures dim while they talk.
+- Set dressing via `"set"` in `episode.json`: a table with per-speaker tent cards (`"card"` in the cast entry), a wall placard, and a phone lockbox.
+- Masks: `rancher`, `organizer`, `official`, `aide`.
+- Episode 005, *Staff Level*: a fictional recreation, set in a SCIF, of the reported 2025 meetings between Alberta separatist organizers and U.S. State Department staff. Four invented characters plus a narrator who sets out what was reported, what is unconfirmed, and the October 2026 referendum result.
+
 ### Planned
 - 003 Davos: replace the WEF credit line with "Source: Office of the Prime Minister" and re-render the end card.
 - Host full-quality renders as GitHub Release assets instead of in-tree.
