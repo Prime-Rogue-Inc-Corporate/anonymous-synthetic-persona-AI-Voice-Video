@@ -152,46 +152,90 @@ def gavel_knock():
     return out / np.abs(out).max() * 0.5
 
 
-def mix_audio(path, clips, starts, total, speakers=None, lines=None):
-    """Write the final mix; return {speaker: voice track} for per-speaker mask animation."""
-    rng = np.random.default_rng(7)
-    N = int(total * SR)
-    speakers = speakers or [None] * len(clips)
-    tracks = {sp: np.zeros(N, np.float32) for sp in set(speakers)}
-    for s, c, sp in zip(starts, clips, speakers):
-        a = int(s * SR); tracks[sp][a:a + len(c)] += c
-    voice = sum(tracks.values())
-    sfx = np.zeros(N, np.float32)
-    if lines:
-        knock = gavel_knock()
-        for s, line in zip(starts, lines):
-            if has_cue(line):
-                a = int((s - CUE_LEAD + 0.02) * SR); sfx[a:a + len(knock)] += knock[:max(0, N - a)]
-    tt = np.arange(N) / SR
-    drone = np.zeros(N, np.float32)
+def _white(i0, i1, seed=7, seg=SR):
+    """Deterministic white noise for samples [i0, i1): built from fixed 1-second segments, so any block of the
+    timeline gets identical values in overlapping regions (no seams when the mix is rendered in blocks)."""
+    out = np.empty(i1 - i0, np.float32)
+    k0, k1 = i0 // seg, (i1 - 1) // seg
+    for k in range(k0, k1 + 1):
+        noise = np.random.default_rng((seed, k)).standard_normal(seg).astype(np.float32)
+        s0, s1 = max(i0, k * seg), min(i1, (k + 1) * seg)
+        out[s0 - i0:s1 - i0] = noise[s0 - k * seg:s1 - k * seg]
+    return out
+
+
+def _drone(i0, i1, N):
+    """Unnormalized drone bed for samples [i0, i1) of an N-sample timeline (padded so block edges are seamless)."""
+    pad = 600
+    j0, j1 = max(0, i0 - pad), min(N, i1 + pad)
+    tt = np.arange(j0, j1) / SR
+    d = np.zeros(j1 - j0, np.float32)
     for f, amp in [(55, .5), (55.4, .4), (82.4, .25), (110.2, .12)]:
-        drone += amp * (2 * ((tt * f) % 1) - 1)
-    drone = gaussian_filter(drone, 6)
-    drone = (drone + gaussian_filter(rng.standard_normal(N).astype(np.float32), 40) * 3) * (0.6 + 0.4 * np.sin(2 * np.pi * tt / 11))
-    drone *= 0.27 / (np.abs(drone).max() + 1e-9)
-    drone *= np.clip(tt / 2.0, 0, 1) * np.clip((total - tt) / 2.0, 0, 1)
-    mix = voice * 0.9 + drone + sfx
-    mix /= max(1.0, np.abs(mix).max() / 0.95)
+        d += (amp * (2 * ((tt * f) % 1) - 1)).astype(np.float32)
+    d = gaussian_filter(d, 6) + gaussian_filter(_white(j0, j1), 40) * 3
+    d *= (0.6 + 0.4 * np.sin(2 * np.pi * tt / 11)).astype(np.float32)
+    return d[i0 - j0:i1 - j0], tt[i0 - j0:i1 - j0]
+
+
+def mix_audio(path, clips, starts, total, speakers=None, lines=None, block_s=60):
+    """Write the final mix in blocks (constant memory, fine for hour-long episodes).
+
+    Returns {speaker: per-video-frame RMS of that speaker's voice}, for mask animation (see envelope_from_rms).
+    """
+    N = int(total * SR)
+    hop, nf = SR // FPS, int(total * FPS)
+    speakers = speakers or [None] * len(clips)
+    # per-speaker loudness per video frame, without materialising full-length tracks
+    energy = {sp: np.zeros(nf + 2) for sp in set(speakers)}
+    events = []
+    for s, c, sp in zip(starts, clips, speakers):
+        a = int(s * SR); events.append((a, c))
+        f0 = a // hop
+        idx = (a - f0 * hop + np.arange(len(c))) // hop
+        bins = np.bincount(idx, weights=c.astype(np.float64) ** 2)
+        e = energy[sp]; m = max(0, min(len(bins), len(e) - f0)); e[f0:f0 + m] += bins[:m]
+    rms = {sp: np.sqrt(e[:nf] / hop).astype(np.float32) for sp, e in energy.items()}
+    knock = gavel_knock()
+    hits = [int((s - CUE_LEAD + 0.02) * SR) for s, l in zip(starts, lines or []) if has_cue(l)]
+    ref, _ = _drone(0, min(N, 60 * SR), N)
+    dscale = 0.27 / (np.abs(ref).max() + 1e-9)
+
+    def block(b0, b1):
+        out = np.zeros(b1 - b0, np.float32)
+        for a, c in events:                      # voice
+            lo, hi = max(a, b0), min(a + len(c), b1)
+            if lo < hi: out[lo - b0:hi - b0] += c[lo - a:hi - a] * 0.9
+        for a in hits:                           # sound effects
+            lo, hi = max(a, b0), min(a + len(knock), b1)
+            if lo < hi: out[lo - b0:hi - b0] += knock[lo - a:hi - a]
+        d, tt = _drone(b0, b1, N)
+        fade = (np.clip(tt / 2.0, 0, 1) * np.clip((total - tt) / 2.0, 0, 1)).astype(np.float32)
+        return out + d * dscale * fade
+
+    B = block_s * SR
+    peak = max(np.abs(block(b, min(N, b + B))).max() for b in range(0, N, B))
+    gain = 1.0 / max(1.0, peak / 0.95)
     with wave.open(path, "w") as w:
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR)
-        w.writeframes((mix * 32767).astype(np.int16).tobytes())
-    return tracks
+        for b in range(0, N, B):
+            w.writeframes((block(b, min(N, b + B)) * gain * 32767).astype(np.int16).tobytes())
+    return rms
 
 
 def envelope(voice, total):
-    """Per-frame voice loudness 0..1 with fast attack / slow release, for mask animation."""
-    nf = int(total * FPS)
-    hop = SR // FPS
+    """Per-frame voice loudness 0..1 from a voice track (kept for small/ad-hoc uses)."""
+    nf = int(total * FPS); hop = SR // FPS
     rms = np.array([np.sqrt(np.mean(voice[i * hop:(i + 1) * hop] ** 2) + 1e-12) for i in range(nf)])
+    return envelope_from_rms(rms)
+
+
+def envelope_from_rms(rms):
+    """Per-frame RMS -> 0..1 loudness with fast attack / slow release, for mask animation."""
+    rms = np.asarray(rms, np.float64)
     ref = np.percentile(rms[rms > 1e-4], 90) if (rms > 1e-4).any() else 1.0
     raw = np.clip(rms / ref, 0, 1)
-    env = np.zeros(nf, np.float32)
-    for i in range(1, nf):
+    env = np.zeros(len(raw), np.float32)
+    for i in range(1, len(raw)):
         a = 0.6 if raw[i] > env[i - 1] else 0.25
         env[i] = env[i - 1] + a * (raw[i] - env[i - 1])
     return env
@@ -664,8 +708,8 @@ def main():
     clips = synth(ep, cfg, lines, speakers)
     starts, total = timeline(cfg, lines, clips)
     audio = os.path.join(build, "mix.wav")
-    tracks = mix_audio(audio, clips, starts, total, speakers, lines)
-    envs = {sp: envelope(v, total) for sp, v in tracks.items()}
+    rms = mix_audio(audio, clips, starts, total, speakers, lines)
+    envs = {sp: envelope_from_rms(r) for sp, r in rms.items()}
     state = (cfg, lines, speakers, [len(c) / SR for c in clips], starts, total, envs)
     who = ", ".join(f"{sp}={c['mask']}" for sp, c in cfg["cast"].items()) if cfg["cast"] else f"mask={cfg['mask']}"
     print(f"persona v{__version__} | {len(lines)} lines, {total:.1f}s, {who}")

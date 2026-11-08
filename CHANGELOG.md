@@ -5,6 +5,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+### Added
+- Episode 008, *Special Order: The Full Hour*: the 60-minute version of 007 (~7,100 words, 59:59). New sections on prices and the court-ordered tariff refunds, the 2027 debt limit, where "lame duck" comes from and the 20th Amendment, war powers votes, FISA 702, how a bill really becomes law, and constituent mail. The C-SPAN clock runs in real time and the chair's time warnings match it.
+
+### Changed
+- Faster frame loop: a reused film-grain bank and skipping glow math when the scene is dark (~33 to ~24 ms per frame).
+
+### Fixed
+- Hour-long episodes ran out of memory (killed at ~7 GB): the audio mixer built several full-length float arrays. It now renders the mix in one-minute blocks with seamless, deterministic noise (identical output at any block size) and tracks each speaker's mouth movement from per-frame loudness instead of full voice tracks. Peak memory for a 60-minute mix: ~775 MB.
+
 ### Planned
 - 003 Davos: replace the WEF credit line with "Source: Office of the Prime Minister" and re-render the end card.
 - Host full-quality renders as GitHub Release assets instead of in-tree.
