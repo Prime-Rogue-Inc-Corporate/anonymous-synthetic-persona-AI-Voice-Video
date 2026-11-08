@@ -1,0 +1,15 @@
+{
+  "output": "special_order_full_hour.mp4",
+  "renderer_version": "0.7.0",
+  "renderer_commit": "f5eb18d",
+  "rendered_at": "2026-11-08T13:01:27+00:00",
+  "duration_s": 3599.11,
+  "lines": 330,
+  "mask": null,
+  "cast": {
+    "WHITLOW": "congressman",
+    "CHAIR": "presiding",
+    "TEAGUE": "whip"
+  },
+  "resolution": "1280x720@30"
+}
