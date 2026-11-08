@@ -1,0 +1,128 @@
+{
+  "subtitle": "special order: sixty minutes",
+  "cast": {
+    "WHITLOW": {
+      "name": "Rep. Clay Whitlow (R-Ohio), lost his primary in May (fictional)",
+      "mask": "congressman",
+      "x": 0.33,
+      "scale": 1.0,
+      "top": 112,
+      "color": [
+        235,
+        210,
+        150
+      ],
+      "voice": {
+        "voice": "en-us+m5",
+        "speed": 156,
+        "pitch": 34,
+        "filter": "asetrate=22050*0.92,aresample=44100,atempo=1.05,aecho=0.8:0.5:60:0.25,highpass=f=90,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "CHAIR": {
+      "name": "Rep. Dolores Finch, Speaker pro tempore (fictional)",
+      "mask": "presiding",
+      "x": 0.74,
+      "scale": 0.42,
+      "top": 150,
+      "gavel": true,
+      "color": [
+        200,
+        180,
+        230
+      ],
+      "voice": {
+        "voice": "en-us+f3",
+        "speed": 150,
+        "pitch": 58,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.02,aecho=0.8:0.5:60:0.25,highpass=f=130,lowpass=f=6500,volume=1.6"
+      },
+      "desk": true,
+      "desk_y": 290
+    },
+    "TEAGUE": {
+      "name": "Rep. Harmon Teague, deputy whip (fictional)",
+      "mask": "whip",
+      "x": 0.88,
+      "scale": 0.9,
+      "top": 200,
+      "enter": "right",
+      "linger": 6,
+      "color": [
+        150,
+        200,
+        240
+      ],
+      "voice": {
+        "voice": "en-us+m3",
+        "speed": 176,
+        "pitch": 70,
+        "filter": "asetrate=22050*0.98,aresample=44100,atempo=1.02,aecho=0.8:0.5:60:0.25,highpass=f=100,lowpass=f=6000,volume=1.6"
+      }
+    }
+  },
+  "set": {
+    "chamber": {
+      "flag_x": 0.74,
+      "rostrum_x": 0.5
+    },
+    "lectern": {
+      "x": 0.33,
+      "y": 492,
+      "seal": true
+    },
+    "chyron": {
+      "title": "U.S. HOUSE OF REPRESENTATIVES",
+      "sub": "SPECIAL ORDER  ·  REP. WHITLOW (FICTIONAL)",
+      "clock": {
+        "from": 3600,
+        "start": "Greetings, Madam Speaker",
+        "zero": "The gentleman's time has expired"
+      }
+    }
+  },
+  "pronounce": {
+    "Whitlow": "Whit-low",
+    "C-SPAN": "See Span"
+  },
+  "signoff_lines": 6,
+  "gaps": {
+    "default": 0.35,
+    "after_greeting": 0.5,
+    "after_intro": 0.5,
+    "after": {
+      "For eight more weeks.": 0.8,
+      "That's a timeshare.": 0.8,
+      "shorter arms than our oversight": 1.1,
+      "The answer was no.": 0.9,
+      "It still won't pass.": 0.8,
+      "It never resolves.": 0.8,
+      "We declared a dinosaur.": 1.1,
+      "I checked them myself.": 0.8,
+      "two gift shops": 1.2,
+      "I'm not on it.": 0.9,
+      "The flight is short.": 0.9,
+      "And the balance of yours.": 1.2
+    }
+  },
+  "light": {
+    "line": "It's not two parties",
+    "color": [
+      255,
+      210,
+      130
+    ],
+    "ramp": 0.5,
+    "tint": [
+      0.34,
+      0.26,
+      0.1
+    ]
+  },
+  "credits": [
+    "An original sketch. Rep. Whitlow and everyone else here are fictional.",
+    "Context: House schedule cuts and the Sept. 16, 2026 recess (AP); lame-duck deadline Dec. 11.",
+    "Previously: 006 The Lame Duck"
+  ],
+  "output": "special_order.mp4"
+}

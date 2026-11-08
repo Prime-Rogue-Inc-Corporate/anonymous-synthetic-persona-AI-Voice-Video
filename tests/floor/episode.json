@@ -1,0 +1,6 @@
+{"subtitle": "floor smoke test", "credits": ["ci"],
+ "cast": {"REP": {"mask": "congressman", "x": 0.33, "scale": 1.0, "top": 112},
+          "CHAIR": {"mask": "presiding", "x": 0.74, "scale": 0.42, "top": 150, "gavel": true, "desk": true, "desk_y": 290}},
+ "set": {"chamber": {}, "lectern": {"x": 0.33, "y": 492, "seal": true},
+         "chyron": {"title": "TEST", "sub": "SMOKE", "clock": {"from": 3600, "start": "Greetings", "zero": "Expect us"}}},
+ "light": {"line": "The light"}}

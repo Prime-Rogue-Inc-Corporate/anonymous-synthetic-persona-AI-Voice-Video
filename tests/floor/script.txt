@@ -1,0 +1,8 @@
+CHAIR: [gavel] The gentleman is recognized.
+REP: Greetings, test.
+REP: The light was on.
+REP: We are Anonymous.
+REP: We are Legion.
+REP: We do not forgive.
+REP: We do not forget.
+REP: Expect us.
