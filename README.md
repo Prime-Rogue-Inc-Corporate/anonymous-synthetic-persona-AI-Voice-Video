@@ -63,6 +63,16 @@ python persona/render.py episodes/NNN-slug --jobs 4    # full render
 
 Rendering runs at roughly 2× real time per core, so an 18-minute speech takes about 30 minutes on two cores.
 
+## Loop clips
+
+Pull a seamless loop out of any rendered episode by naming its first and last caption lines:
+
+```bash
+python tools/loop_clip.py episodes/002-lyceum-address --from "If destruction" --to "As a nation of freemen" --name destruction --repeat 4
+```
+
+Writes `episodes/<ep>/clips/<name>_loop.mp4` (one cycle, crossfaded tail-into-head) and `<name>_x4.mp4`.
+
 ## Versioning
 
 Branches, pull requests, a changelog and semver tags. See [`CONTRIBUTING.md`](CONTRIBUTING.md). Short version:
