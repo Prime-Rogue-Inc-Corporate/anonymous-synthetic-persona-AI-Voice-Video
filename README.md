@@ -11,6 +11,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 001 | [Greetings, Podiatrist](episodes/001-greetings-podiatrist) | The moth joke, for Norm | 2:44 |
 | 002 | [Lyceum Address](episodes/002-lyceum-address) | Abraham Lincoln, Springfield, 1838 (cut) · `lincoln` mask | 4:12 |
 | 003 | [Middle Powers](episodes/003-davos-middle-powers) | Mark Carney, Davos, Jan 20 2026 (full) | 18:16 |
+| 004 | [Record Extremes](episodes/004-record-extremes) | Original two-hander on the 2026 State of the Climate report · `anchor` + `expert` | ~2:45 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
@@ -22,6 +23,8 @@ The persona's head changes per episode and moves with the voice.
 |------|------|-----------|
 | `moth` (default) | moth-in-a-suit, the Prime Rogue emblem | wings flutter with the voice |
 | `lincoln` | pale Lincoln mask, stovepipe hat, chin-curtain beard | jaw opens with the voice |
+| `anchor` | news anchor: sleek bob, earpiece | mouth opens with the voice |
+| `expert` | bald dome, round wire glasses, goatee, permanent smile | smile opens with the voice |
 
 Add one by writing a function in `persona/masks.py` decorated with `@mask("name")`. It gets the frame's voice loudness (`amp`, 0–1) and time (`t`), and draws on a 520×520 canvas with the suit's collar at y=300.
 
@@ -62,6 +65,26 @@ python persona/render.py episodes/NNN-slug --jobs 4    # full render
 ```
 
 Rendering runs at roughly 2× real time per core, so an 18-minute speech takes about 30 minutes on two cores.
+
+## Dialogue
+
+Tag each line with a speaker and define the cast:
+
+```
+ANCHOR: Doctor Wren. Seven records. How should people feel?
+WREN: Proud. Very few planets set seven records in a single year.
+```
+
+```json
+"cast": {
+  "ANCHOR": {"name": "Dana Kerr, anchor", "mask": "anchor", "x": 0.3, "color": [150, 190, 255],
+             "voice": {"voice": "en-us+f3", "speed": 150, "pitch": 40}},
+  "WREN":   {"name": "Dr. Ellis Wren", "mask": "expert", "x": 0.7, "color": [255, 205, 120],
+             "voice": {"voice": "en-us+m7", "speed": 162, "pitch": 58}}
+}
+```
+
+Each speaker gets their own espeak-ng voice (anything from `espeak-ng --voices`, plus a `+variant`), their own mask and their own voice-driven animation. Whoever isn't talking is dimmed. Leave `cast` out for a solo persona.
 
 ## Loop clips
 

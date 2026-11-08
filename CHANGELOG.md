@@ -6,6 +6,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 ## [Unreleased]
 
 ### Added
+- Dialogue mode: tag lines `SPEAKER: text` in `script.txt` and define a `"cast"` in `episode.json` (per-speaker mask, voice, position, label, colour). Each face animates from its own voice; the non-speaker dims; the speaker's name shows above the caption.
+- Masks: `anchor` (sleek bob, earpiece) and `expert` (bald dome, round glasses, goatee, permanent smile).
+- Episode 004, *Record Extremes*: an original two-hander. A deadpan anchor interviews a relentlessly positive (fictional) government messaging official about the 2026 State of the Climate report.
+- Dialogue smoke test (`tests/dialogue`).
 - `tools/loop_clip.py`: cut a seamless, crossfaded loop from any rendered episode by caption-line prefix (`--repeat N` for a posting copy).
 - Episode 002 clip: "If destruction be our lot… or die by suicide" (`clips/destruction_loop.mp4`, 13.5s; `destruction_x4.mp4`).
 
@@ -15,7 +19,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 ### Planned
 - 003 Davos: replace the WEF credit line with "Source: Office of the Prime Minister" and re-render the end card.
 - Host full-quality renders as GitHub Release assets instead of in-tree.
-- More test episodes: another historical speech or two and a comedy bit.
+- More test episodes: another historical speech or two.
 
 ## [0.2.0] - 2026-11-07
 
