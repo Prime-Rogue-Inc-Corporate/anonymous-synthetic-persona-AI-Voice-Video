@@ -5,6 +5,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+### Added
+- House floor scenes: `"set": {"chamber": {...}}` draws the chamber (walnut wall, marble pilasters, rostrum tiers, flag behind the chair); `"lectern"` adds a foreground lectern with gooseneck mics and a seal.
+- C-SPAN-style chyron (`"chyron"`): title, subtitle and an optional countdown clock that runs from `from` seconds at the `start` line to 00:00 (blinking red) at the `zero` line.
+- Inline sound cues: `[gavel]` anywhere in a line plays a synthesized double knock just before it (stripped from voice and captions); cast members with `"gavel": true` lean into it.
+- Cast `"desk": true` seats a figure behind a desk front (e.g. the rostrum), drawn in cast order so walk-ons can still stand in front.
+- Masks: `congressman`, `presiding`, `whip`.
+- Episode 007, *Special Order*: a fictional lame-duck congressman who lost his primary takes an hour on the House floor in the first week of the lame duck and torches both parties, set in the same universe as 006.
+- Floor-speech smoke test (`tests/floor`).
+
 ### Planned
 - 003 Davos: replace the WEF credit line with "Source: Office of the Prime Minister" and re-render the end card.
 - Host full-quality renders as GitHub Release assets instead of in-tree.

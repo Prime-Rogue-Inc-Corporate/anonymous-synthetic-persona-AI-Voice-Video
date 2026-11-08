@@ -14,6 +14,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 004 | [Record Extremes](episodes/004-record-extremes) | Original two-hander on the 2026 State of the Climate report · `anchor` + `expert` | ~2:45 |
 | 005 | [Staff Level](episodes/005-staff-level) | Fictional SCIF recreation of the reported Alberta separatist / State Department meetings · 4 speakers + narrator | ~3:40 |
 | 006 | [The Lame Duck](episodes/006-lame-duck) | Original walk-and-talk: Senate staffers vs. the Nov. 2026 lame-duck session · corridor, 2 walkers + 2 walk-ons | ~2:37 |
+| 007 | [Special Order](episodes/007-special-order) | A fictional lame-duck congressman's hour on the House floor · chamber, lectern, gavel, chyron clock | ~4:17 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
@@ -34,6 +35,9 @@ The persona's head changes per episode and moves with the voice.
 | `chief` | silver pixie cut, readers pushed up on her head, pearls | mouth opens with the voice |
 | `counsel` | dark curls, stubble, loosened tie | mouth opens with the voice |
 | `clerk` | buzz cut, flushed round face, headset | mouth opens with the voice |
+| `congressman` | grey hair, short grey beard, rectangular glasses, flat brows | mouth opens in the beard |
+| `presiding` | white hair, half-moon glasses low on the nose | mouth opens with the voice; leans into the gavel |
+| `whip` | slicked-back hair, too many teeth, pocket square | grin opens with the voice |
 
 Add one by writing a function in `persona/masks.py` decorated with `@mask("name")`. It gets the frame's voice loudness (`amp`, 0–1) and time (`t`), and draws on a 520×520 canvas with the suit's collar at y=300.
 
@@ -128,6 +132,24 @@ A moving corridor, two leads walking toward camera, and walk-ons who cut in from
 ```
 
 Walk-ons appear for each burst of their lines and leave afterwards. A short `gaps.default` and faster voice `speed` give it the pace.
+
+### Floor speeches
+
+```json
+"cast": {
+  "WHITLOW": {"mask": "congressman", "x": 0.33, "scale": 1.0, "top": 112},
+  "CHAIR":   {"mask": "presiding", "x": 0.74, "scale": 0.42, "top": 150, "gavel": true, "desk": true, "desk_y": 290},
+  "TEAGUE":  {"mask": "whip", "x": 0.88, "scale": 0.9, "top": 200, "enter": "right"}
+},
+"set": {
+  "chamber": {"flag_x": 0.74},
+  "lectern": {"x": 0.33, "y": 492, "seal": true},
+  "chyron": {"title": "U.S. HOUSE OF REPRESENTATIVES", "sub": "SPECIAL ORDER",
+             "clock": {"from": 3600, "start": "Greetings", "zero": "The gentleman's time has expired"}}
+}
+```
+
+Put `[gavel]` in a line (`CHAIR: [gavel] The gentleman will suspend.`) for a knock. Note that `gaps.after` prefixes match the raw line, so include the cue if you key a gap off a gavelled line.
 
 ## Loop clips
 
