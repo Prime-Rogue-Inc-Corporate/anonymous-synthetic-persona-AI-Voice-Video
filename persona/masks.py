@@ -358,3 +358,73 @@ def clerk(d, amp, t):
     d.ellipse([cx - 92, 196, cx - 72, 226], fill=(40, 40, 44, 255))
     d.line([(cx - 82, 222), (cx - 50, 262), (cx - 26, 268)], fill=(40, 40, 44, 255), width=4)
     d.ellipse([cx - 30, 263, cx - 20, 273], fill=(70, 70, 76, 255))
+
+
+@mask("congressman", tie=True)
+def congressman(d, amp, t):
+    """Lame-duck libertarian congressman: grey hair, short grey beard, rectangular glasses, unimpressed brows."""
+    cx = CX
+    skin, grey, dgrey = (230, 222, 208, 255), (160, 158, 154, 255), (110, 108, 104, 255)
+    jaw = 7 * amp
+    for s in (-1, 1):
+        d.ellipse([cx + s * 74 - 12, 188, cx + s * 74 + 12, 232], fill=(206, 196, 182, 255))
+    d.ellipse([cx - 68, 112, cx + 68, 296 + jaw], fill=skin)
+    d.polygon([(cx - 70, 172), (cx - 66, 122), (cx - 20, 100), (cx + 30, 102), (cx + 68, 124), (cx + 70, 168),
+               (cx + 54, 136), (cx + 10, 126), (cx - 40, 132), (cx - 56, 150)], fill=grey)
+    # short beard and moustache, following the jaw
+    d.polygon([(cx - 64, 222), (cx - 60, 262 + jaw), (cx - 36, 294 + jaw), (cx, 304 + jaw), (cx + 36, 294 + jaw), (cx + 60, 262 + jaw),
+               (cx + 64, 222), (cx + 50, 240), (cx + 40, 276 + jaw), (cx, 286 + jaw), (cx - 40, 276 + jaw), (cx - 50, 240)], fill=grey)
+    d.polygon([(cx - 30, 256), (cx, 250), (cx + 30, 256), (cx + 24, 262), (cx - 24, 262)], fill=dgrey)
+    # flat, unimpressed brows + rectangular glasses
+    for s in (-1, 1):
+        d.line([(cx + s * 12, 178), (cx + s * 50, 178)], fill=dgrey, width=6)
+    _eyes(d, cx, 196)
+    for s in (-1, 1):
+        d.rectangle([cx + s * 31 - 24, 184, cx + s * 31 + 24, 208], outline=(50, 50, 56, 255), width=3)
+    d.line([(cx - 7, 192), (cx + 7, 192)], fill=(50, 50, 56, 255), width=3)
+    d.polygon([(cx - 5, 204), (cx + 5, 204), (cx + 11, 242), (cx - 11, 242)], fill=(212, 200, 186, 255))
+    my = 272 + jaw * 0.4
+    if amp > 0.08:
+        d.ellipse([cx - 15, my - 2, cx + 15, my + 3 + 10 * amp], fill=(50, 24, 24, 255))
+    else:
+        d.line([(cx - 15, my), (cx + 15, my)], fill=(90, 70, 62, 255), width=4)
+
+
+@mask("presiding", tie=False)
+def presiding(d, amp, t):
+    """Speaker pro tempore: white hair, half-moon glasses on the end of the nose."""
+    cx = CX
+    skin, hair = (234, 226, 214, 255), (238, 236, 232, 255)
+    jaw = 6 * amp
+    d.ellipse([cx - 76, 100, cx + 76, 236], fill=hair)
+    d.ellipse([cx - 62, 122, cx + 62, 294 + jaw], fill=skin)
+    d.chord([cx - 66, 104, cx + 66, 190], 180, 360, fill=hair)
+    for s in (-1, 1):
+        d.line([(cx + s * 12, 182), (cx + s * 44, 180)], fill=(170, 166, 160, 255), width=4)
+    _eyes(d, cx, 198, 28)
+    d.polygon([(cx - 4, 204), (cx + 4, 204), (cx + 9, 240), (cx - 9, 240)], fill=(214, 204, 190, 255))
+    for s in (-1, 1):   # half-moons low on the nose
+        d.chord([cx + s * 24 - 18, 214, cx + s * 24 + 18, 244], 0, 180, outline=(60, 50, 40, 255), width=3)
+    _mouth(d, cx, 266 + jaw * 0.4, amp, 14, (140, 80, 86, 255), (100, 44, 52, 255))
+    d.polygon([(cx - 44, 300), (cx, 326), (cx + 44, 300)], fill=(60, 40, 90, 255))   # purple blouse
+
+
+@mask("whip", tie=True)
+def whip(d, amp, t):
+    """Deputy whip: slicked-back dark hair, too many teeth, pocket square."""
+    cx = CX
+    skin, hair = (232, 220, 204, 255), (26, 22, 22, 255)
+    jaw = 7 * amp
+    for s in (-1, 1):
+        d.ellipse([cx + s * 72 - 12, 188, cx + s * 72 + 12, 232], fill=(206, 194, 178, 255))
+    d.ellipse([cx - 66, 112, cx + 66, 298 + jaw], fill=skin)
+    d.chord([cx - 68, 96, cx + 68, 196], 180, 360, fill=hair)
+    d.arc([cx - 50, 104, cx + 40, 150], 200, 330, fill=(80, 80, 90, 255), width=3)   # comb lines
+    for s in (-1, 1):
+        d.line([(cx + s * 12, 176), (cx + s * 46, 170)], fill=hair, width=5)
+    _eyes(d, cx, 196)
+    d.polygon([(cx - 5, 202), (cx + 5, 202), (cx + 10, 240), (cx - 10, 240)], fill=(212, 198, 182, 255))
+    my = 262 + jaw * 0.4
+    d.chord([cx - 26, my - 10, cx + 26, my + 14 + 10 * amp], 0, 180, fill=(250, 250, 248, 255))   # the grin
+    d.line([(cx - 24, my + 1), (cx + 24, my + 1)], fill=(200, 196, 190, 255), width=2)
+    d.polygon([(cx + 66, 346), (cx + 92, 346), (cx + 86, 334), (cx + 78, 340), (cx + 72, 332)], fill=(230, 230, 236, 255))

@@ -32,7 +32,8 @@ DEFAULTS = {
     "subtitle": "message",
     "mask": "moth",
     "cast": {},
-    "set": {"table": False, "placard": None, "lockbox": False, "corridor": None},
+    "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
+            "chamber": None, "lectern": None, "chyron": None},
     "layout": {},
     "credits": [],
     "voice": {"voice": "en-us+m3", "speed": 138, "pitch": 22,
@@ -57,6 +58,17 @@ def merge(a, b):
 
 # ---------------------------------------------------------------- script
 SPEAKER = re.compile(r"^([A-Z][A-Z0-9 .'-]{0,24}):\s+(.*)$")
+CUE = re.compile(r"\[(gavel)\]\s*", re.I)
+CUE_LEAD = 0.55          # seconds of room left before a cued line for the sound effect
+
+
+def strip_cues(text):
+    """Remove inline sound cues like [gavel] from a line (for voice and captions)."""
+    return CUE.sub("", text).strip()
+
+
+def has_cue(text, name="gavel"):
+    return any(m.group(1).lower() == name for m in CUE.finditer(text))
 
 
 def load_episode(ep):
@@ -97,7 +109,7 @@ def synth(ep_dir, cfg, lines, speakers=None):
     clips = []
     for i, line in enumerate(lines):
         v, pron = voice_for(cfg, speakers[i])
-        spoken = line.replace('"', "")
+        spoken = strip_cues(line).replace('"', "")
         for k, rep in pron.items():
             spoken = spoken.replace(k, rep)
         raw, out = f"{work}/raw_{i:03d}.wav", f"{work}/v_{i:03d}.wav"
@@ -113,6 +125,8 @@ def timeline(cfg, lines, clips):
     t, starts = 2.5, []
     n = len(lines)
     for i, c in enumerate(clips):
+        if has_cue(lines[i]):
+            t += CUE_LEAD
         starts.append(t)
         t += len(c) / SR
         gap = g["default"]
@@ -125,7 +139,20 @@ def timeline(cfg, lines, clips):
     return starts, t + 2.5
 
 
-def mix_audio(path, clips, starts, total, speakers=None):
+def gavel_knock():
+    """Two sharp wooden knocks, synthesized."""
+    rng = np.random.default_rng(3)
+    n = int(0.42 * SR); out = np.zeros(n, np.float32)
+    for at in (0.0, 0.19):
+        k = int(0.12 * SR); tt = np.arange(k) / SR
+        env = np.exp(-tt * 55)
+        hit = (np.sin(2 * np.pi * 190 * tt) * 0.9 + np.sin(2 * np.pi * 620 * tt) * 0.35) * env
+        hit += gaussian_filter(rng.standard_normal(k).astype(np.float32), 1.2) * np.exp(-tt * 140) * 0.8
+        a = int(at * SR); out[a:a + k] += hit
+    return out / np.abs(out).max() * 0.5
+
+
+def mix_audio(path, clips, starts, total, speakers=None, lines=None):
     """Write the final mix; return {speaker: voice track} for per-speaker mask animation."""
     rng = np.random.default_rng(7)
     N = int(total * SR)
@@ -134,6 +161,12 @@ def mix_audio(path, clips, starts, total, speakers=None):
     for s, c, sp in zip(starts, clips, speakers):
         a = int(s * SR); tracks[sp][a:a + len(c)] += c
     voice = sum(tracks.values())
+    sfx = np.zeros(N, np.float32)
+    if lines:
+        knock = gavel_knock()
+        for s, line in zip(starts, lines):
+            if has_cue(line):
+                a = int((s - CUE_LEAD + 0.02) * SR); sfx[a:a + len(knock)] += knock[:max(0, N - a)]
     tt = np.arange(N) / SR
     drone = np.zeros(N, np.float32)
     for f, amp in [(55, .5), (55.4, .4), (82.4, .25), (110.2, .12)]:
@@ -142,7 +175,7 @@ def mix_audio(path, clips, starts, total, speakers=None):
     drone = (drone + gaussian_filter(rng.standard_normal(N).astype(np.float32), 40) * 3) * (0.6 + 0.4 * np.sin(2 * np.pi * tt / 11))
     drone *= 0.27 / (np.abs(drone).max() + 1e-9)
     drone *= np.clip(tt / 2.0, 0, 1) * np.clip((total - tt) / 2.0, 0, 1)
-    mix = voice * 0.9 + drone
+    mix = voice * 0.9 + drone + sfx
     mix /= max(1.0, np.abs(mix).max() / 0.95)
     with wave.open(path, "w") as w:
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR)
@@ -201,6 +234,16 @@ class Renderer:
         self.fig_top = lay.get("top", {1: 40, 2: 78, 3: 130}.get(n, 165))
         if cfg["set"].get("corridor"):
             self.corridor = Corridor(cfg["set"]["corridor"])
+        self.gavels = [starts[i] - CUE_LEAD for i, l in enumerate(lines) if has_cue(l)]
+        if cfg["set"].get("chamber"):
+            self.chamber_bg = chamber_backdrop(cfg["set"]["chamber"])
+        ch = cfg["set"].get("chyron")
+        self.clock = None
+        if ch and ch.get("clock"):
+            ck = ch["clock"]
+            find = lambda pre: next((starts[i] for i, l in enumerate(lines) if strip_cues(l).startswith(pre)), None)
+            self.clock = (ck.get("from", 3600), find(ck["start"]), find(ck["zero"]))
+        self.chy_big = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 22)
         self.card_font = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 15)
         lt = cfg["light"]["line"]
         self.light_t = next((starts[i] for i, l in enumerate(lines) if lt and l.startswith(lt)), None)
@@ -268,6 +311,49 @@ class Renderer:
         d.rectangle([x0, y0, x0 + tw + 36, y0 + 34], fill=(26, 24, 24), outline=(150, 40, 36), width=2)
         d.text((x0 + 18, y0 + 8), text, font=self.card_font, fill=(214, 70, 60))
 
+    def draw_lectern(self, im):
+        lc = self.cfg["set"].get("lectern")
+        if not lc:
+            return
+        d = ImageDraw.Draw(im)
+        cx, y = lc.get("x", 0.5) * W, lc.get("y", 470)
+        for s in (-1, 1):   # two gooseneck mics
+            d.line([(cx + s * 40, y + 6), (cx + s * 30, y - 40), (cx + s * 14, y - 70)], fill=(30, 30, 32), width=4)
+            d.ellipse([cx + s * 14 - 7, y - 78, cx + s * 14 + 7, y - 62], fill=(20, 20, 22))
+        d.polygon([(cx - 150, y), (cx + 150, y), (cx + 120, H), (cx - 120, H)], fill=(78, 54, 38))
+        d.rectangle([cx - 160, y - 10, cx + 160, y + 8], fill=(98, 70, 50))
+        d.line([(cx - 150, y + 8), (cx + 150, y + 8)], fill=(50, 34, 24), width=3)
+        if lc.get("seal"):
+            d.ellipse([cx - 34, y + 40, cx + 34, y + 108], outline=(190, 160, 90), width=4)
+            d.ellipse([cx - 22, y + 52, cx + 22, y + 96], outline=(190, 160, 90), width=2)
+
+    def draw_chyron(self, im, t):
+        ch = self.cfg["set"].get("chyron")
+        if not ch:
+            return
+        d = ImageDraw.Draw(im)
+        x0, y0 = 24, 22
+        title, sub = ch.get("title", ""), ch.get("sub", "")
+        w = max(self.card_font.getlength(title), self.card_font.getlength(sub)) + 28
+        clock_txt, red = None, False
+        if self.clock:
+            frm, a, z = self.clock
+            if a is None or t < a: rem = frm
+            elif z is None or t >= z: rem = 0
+            else: rem = frm * (1 - (t - a) / (z - a))
+            mm, ss = divmod(int(math.ceil(rem)), 60)
+            clock_txt = f"TIME REMAINING  {mm:02d}:{ss:02d}"
+            red = rem <= 0
+            w = max(w, self.chy_big.getlength(clock_txt) + 28)
+        h = 58 + (34 if clock_txt else 0)
+        d.rectangle([x0, y0, x0 + w, y0 + h], fill=(14, 22, 44))
+        d.rectangle([x0, y0, x0 + 6, y0 + h], fill=(200, 40, 46))
+        d.text((x0 + 16, y0 + 9), title, font=self.card_font, fill=(235, 235, 240))
+        d.text((x0 + 16, y0 + 31), sub, font=self.card_font, fill=(170, 180, 205))
+        if clock_txt:
+            col = (240, 70, 60) if red and int(t * 2) % 2 == 0 else ((240, 70, 60) if red else (240, 214, 120))
+            d.text((x0 + 16, y0 + 56), clock_txt, font=self.chy_big, fill=col)
+
     def draw_table(self, im, active):
         st = self.cfg["set"]
         if not st.get("table"):
@@ -312,7 +398,11 @@ class Renderer:
             glow = min(1, (t - self.light_t) / cfg["light"]["ramp"]) * (0.85 + 0.15 * (rng.random() > 0.1))
             if t >= self.sign_t: glow *= max(0, 1 - (t - self.sign_t) / 1.5)
         tr, tg, tb = cfg["light"]["tint"]
-        if hasattr(self, "corridor"):
+        if hasattr(self, "chamber_bg"):
+            hall = self.chamber_bg
+            base3 = hall * (0.86 + 0.14 * sky[..., None])
+            img = base3 + glow * np.stack([tr * self.beam, tg * self.beam, tb * self.beam], -1)
+        elif hasattr(self, "corridor"):
             hall = self.corridor.draw(t)
             base3 = hall * (0.82 + 0.18 * sky[..., None])
             img = base3 + glow * np.stack([tr * self.beam, tg * self.beam, tb * self.beam], -1)
@@ -357,14 +447,25 @@ class Renderer:
                     ph = t * 2 * math.pi * c.get("cadence", 1.9) + k * 1.3
                     ey -= 9 * abs(math.sin(ph / 2))
                     ex += 4 * math.sin(ph / 2)
+                if c.get("gavel") and any(0 <= t - g < 0.3 for g in self.gavels):
+                    ey += 7                                          # the chair leans into the gavel
                 if c.get("enter"):                                  # slide in from the named side
                     side = -1 if c["enter"] == "left" else 1
                     ex += side * (1 - pres) * (W * 0.45)
                 im.paste(e, (int(ex), int(ey)), e)
+                if c.get("desk"):                                   # seated behind a desk front (e.g. the rostrum)
+                    dd = ImageDraw.Draw(im)
+                    dy = int(c.get("desk_y", ey + e.height * 0.62))
+                    hw = e.width * 0.75
+                    dd.rectangle([xf * W - hw, dy, xf * W + hw, dy + 140], fill=(70, 48, 34))
+                    dd.line([(xf * W - hw, dy), (xf * W + hw, dy)], fill=(130, 98, 66), width=4)
+                    dd.rectangle([xf * W - hw + 14, dy + 16, xf * W + hw - 14, dy + 124], outline=(96, 70, 48), width=2)
             self.draw_table(im, active)
+            self.draw_lectern(im)
+            self.draw_chyron(im, t)
             ci = self.caption(t)
             if ci is not None:
-                rows = self.wrap(self.lines[ci])
+                rows = self.wrap(strip_cues(self.lines[ci]))
                 sp = self.speakers[ci]
                 name = cfg["cast"][sp].get("name", sp) if duo and sp else None
                 yb = H - 40 - len(rows) * 40
@@ -398,6 +499,42 @@ class Renderer:
                 arr[y0:y0 + h] = np.roll(arr[y0:y0 + h], rng.integers(-40, 41), 1)
             arr[..., 0] = np.roll(arr[..., 0], 4, 1)
         return np.clip(arr, 0, 255).astype(np.uint8)
+
+
+def chamber_backdrop(conf):
+    """Static House-chamber backdrop: walnut wall, marble pilasters, rostrum tiers, a flag behind the chair."""
+    conf = conf if isinstance(conf, dict) else {}
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    for y in range(H):   # wall gradient
+        k = y / H
+        d.line([(0, y), (W, y)], fill=(int(46 + 20 * k), int(40 + 14 * k), int(44 + 10 * k)))
+    for x in range(0, W, 90):   # wall panels
+        d.rectangle([x + 8, 30, x + 82, 300], outline=(70, 58, 52), width=2)
+    rx0 = int(conf.get("rostrum_x", 0.5) * W)
+    # flag behind the chair
+    fx, fy, fw, fh = int(conf.get("flag_x", 0.74) * W) - 120, 34, 240, 150
+    for k in range(13):
+        col = (150, 40, 46) if k % 2 == 0 else (215, 210, 200)
+        d.rectangle([fx, fy + k * fh / 13, fx + fw, fy + (k + 1) * fh / 13], fill=col)
+    d.rectangle([fx, fy, fx + fw * 0.4, fy + fh * 7 / 13], fill=(40, 52, 100))
+    for r in range(4):
+        for c in range(5):
+            sx, sy = fx + 10 + c * 18, fy + 9 + r * 18
+            d.ellipse([sx - 2, sy - 2, sx + 2, sy + 2], fill=(225, 225, 225))
+    # marble pilasters
+    for px in conf.get("pilasters", [0.47, 0.985]):
+        x = int(px * W)
+        d.rectangle([x - 18, 0, x + 18, 420], fill=(196, 190, 178))
+        d.line([(x - 8, 0), (x - 8, 420)], fill=(170, 164, 152), width=2)
+    # rostrum: three walnut tiers on the right
+    for k, (y0, y1, inset) in enumerate([(250, 300, 40), (300, 360, 20), (360, 430, 0)]):
+        d.rectangle([rx0 + inset, y0, W, y1], fill=(84 - k * 8, 58 - k * 6, 40 - k * 4))
+        d.line([(rx0 + inset, y0), (W, y0)], fill=(120, 90, 60), width=3)
+    # dark drape on the left
+    d.rectangle([0, 0, int(0.06 * W), H], fill=(36, 26, 40))
+    # floor
+    d.rectangle([0, 430, W, H], fill=(52, 30, 34))
+    return np.asarray(im).astype(np.float32) / 255
 
 
 class Corridor:
@@ -523,7 +660,7 @@ def main():
     clips = synth(ep, cfg, lines, speakers)
     starts, total = timeline(cfg, lines, clips)
     audio = os.path.join(build, "mix.wav")
-    tracks = mix_audio(audio, clips, starts, total, speakers)
+    tracks = mix_audio(audio, clips, starts, total, speakers, lines)
     envs = {sp: envelope(v, total) for sp, v in tracks.items()}
     state = (cfg, lines, speakers, [len(c) / SR for c in clips], starts, total, envs)
     who = ", ".join(f"{sp}={c['mask']}" for sp, c in cfg["cast"].items()) if cfg["cast"] else f"mask={cfg['mask']}"
