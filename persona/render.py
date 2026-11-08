@@ -33,7 +33,7 @@ DEFAULTS = {
     "mask": "moth",
     "cast": {},
     "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
-            "chamber": None, "lectern": None, "chyron": None},
+            "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None},
     "layout": {},
     "credits": [],
     "voice": {"voice": "en-us+m3", "speed": 138, "pitch": 22,
@@ -58,8 +58,10 @@ def merge(a, b):
 
 # ---------------------------------------------------------------- script
 SPEAKER = re.compile(r"^([A-Z][A-Z0-9 .'-]{0,24}):\s+(.*)$")
-CUE = re.compile(r"\[(gavel)\]\s*", re.I)
-CUE_LEAD = 0.55          # seconds of room left before a cued line for the sound effect
+CUE = re.compile(r"\[(gavel|bark|cackle)\]\s*", re.I)
+CUE_LEAD = 0.55          # seconds of room left before a gavelled line (kept for compatibility)
+CUE_LEN = {"gavel": 0.55, "bark": 0.75, "cackle": 1.45}   # room each sound effect takes on the timeline
+CUE_OWNER = {"gavel": None, "bark": "_dog", "cackle": "speaker"}   # whose mouth moves with it
 
 
 def strip_cues(text):
@@ -69,6 +71,33 @@ def strip_cues(text):
 
 def has_cue(text, name="gavel"):
     return any(m.group(1).lower() == name for m in CUE.finditer(text))
+
+
+def cue_split(text):
+    """(cues before the words, cues after the words). A line that is only cues counts them all as 'before'."""
+    pre, post = [], []
+    lead = re.match(r"^(?:\s*\[(?:gavel|bark|cackle)\]\s*)+", text, re.I)
+    if lead:
+        pre = [m.group(1).lower() for m in CUE.finditer(lead.group(0))]
+        rest = text[lead.end():]
+    else:
+        rest = text
+    post = [m.group(1).lower() for m in CUE.finditer(rest)]
+    return pre, post
+
+
+def cue_events(lines, starts, durs):
+    """[(time, cue, line_index)] for every sound cue in the script."""
+    ev = []
+    for i, (l, s, d) in enumerate(zip(lines, starts, durs)):
+        pre, post = cue_split(l)
+        t = s - sum(CUE_LEN[c] for c in pre)
+        for c in pre:
+            ev.append((t, c, i)); t += CUE_LEN[c]
+        t = s + d + 0.08
+        for c in post:
+            ev.append((t, c, i)); t += CUE_LEN[c]
+    return ev
 
 
 def load_episode(ep):
@@ -113,6 +142,11 @@ def synth(ep_dir, cfg, lines, speakers=None):
         for k, rep in pron.items():
             spoken = spoken.replace(k, rep)
         raw, out = f"{work}/raw_{i:03d}.wav", f"{work}/v_{i:03d}.wav"
+        if not spoken.strip():                     # a cue-only line, e.g. "HOST: [cackle]"
+            clips.append(np.zeros(int(0.05 * SR), np.float32))
+            with wave.open(out, "w") as w:
+                w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR); w.writeframes(b"\0\0" * int(0.05 * SR))
+            continue
         subprocess.run(["espeak-ng", "-v", v["voice"], "-s", str(v["speed"]), "-p", str(v["pitch"]), "-w", raw, spoken], check=True)
         subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", raw, "-af", v["filter"], "-ar", str(SR), "-ac", "1", out], check=True)
         with wave.open(out) as w:
@@ -125,10 +159,11 @@ def timeline(cfg, lines, clips):
     t, starts = 2.5, []
     n = len(lines)
     for i, c in enumerate(clips):
-        if has_cue(lines[i]):
-            t += CUE_LEAD
+        pre, post = cue_split(lines[i])
+        t += sum(CUE_LEN[x] for x in pre)
         starts.append(t)
         t += len(c) / SR
+        t += sum(CUE_LEN[x] for x in post)
         gap = g["default"]
         if i == 0: gap = g["after_greeting"]
         if i == 1: gap = g["after_intro"]
@@ -177,6 +212,39 @@ def _drone(i0, i1, N):
     return d[i0 - j0:i1 - j0], tt[i0 - j0:i1 - j0]
 
 
+def bark():
+    """Two short dog barks, synthesized."""
+    rng = np.random.default_rng(5)
+    out = np.zeros(int(0.7 * SR), np.float32)
+    for at, f0 in ((0.0, 560), (0.3, 500)):
+        k = int(0.2 * SR); tt = np.arange(k) / SR
+        f = f0 - 260 * tt / 0.2
+        ph = 2 * np.pi * np.cumsum(f) / SR
+        tone = sum(np.sin(ph * h) / h for h in (1, 2, 3, 4))
+        env = np.minimum(1, tt / 0.012) * np.exp(-tt * 14)
+        b = (tone * 0.8 + gaussian_filter(rng.standard_normal(k), 2) * 0.5) * env
+        a = int(at * SR); out[a:a + k] += b.astype(np.float32)
+    return out / np.abs(out).max() * 0.55
+
+
+def cackle():
+    """A high, delighted cackle (espeak at a silly pitch), fixed length."""
+    tmp = "/tmp/_persona_cackle"
+    subprocess.run(["espeak-ng", "-v", "en-us+m2", "-s", "290", "-p", "99", "-w", tmp + "_r.wav",
+                    "heh heh heh. hah hah hah hah hah"], check=True)
+    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", tmp + "_r.wav", "-af",
+                    "asetrate=22050*1.06,aresample=44100,aecho=0.8:0.5:30:0.2,volume=1.5", "-ar", str(SR), "-ac", "1", tmp + ".wav"], check=True)
+    with wave.open(tmp + ".wav") as w:
+        x = np.frombuffer(w.readframes(w.getnframes()), np.int16).astype(np.float32) / 32768
+    n = int((CUE_LEN["cackle"] - 0.1) * SR)
+    x = x[:n]
+    x[-int(0.08 * SR):] *= np.linspace(1, 0, int(0.08 * SR))
+    return x * 0.8
+
+
+SFX = {"gavel": lambda: gavel_knock(), "bark": lambda: bark(), "cackle": lambda: cackle()}
+
+
 def mix_audio(path, clips, starts, total, speakers=None, lines=None, block_s=60):
     """Write the final mix in blocks (constant memory, fine for hour-long episodes).
 
@@ -194,9 +262,22 @@ def mix_audio(path, clips, starts, total, speakers=None, lines=None, block_s=60)
         idx = (a - f0 * hop + np.arange(len(c))) // hop
         bins = np.bincount(idx, weights=c.astype(np.float64) ** 2)
         e = energy[sp]; m = max(0, min(len(bins), len(e) - f0)); e[f0:f0 + m] += bins[:m]
+    # sound effects from inline cues; voice-like ones (cackle, bark) also drive a mouth
+    bank, hits = {}, []
+    if lines:
+        for t, cue, i in cue_events(lines, starts, [len(c) / SR for c in clips]):
+            if cue not in bank:
+                bank[cue] = SFX[cue]()
+            snd = bank[cue]; a = int((t + 0.02) * SR); hits.append((a, snd))
+            owner = CUE_OWNER[cue]
+            owner = speakers[i] if owner == "speaker" else owner
+            if owner is not None:
+                e = energy.setdefault(owner, np.zeros(nf + 2))
+                f0 = a // hop
+                idx = (a - f0 * hop + np.arange(len(snd))) // hop
+                bins = np.bincount(idx, weights=snd.astype(np.float64) ** 2)
+                m = max(0, min(len(bins), len(e) - f0)); e[f0:f0 + m] += bins[:m]
     rms = {sp: np.sqrt(e[:nf] / hop).astype(np.float32) for sp, e in energy.items()}
-    knock = gavel_knock()
-    hits = [int((s - CUE_LEAD + 0.02) * SR) for s, l in zip(starts, lines or []) if has_cue(l)]
     ref, _ = _drone(0, min(N, 60 * SR), N)
     dscale = 0.27 / (np.abs(ref).max() + 1e-9)
 
@@ -205,9 +286,9 @@ def mix_audio(path, clips, starts, total, speakers=None, lines=None, block_s=60)
         for a, c in events:                      # voice
             lo, hi = max(a, b0), min(a + len(c), b1)
             if lo < hi: out[lo - b0:hi - b0] += c[lo - a:hi - a] * 0.9
-        for a in hits:                           # sound effects
-            lo, hi = max(a, b0), min(a + len(knock), b1)
-            if lo < hi: out[lo - b0:hi - b0] += knock[lo - a:hi - a]
+        for a, snd in hits:                      # sound effects
+            lo, hi = max(a, b0), min(a + len(snd), b1)
+            if lo < hi: out[lo - b0:hi - b0] += snd[lo - a:hi - a]
         d, tt = _drone(b0, b1, N)
         fade = (np.clip(tt / 2.0, 0, 1) * np.clip((total - tt) / 2.0, 0, 1)).astype(np.float32)
         return out + d * dscale * fade
@@ -281,9 +362,11 @@ class Renderer:
         self.fig_top = lay.get("top", {1: 40, 2: 78, 3: 130}.get(n, 165))
         if cfg["set"].get("corridor"):
             self.corridor = Corridor(cfg["set"]["corridor"])
-        self.gavels = [starts[i] - CUE_LEAD for i, l in enumerate(lines) if has_cue(l)]
+        self.gavels = [t for t, c, _ in cue_events(lines, starts, durs) if c == "gavel"]
         if cfg["set"].get("chamber"):
             self.chamber_bg = chamber_backdrop(cfg["set"]["chamber"])
+        if cfg["set"].get("barn"):
+            self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
         ch = cfg["set"].get("chyron")
         self.clock = None
         if ch and ch.get("clock"):
@@ -307,7 +390,7 @@ class Renderer:
     def caption(self, t):
         """Index of the line on screen at time t, or None."""
         for i, s in enumerate(self.starts):
-            if s - 0.05 <= t <= s + self.durs[i] + 0.35:
+            if s - 0.05 <= t <= s + self.durs[i] + 0.35 and strip_cues(self.lines[i]):
                 return i
         return None
 
@@ -357,6 +440,73 @@ class Renderer:
         x0, y0 = (W - tw) / 2 - 18, 52
         d.rectangle([x0, y0, x0 + tw + 36, y0 + 34], fill=(26, 24, 24), outline=(150, 40, 36), width=2)
         d.text((x0 + 18, y0 + 8), text, font=self.card_font, fill=(214, 70, 60))
+
+    def draw_monitor(self, im, head, c, lit, t):
+        """Guest shown inside a TV on a stand: head-and-shoulders crop, blue cast, scanlines, bezel."""
+        sw, sh = c.get("screen_w", 300), c.get("screen_h", 210)
+        cx, top = c.get("x", 0.8) * W, c.get("top", 120)
+        crop = head.crop((60, 70, 460, 350)).resize((sw, sh), Image.BICUBIC)
+        scr = Image.new("RGB", (sw, sh), (18, 26, 40))
+        scr.paste(crop, (0, 0), crop)
+        a = np.asarray(scr).astype(np.float32)
+        a *= np.array([0.86, 0.95, 1.12], np.float32) * (1.0 if lit else 0.75)
+        a[::2] *= 0.82
+        scr = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
+        d = ImageDraw.Draw(im)
+        x0, y0 = int(cx - sw / 2), int(top)
+        d.rectangle([x0 - 16, y0 - 16, x0 + sw + 16, y0 + sh + 16], fill=(22, 22, 24))
+        d.line([(cx, y0 + sh + 16), (cx, y0 + sh + 120)], fill=(30, 30, 32), width=10)
+        d.rectangle([cx - 60, y0 + sh + 116, cx + 60, y0 + sh + 126], fill=(30, 30, 32))
+        im.paste(scr, (x0, y0))
+        if c.get("screen_label"):
+            lab = c["screen_label"]; tw = self.card_font.getlength(lab)
+            d.rectangle([x0, y0 + sh - 26, x0 + tw + 16, y0 + sh], fill=(150, 30, 34))
+            d.text((x0 + 8, y0 + sh - 22), lab, font=self.card_font, fill=(245, 245, 245))
+        if int(t * 1.2) % 2 == 0:                                   # LIVE dot
+            d.ellipse([x0 + sw - 22, y0 + 10, x0 + sw - 10, y0 + 22], fill=(220, 40, 40))
+
+    def draw_desk(self, im):
+        dk = self.cfg["set"].get("desk")
+        if not dk:
+            return
+        d = ImageDraw.Draw(im)
+        cx, y, w = dk.get("x", 0.4) * W, dk.get("y", 520), dk.get("w", 620)
+        d.polygon([(cx - w / 2, y), (cx + w / 2, y), (cx + w / 2 + 30, H), (cx - w / 2 - 30, H)], fill=(96, 66, 42))
+        for k in range(1, 4):                                       # plank seams
+            d.line([(cx - w / 2 - 10 * k, y + 50 * k), (cx + w / 2 + 10 * k, y + 50 * k)], fill=(70, 48, 30), width=3)
+        d.rectangle([cx - w / 2 - 12, y - 14, cx + w / 2 + 12, y + 4], fill=(120, 86, 56))
+        if dk.get("mic"):                                           # boom arm + broadcast mic + pop filter
+            mx, my = dk.get("mic_x", cx + 70), dk.get("mic_y", y - 120)
+            d.line([(cx + w / 2 - 20, y - 14), (cx + w / 2 - 60, y - 200), (mx + 40, my - 30)], fill=(26, 26, 28), width=8)
+            d.rounded_rectangle([mx - 20, my - 46, mx + 20, my + 40], radius=18, fill=(30, 30, 34))
+            for k in range(-36, 36, 9):
+                d.line([(mx - 18, my + k), (mx + 18, my + k)], fill=(54, 54, 60), width=2)
+            d.ellipse([mx - 64, my - 40, mx - 24, my + 34], outline=(20, 20, 22), width=4, fill=(40, 40, 46))
+        if dk.get("mug"):
+            mx = cx - w / 2 + 60
+            d.rectangle([mx, y - 50, mx + 36, y - 14], fill=(170, 40, 40))
+            d.arc([mx + 26, y - 44, mx + 50, y - 20], 270, 90, fill=(170, 40, 40), width=5)
+
+    def draw_dog(self, im, fi, t):
+        dg = self.cfg["set"].get("dog")
+        if not dg:
+            return
+        d = ImageDraw.Draw(im)
+        amp = self.amp("_dog", fi)
+        cx, cy, s = dg.get("x", 0.1) * W, dg.get("y", 600), dg.get("scale", 1.0)
+        fur, dark = tuple(dg.get("color", [214, 170, 100])), (120, 86, 46)
+        P = lambda pts: [(cx + x * s, cy + y * s) for x, y in pts]
+        bob = 3 * math.sin(t * 2.0)
+        d.ellipse(P([(-70, -60 + bob), (70, 80 + bob)]), fill=fur)                       # head
+        for side in (-1, 1):                                                             # floppy ears
+            flap = 10 * amp
+            d.ellipse(P([(side * 58 - 26, -40 + bob - flap), (side * 58 + 26, 50 + bob - flap)]), fill=dark)
+        d.ellipse(P([(-38, 10 + bob), (38, 96 + bob + 22 * amp)]), fill=(230, 196, 140))   # muzzle
+        d.ellipse(P([(-14, 14 + bob), (14, 34 + bob)]), fill=(30, 22, 18))                # nose
+        for side in (-1, 1):
+            d.ellipse(P([(side * 28 - 8, -18 + bob), (side * 28 + 8, -2 + bob)]), fill=(24, 18, 14))
+        if amp > 0.08:
+            d.ellipse(P([(-24, 52 + bob), (24, 70 + bob + 26 * amp)]), fill=(120, 30, 40))
 
     def draw_lectern(self, im):
         lc = self.cfg["set"].get("lectern")
@@ -488,6 +638,9 @@ class Renderer:
                     r_, g_, b_, a_ = head.split()
                     dimmed = Image.merge("RGB", (r_, g_, b_)).point(lambda v: int(v * 0.62))
                     head = Image.merge("RGBA", (*dimmed.split(), a_))
+                if c.get("screen"):                                 # remote guest on a TV monitor
+                    self.draw_monitor(im, head, c, sp == active, t)
+                    continue
                 e = head.resize((int(520 * s), int(520 * s)), Image.BICUBIC)
                 ex = xf * W - e.width / 2
                 ey = c.get("top", top) + 4 * math.sin(t * 1.3 + k * 2.1)
@@ -510,6 +663,8 @@ class Renderer:
                     dd.rectangle([xf * W - hw + 14, dy + 16, xf * W + hw - 14, dy + 124], outline=(96, 70, 48), width=2)
             self.draw_table(im, active)
             self.draw_lectern(im)
+            self.draw_desk(im)
+            self.draw_dog(im, fi, t)
             self.draw_chyron(im, t)
             ci = self.caption(t)
             if ci is not None:
@@ -583,6 +738,77 @@ def chamber_backdrop(conf):
     # floor
     d.rectangle([0, 430, W, H], fill=(52, 30, 34))
     return np.asarray(im).astype(np.float32) / 255
+
+
+def barn_backdrop(conf):
+    """Static converted-barn studio: vertical planks, a beam, a window onto pines at dusk, a moose mount,
+    a framed glossy headshot from the old network days, bookshelves and a hanging lantern."""
+    conf = conf if isinstance(conf, dict) else {}
+    rng = np.random.default_rng(4)
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    x = 0
+    while x < W:                                   # planks
+        w = int(rng.integers(52, 78)); k = int(rng.integers(-10, 10))
+        d.rectangle([x, 0, x + w, H], fill=(104 + k, 72 + k, 48 + k))
+        d.line([(x, 0), (x, H)], fill=(52, 36, 24), width=3)
+        for _ in range(3):                         # knots
+            ky = int(rng.integers(40, 680)); d.ellipse([x + w / 2 - 5, ky - 3, x + w / 2 + 5, ky + 3], fill=(76, 52, 34))
+        x += w
+    d.rectangle([0, 60, W, 96], fill=(70, 46, 30)); d.line([(0, 96), (W, 96)], fill=(44, 30, 20), width=4)   # beam
+    # window onto the pines at dusk
+    wx, wy, ww, wh = int(conf.get("window_x", 0.07) * W), 150, 230, 210
+    for yy in range(wh):
+        k = yy / wh
+        d.line([(wx, wy + yy), (wx + ww, wy + yy)], fill=(int(70 + 90 * k), int(70 + 40 * k), int(110 - 20 * k)))
+    for px in range(wx, wx + ww - 36, 30):
+        hgt = int(rng.integers(70, 140))
+        d.polygon([(px, wy + wh), (px + 20, wy + wh - hgt), (px + 40, wy + wh)], fill=(20, 34, 28))
+    d.rectangle([wx, wy, wx + ww, wy + wh], outline=(230, 226, 214), width=10)
+    d.line([(wx + ww / 2, wy), (wx + ww / 2, wy + wh)], fill=(230, 226, 214), width=6)
+    d.line([(wx, wy + wh / 2), (wx + ww, wy + wh / 2)], fill=(230, 226, 214), width=6)
+    # moose mount
+    mx, my = int(conf.get("moose_x", 0.6) * W), 210
+    d.ellipse([mx - 30, my - 10, mx + 30, my + 30], fill=(60, 40, 26))                    # plaque
+    d.polygon([(mx - 34, my - 30), (mx + 34, my - 30), (mx + 22, my + 70), (mx, my + 92), (mx - 22, my + 70)], fill=(92, 62, 40))
+    d.ellipse([mx - 24, my + 60, mx + 24, my + 100], fill=(110, 76, 50))
+    for side in (-1, 1):                                                                   # palmate antlers
+        d.polygon([(mx + side * 26, my - 26), (mx + side * 120, my - 70), (mx + side * 150, my - 120), (mx + side * 126, my - 90),
+                   (mx + side * 118, my - 128), (mx + side * 100, my - 94), (mx + side * 86, my - 124), (mx + side * 76, my - 84),
+                   (mx + side * 40, my - 44)], fill=(214, 196, 160))
+    # framed glossy headshot from the old network days
+    fx, fy = int(conf.get("frame_x", 0.86) * W), 140
+    d.rectangle([fx - 70, fy, fx + 70, fy + 170], fill=(180, 150, 60))
+    d.rectangle([fx - 58, fy + 12, fx + 58, fy + 158], fill=(40, 60, 110))
+    try:
+        sys.path.insert(0, HERE)
+        from masks import render_head
+        hs = render_head(conf.get("headshot_mask", "pundit"), 0.0, 0.0).crop((80, 60, 440, 420)).resize((110, 110), Image.BICUBIC)
+        im.paste(hs, (fx - 55, fy + 22), hs)
+    except Exception:
+        pass
+    small = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 11)
+    cap = conf.get("headshot_caption", "PRIME TIME")
+    d.text((fx - small.getlength(cap) / 2, fy + 138), cap, font=small, fill=(230, 220, 180))
+    # bookshelf
+    bx, by = int(conf.get("shelf_x", 0.25) * W), 330
+    for row in range(3):
+        y0 = by + row * 70
+        d.rectangle([bx, y0 + 60, bx + 260, y0 + 68], fill=(64, 42, 26))
+        xx = bx + 6
+        while xx < bx + 250:
+            bw = int(rng.integers(10, 20)); bh = int(rng.integers(38, 58))
+            col = [(120, 30, 34), (40, 60, 90), (190, 170, 120), (40, 70, 50), (90, 70, 50)][int(rng.integers(0, 5))]
+            d.rectangle([xx, y0 + 60 - bh, xx + bw, y0 + 60], fill=col); xx += bw + 2
+    # hanging lantern
+    lx = int(conf.get("lantern_x", 0.46) * W)
+    d.line([(lx, 96), (lx, 150)], fill=(30, 30, 30), width=3)
+    d.rectangle([lx - 16, 150, lx + 16, 196], fill=(250, 210, 120), outline=(40, 40, 40), width=4)
+    d.rectangle([lx - 20, 146, lx + 20, 152], fill=(40, 40, 40))
+    arr = np.asarray(im).astype(np.float32) / 255
+    X, Y = np.meshgrid(np.arange(W), np.arange(H))                                          # warm lantern glow
+    glow = np.exp(-(((X - lx) ** 2) / (2 * 220 ** 2) + ((Y - 175) ** 2) / (2 * 180 ** 2))).astype(np.float32)
+    arr = arr * (0.62 + 0.5 * glow[..., None] * np.array([1.0, 0.85, 0.6], np.float32))
+    return np.clip(arr, 0, 1)
 
 
 class Corridor:

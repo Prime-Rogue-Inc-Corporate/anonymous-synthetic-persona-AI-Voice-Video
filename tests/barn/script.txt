@@ -1,0 +1,9 @@
+PROD: Live in three.
+HOST: [cackle] Greetings, test.
+GUEST: The light was on.
+PROD: [bark]
+HOST: We are Anonymous.
+GUEST: We are Legion.
+HOST: We do not forgive.
+GUEST: We do not forget.
+HOST: Expect us. [bark]

@@ -18,7 +18,7 @@ for name in MASKS:
         assert n >= 3, f"{name}: expected preview frames, got {n}"
         print(f"ok  {name}: {n} frames")
 # scene tests: dialogue (two voices, two masks) and walk-and-talk (corridor, gait, walk-on)
-for name in ("dialogue", "walk", "floor"):
+for name in ("dialogue", "walk", "floor", "barn"):
     with tempfile.TemporaryDirectory() as tmp:
         ep = os.path.join(tmp, f"smoke-{name}")
         shutil.copytree(os.path.join(ROOT, "tests", name), ep)

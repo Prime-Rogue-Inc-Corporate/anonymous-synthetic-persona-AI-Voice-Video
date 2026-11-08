@@ -428,3 +428,36 @@ def whip(d, amp, t):
     d.chord([cx - 26, my - 10, cx + 26, my + 14 + 10 * amp], 0, 180, fill=(250, 250, 248, 255))   # the grin
     d.line([(cx - 24, my + 1), (cx + 24, my + 1)], fill=(200, 196, 190, 255), width=2)
     d.polygon([(cx + 66, 346), (cx + 92, 346), (cx + 86, 334), (cx + 78, 340), (cx + 72, 332)], fill=(230, 230, 236, 255))
+
+
+@mask("pundit", tie=False)
+def pundit(d, amp, t):
+    """Ex-cable anchor turned barn podcaster: swept preppy hair with a cowlick, one eyebrow permanently cocked,
+    outdoorsman vest over an open collar."""
+    cx = CX
+    skin, hair = (236, 224, 206, 255), (150, 112, 70, 255)
+    jaw = 7 * amp
+    # vest over the suit jacket area
+    d.polygon([(cx - 120, 330), (cx - 40, 300), (cx - 30, 520), (cx - 150, 520)], fill=(70, 86, 60, 255))
+    d.polygon([(cx + 120, 330), (cx + 40, 300), (cx + 30, 520), (cx + 150, 520)], fill=(70, 86, 60, 255))
+    for s in (-1, 1):
+        d.rectangle([cx + s * 80 - 18, 390, cx + s * 80 + 18, 412], outline=(50, 62, 42, 255), width=3)   # pockets
+    d.polygon([(cx - 40, 300), (cx + 40, 300), (cx + 22, 334), (cx - 22, 334)], fill=(170, 196, 226, 255))    # blue oxford
+    for s in (-1, 1):
+        d.ellipse([cx + s * 74 - 12, 188, cx + s * 74 + 12, 232], fill=(214, 198, 180, 255))
+    d.ellipse([cx - 68, 114, cx + 68, 298 + jaw], fill=skin)
+    # swept-back hair + the cowlick that will not lie down
+    d.polygon([(cx - 70, 170), (cx - 66, 120), (cx - 30, 98), (cx + 30, 96), (cx + 66, 114), (cx + 72, 160),
+               (cx + 50, 132), (cx + 10, 124), (cx - 30, 128), (cx - 54, 146)], fill=hair)
+    d.polygon([(cx + 10, 100), (cx + 26, 66 + 4 * math.sin(t * 3)), (cx + 34, 102)], fill=hair)
+    # one brow up (the quizzical look), one brow down
+    d.line([(cx - 50, 170), (cx - 14, 162)], fill=(110, 80, 50, 255), width=6)
+    d.arc([cx + 8, 150, cx + 58, 186], 200, 330, fill=(110, 80, 50, 255), width=6)
+    _eyes(d, cx, 196)
+    d.polygon([(cx - 5, 202), (cx + 5, 202), (cx + 11, 242), (cx - 11, 242)], fill=(216, 202, 184, 255))
+    # lopsided half-smirk; opens with the voice
+    my = 266 + jaw * 0.4
+    if amp > 0.08:
+        d.chord([cx - 20, my - 6, cx + 24, my + 8 + 12 * amp], 0, 180, fill=(70, 30, 30, 255))
+    else:
+        d.line([(cx - 18, my + 2), (cx + 20, my - 3)], fill=(130, 80, 70, 255), width=4)
