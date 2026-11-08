@@ -5,6 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+### Planned
+- 003 Davos: replace the WEF credit line with "Source: Office of the Prime Minister" and re-render the end card.
+- Host full-quality renders as GitHub Release assets instead of in-tree.
+- More test episodes: another historical speech or two.
+
+## [0.5.0] - 2026-11-08
+
 ### Added
 - Walk-and-talk scenes: `"set": {"corridor": {...}}` draws a one-point-perspective hallway with the camera tracking backward: doors with brass room plaques, ceiling lights, a runner and a chair rail all recede as the cast walks. `speed`, `plaques` and `color` are configurable.
 - Cast `"walk": true` adds a walking gait (step bounce and sway, `cadence` in steps/s).
@@ -13,11 +20,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Masks: `chief`, `counsel`, `clerk`.
 - Episode 006, *The Lame Duck*: an original walk-and-talk. Two senior Senate staffers (outgoing and incoming majority) speed-walk the Capitol through the Nov. 2026 lame-duck session while a floor aide and a press secretary cut in.
 - Walk-and-talk smoke test (`tests/walk`).
-
-### Planned
-- 003 Davos: replace the WEF credit line with "Source: Office of the Prime Minister" and re-render the end card.
-- Host full-quality renders as GitHub Release assets instead of in-tree.
-- More test episodes: another historical speech or two.
 
 ## [0.4.0] - 2026-11-08
 
@@ -65,7 +67,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
   Repo copy is re-encoded to 540p to stay under the push size limit; render locally for 720p.
 - Versioning: `VERSION`, this changelog, semver git tags.
 
-[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.1.0...v0.2.0
