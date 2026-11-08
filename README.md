@@ -15,6 +15,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 005 | [Staff Level](episodes/005-staff-level) | Fictional SCIF recreation of the reported Alberta separatist / State Department meetings · 4 speakers + narrator | ~3:40 |
 | 006 | [The Lame Duck](episodes/006-lame-duck) | Original walk-and-talk: Senate staffers vs. the Nov. 2026 lame-duck session · corridor, 2 walkers + 2 walk-ons | ~2:37 |
 | 007 | [Special Order](episodes/007-special-order) | A fictional lame-duck congressman's hour on the House floor · chamber, lectern, gavel, chyron clock | ~4:17 |
+| 008 | [Special Order: The Full Hour](episodes/008-special-order-full-hour) | The 60-minute cut of 007 (59:59). Video not stored in the repo (too large); highlight clip + script included, render locally | 59:59 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
