@@ -181,3 +181,114 @@ def expert(d, amp, t):
         d.chord([cx - 22, my - 8, cx + 22, my + 8 + 12 * amp], 0, 180, fill=(70, 30, 30, 255))
     else:
         d.arc([cx - 22, my - 10, cx + 22, my + 6], 20, 160, fill=(110, 70, 64, 255), width=4)
+
+
+def _mouth(d, cx, my, amp, w=16, lip=(110, 70, 64, 255), inner=(50, 24, 24, 255)):
+    if amp > 0.08:
+        d.ellipse([cx - w, my - 2, cx + w, my + 3 + 11 * amp], fill=inner)
+    else:
+        d.line([(cx - w, my), (cx + w, my)], fill=lip, width=4)
+
+
+def _eyes(d, cx, y=196, gap=31, socket=(156, 148, 136, 255)):
+    for s in (-1, 1):
+        d.ellipse([cx + s * gap - 17, y - 9, cx + s * gap + 17, y + 9], fill=socket)
+        d.ellipse([cx + s * gap - 10, y - 6, cx + s * gap + 10, y + 6], fill=(12, 10, 12, 255))
+
+
+@mask("rancher", tie=False)
+def rancher(d, amp, t):
+    """Prairie organizer: cowboy hat, big moustache, bolo tie."""
+    cx = CX
+    skin, dark, hat = (230, 222, 206, 255), (60, 46, 36, 255), (92, 68, 46, 255)
+    jaw = 7 * amp
+    for s in (-1, 1):
+        d.ellipse([cx + s * 76 - 12, 190, cx + s * 76 + 12, 234], fill=(206, 196, 180, 255))
+    d.ellipse([cx - 70, 118, cx + 70, 300 + jaw], fill=skin)
+    for s in (-1, 1):
+        d.line([(cx + s * 14, 178), (cx + s * 50, 174)], fill=dark, width=6)
+    _eyes(d, cx, 194)
+    d.polygon([(cx - 5, 200), (cx + 5, 200), (cx + 12, 240), (cx - 12, 240)], fill=(212, 200, 182, 255))
+    _mouth(d, cx, 266 + jaw * 0.4, amp)
+    # handlebar moustache over the mouth
+    d.polygon([(cx - 40, 258), (cx - 30, 246), (cx, 244), (cx + 30, 246), (cx + 40, 258), (cx + 24, 254), (cx, 252), (cx - 24, 254)], fill=dark)
+    # bolo tie
+    d.line([(cx - 10, 300), (cx - 3, 360)], fill=(30, 30, 30, 255), width=3)
+    d.line([(cx + 10, 300), (cx + 3, 360)], fill=(30, 30, 30, 255), width=3)
+    d.ellipse([cx - 12, 318, cx + 12, 338], fill=(150, 170, 180, 255), outline=(200, 180, 120, 255), width=3)
+    # cowboy hat
+    d.ellipse([cx - 120, 112, cx + 120, 148], fill=hat)
+    d.polygon([(cx - 66, 130), (cx - 58, 56), (cx - 20, 44), (cx, 56), (cx + 20, 44), (cx + 58, 56), (cx + 66, 130)], fill=hat)
+    d.rectangle([cx - 64, 110, cx + 64, 124], fill=(52, 38, 28, 255))
+
+
+@mask("organizer", tie=False)
+def organizer(d, amp, t):
+    """Movement finance lead: curly grey-blonde hair, cat-eye glasses, earrings."""
+    cx = CX
+    skin, hair = (234, 226, 214, 255), (196, 182, 150, 255)
+    jaw = 6 * amp
+    for (x, y, r) in [(-70, 150, 34), (-50, 112, 34), (-14, 96, 34), (22, 96, 34), (56, 112, 34), (74, 150, 34),
+                      (-80, 196, 30), (80, 196, 30), (-74, 236, 26), (74, 236, 26)]:
+        d.ellipse([cx + x - r, y - r, cx + x + r, y + r], fill=hair)
+    d.ellipse([cx - 64, 120, cx + 64, 294 + jaw], fill=skin)
+    for (x, y, r) in [(-40, 126, 22), (-6, 116, 22), (30, 122, 22)]:
+        d.ellipse([cx + x - r, y - r, cx + x + r, y + r], fill=hair)
+    _eyes(d, cx, 196, 28)
+    for s in (-1, 1):   # cat-eye frames
+        d.polygon([(cx + s * 6, 186), (cx + s * 52, 180), (cx + s * 56, 196), (cx + s * 46, 208), (cx + s * 10, 208)],
+                  outline=(120, 40, 60, 255), width=3)
+        d.ellipse([cx + s * 66 - 5, 238, cx + s * 66 + 5, 250], fill=(210, 180, 90, 255))
+    d.polygon([(cx - 4, 204), (cx + 4, 204), (cx + 8, 238), (cx - 8, 238)], fill=(214, 204, 190, 255))
+    _mouth(d, cx, 262 + jaw * 0.4, amp, 15, (150, 70, 80, 255), (110, 40, 50, 255))
+    # scarf
+    d.polygon([(cx - 56, 300), (cx + 56, 300), (cx + 30, 336), (cx - 30, 336)], fill=(150, 40, 46, 255))
+
+
+@mask("official", tie=True)
+def official(d, amp, t):
+    """Mid-level official: grey side part, heavy brows, square jaw, flag pin."""
+    cx = CX
+    skin, grey = (232, 224, 210, 255), (170, 168, 164, 255)
+    jaw = 7 * amp
+    for s in (-1, 1):
+        d.ellipse([cx + s * 76 - 12, 188, cx + s * 76 + 12, 232], fill=(206, 198, 184, 255))
+    d.rounded_rectangle([cx - 70, 116, cx + 70, 300 + jaw], radius=48, fill=skin)
+    d.polygon([(cx - 74, 170), (cx - 70, 120), (cx - 30, 100), (cx + 40, 100), (cx + 74, 126), (cx + 74, 168),
+               (cx + 60, 140), (cx - 20, 128), (cx - 28, 140), (cx - 60, 146)], fill=grey)
+    d.line([(cx - 28, 104), (cx - 26, 140)], fill=(240, 240, 240, 255), width=3)   # the part
+    for s in (-1, 1):
+        d.rectangle([cx + s * 31 - 22, 172, cx + s * 31 + 22, 180], fill=(96, 94, 92, 255))
+    _eyes(d, cx, 196)
+    d.polygon([(cx - 5, 200), (cx + 5, 200), (cx + 11, 242), (cx - 11, 242)], fill=(212, 202, 188, 255))
+    _mouth(d, cx, 268 + jaw * 0.4, amp, 18)
+    # flag pin on the lapel
+    px, py = cx - 82, 344
+    d.rectangle([px, py, px + 20, py + 12], fill=(230, 230, 230, 255))
+    for k in range(0, 12, 4):
+        d.line([(px, py + k), (px + 20, py + k)], fill=(190, 40, 50, 255), width=2)
+    d.rectangle([px, py, px + 8, py + 6], fill=(40, 60, 140, 255))
+
+
+@mask("aide", tie=False)
+def aide(d, amp, t):
+    """Junior note-taker: dark ponytail, lanyard and badge."""
+    cx = CX
+    skin, hair = (236, 228, 218, 255), (52, 36, 30, 255)
+    jaw = 6 * amp
+    sway = 6 * math.sin(t * 2.2)
+    d.polygon([(cx + 52, 150), (cx + 98 + sway, 190), (cx + 92 + sway, 280), (cx + 70, 230)], fill=hair)   # ponytail
+    d.ellipse([cx - 66, 104, cx + 66, 180], fill=hair)
+    d.ellipse([cx - 62, 122, cx + 62, 294 + jaw], fill=skin)
+    d.polygon([(cx - 62, 168), (cx - 56, 122), (cx, 108), (cx + 56, 122), (cx + 62, 168), (cx + 20, 134), (cx - 30, 140)], fill=hair)
+    _eyes(d, cx, 198, 28)
+    for s in (-1, 1):
+        d.line([(cx + s * 14, 180), (cx + s * 44, 176)], fill=hair, width=4)
+    d.polygon([(cx - 4, 206), (cx + 4, 206), (cx + 8, 238), (cx - 8, 238)], fill=(216, 206, 194, 255))
+    _mouth(d, cx, 262 + jaw * 0.4, amp, 14, (150, 80, 86, 255), (110, 44, 52, 255))
+    # lanyard + badge
+    d.line([(cx - 36, 300), (cx - 6, 396)], fill=(40, 70, 150, 255), width=5)
+    d.line([(cx + 36, 300), (cx + 6, 396)], fill=(40, 70, 150, 255), width=5)
+    d.rectangle([cx - 24, 394, cx + 24, 450], fill=(240, 240, 240, 255))
+    d.rectangle([cx - 24, 394, cx + 24, 406], fill=(40, 70, 150, 255))
+    d.rectangle([cx - 14, 414, cx + 14, 438], fill=(180, 180, 186, 255))

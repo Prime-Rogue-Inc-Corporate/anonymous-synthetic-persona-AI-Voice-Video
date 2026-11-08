@@ -32,6 +32,7 @@ DEFAULTS = {
     "subtitle": "message",
     "mask": "moth",
     "cast": {},
+    "set": {"table": False, "placard": None, "lockbox": False},
     "credits": [],
     "voice": {"voice": "en-us+m3", "speed": 138, "pitch": 22,
               "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.6:40:0.25,highpass=f=90,lowpass=f=6000,volume=1.6"},
@@ -183,14 +184,19 @@ class Renderer:
         self.beam = np.clip(1 - (X ** 2 + (Y + 0.9) ** 2) / 1.2, 0, 1).astype(np.float32)
         # figures: one solo persona, or one per cast member (left to right in cast order)
         if cfg["cast"]:
-            n = len(cfg["cast"])
-            self.figures = [(sp, c["mask"], c.get("x", (k + 1) / (n + 1))) for k, (sp, c) in enumerate(cfg["cast"].items())]
+            shown = [(sp, c) for sp, c in cfg["cast"].items() if c.get("mask")]   # mask: null = voice only (narrator)
+            n = len(shown)
+            self.figures = [(sp, c["mask"], c.get("x", (k + 1) / (n + 1))) for k, (sp, c) in enumerate(shown)]
         else:
             self.figures = [(None, cfg["mask"], 0.5)]
         for _, m, _ in self.figures:
             if m not in MASKS:
                 raise SystemExit(f"unknown mask {m!r}; available: {', '.join(MASKS)}")
         self.suits = {m: suit(MASKS[m].tie) for _, m, _ in self.figures}
+        n = len(self.figures)
+        self.fig_scale = {1: 1.0, 2: 0.74, 3: 0.64}.get(n, 0.58)
+        self.fig_top = {1: 40, 2: 78, 3: 130}.get(n, 165)
+        self.card_font = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 15)
         lt = cfg["light"]["line"]
         self.light_t = next((starts[i] for i, l in enumerate(lines) if lt and l.startswith(lt)), None)
         self.sign_t = starts[len(lines) - cfg["signoff_lines"]]
@@ -217,6 +223,41 @@ class Renderer:
             if s - 0.05 <= t: last = self.speakers[i]
             else: break
         return last
+
+    # ---- set dressing
+    def draw_placard(self, im):
+        text = self.cfg["set"].get("placard")
+        if not text:
+            return
+        d = ImageDraw.Draw(im)
+        tw = self.card_font.getlength(text)
+        x0, y0 = (W - tw) / 2 - 18, 52
+        d.rectangle([x0, y0, x0 + tw + 36, y0 + 34], fill=(26, 24, 24), outline=(150, 40, 36), width=2)
+        d.text((x0 + 18, y0 + 8), text, font=self.card_font, fill=(214, 70, 60))
+
+    def draw_table(self, im, active):
+        st = self.cfg["set"]
+        if not st.get("table"):
+            return
+        d = ImageDraw.Draw(im)
+        fig_h = 520 * self.fig_scale
+        y = int(self.fig_top + fig_h * 0.72)
+        yb = max(y + 70, int(self.fig_top + fig_h) + 8)        # deep enough to hide the suit hems
+        d.polygon([(60, y), (W - 60, y), (W - 20, yb), (20, yb)], fill=(44, 32, 26))
+        d.line([(60, y), (W - 60, y)], fill=(92, 70, 54), width=3)
+        for sp, _, xf in self.figures:                      # tent cards
+            label = self.cfg["cast"].get(sp, {}).get("card") if sp else None
+            if not label:
+                continue
+            tw = self.card_font.getlength(label)
+            cx = xf * W
+            lit = 255 if sp == active else 190
+            d.polygon([(cx - tw / 2 - 12, y + 34), (cx + tw / 2 + 12, y + 34), (cx + tw / 2 + 8, y + 8), (cx - tw / 2 - 8, y + 8)], fill=(lit, lit, lit - 8))
+            d.text((cx - tw / 2, y + 13), label, font=self.card_font, fill=(30, 30, 34))
+        if st.get("lockbox"):                               # the phones-in-the-box box
+            bx, by = W / 2 - 34, y + 10
+            d.rectangle([bx, by, bx + 68, by + 34], fill=(70, 74, 80), outline=(140, 144, 150), width=2)
+            d.rectangle([bx + 28, by + 12, bx + 40, by + 24], fill=(200, 170, 70))
 
     def amp(self, speaker, fi):
         env = self.envs.get(speaker)
@@ -249,15 +290,16 @@ class Renderer:
             self.centered(ld, cfg["subtitle"], self.small, H / 2 + 20, (170, 170, 170, a))
             im.paste(layer, (0, 0), layer)
         else:
-            duo = len(self.figures) > 1
-            base_scale = 0.74 if duo else 1.0
-            top = 78 if duo else 40
+            duo = len(self.figures) > 1 or bool(cfg["cast"])
+            base_scale, top = self.fig_scale, self.fig_top
             active = self.active_speaker(t)
             if glow > 0:
+                hw = 230 if len(self.figures) == 1 else 470
                 halo = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-                ImageDraw.Draw(halo).ellipse([W / 2 - 330, top + 50, W / 2 + 330, top + 360], fill=(*cfg["light"]["color"], int(85 * glow)))
+                ImageDraw.Draw(halo).ellipse([W / 2 - hw, top + 30, W / 2 + hw, top + 330], fill=(*cfg["light"]["color"], int(85 * glow)))
                 halo = halo.filter(ImageFilter.GaussianBlur(60))
                 im.paste(halo, (0, 0), halo)
+            self.draw_placard(im)
             for k, (sp, m, xf) in enumerate(self.figures):
                 s = base_scale * (1 + 0.015 * math.sin(t * 0.4 + k * 1.7))
                 head = self.suits[m].copy()
@@ -270,6 +312,7 @@ class Renderer:
                 ex = int(xf * W - e.width / 2)
                 ey = top + int(4 * math.sin(t * 1.3 + k * 2.1))
                 im.paste(e, (ex, ey), e)
+            self.draw_table(im, active)
             ci = self.caption(t)
             if ci is not None:
                 rows = self.wrap(self.lines[ci])

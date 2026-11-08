@@ -12,6 +12,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 002 | [Lyceum Address](episodes/002-lyceum-address) | Abraham Lincoln, Springfield, 1838 (cut) · `lincoln` mask | 4:12 |
 | 003 | [Middle Powers](episodes/003-davos-middle-powers) | Mark Carney, Davos, Jan 20 2026 (full) | 18:16 |
 | 004 | [Record Extremes](episodes/004-record-extremes) | Original two-hander on the 2026 State of the Climate report · `anchor` + `expert` | ~2:45 |
+| 005 | [Staff Level](episodes/005-staff-level) | Fictional SCIF recreation of the reported Alberta separatist / State Department meetings · 4 speakers + narrator | ~3:40 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
@@ -25,6 +26,10 @@ The persona's head changes per episode and moves with the voice.
 | `lincoln` | pale Lincoln mask, stovepipe hat, chin-curtain beard | jaw opens with the voice |
 | `anchor` | news anchor: sleek bob, earpiece | mouth opens with the voice |
 | `expert` | bald dome, round wire glasses, goatee, permanent smile | smile opens with the voice |
+| `rancher` | cowboy hat, handlebar moustache, bolo tie | mouth opens under the moustache |
+| `organizer` | curly hair, cat-eye glasses, earrings, scarf | mouth opens with the voice |
+| `official` | grey side part, heavy brows, flag lapel pin | mouth opens with the voice |
+| `aide` | ponytail (sways), lanyard and badge | mouth opens with the voice |
 
 Add one by writing a function in `persona/masks.py` decorated with `@mask("name")`. It gets the frame's voice loudness (`amp`, 0–1) and time (`t`), and draws on a 520×520 canvas with the suit's collar at y=300.
 
@@ -85,6 +90,22 @@ WREN: Proud. Very few planets set seven records in a single year.
 ```
 
 Each speaker gets their own espeak-ng voice (anything from `espeak-ng --voices`, plus a `+variant`), their own mask and their own voice-driven animation. Whoever isn't talking is dimmed. Leave `cast` out for a solo persona.
+
+### Ensembles, narrators and sets
+
+Any number of speakers works; the layout scales for 3 and 4+. A cast member with `"mask": null` is voice-only, which is handy for a narrator. Dress the room with `"set"`:
+
+```json
+"cast": {
+  "NARRATOR": {"name": "Anonymous", "mask": null},
+  "WADE":  {"mask": "rancher",  "x": 0.14, "card": "ALBERTA", "voice": {"voice": "en-us+m1", "pitch": 28}},
+  "BRENT": {"mask": "official", "x": 0.62, "card": "STATE",   "voice": {"voice": "en-us+m3", "pitch": 48}}
+},
+"set": {"table": true, "placard": "SCIF · NO PERSONAL ELECTRONIC DEVICES BEYOND THIS POINT", "lockbox": true},
+"signoff_lines": 6
+```
+
+`signoff_lines` is how many closing lines count as the sign-off (default 5); raise it if the sign-off has an extra button.
 
 ## Loop clips
 

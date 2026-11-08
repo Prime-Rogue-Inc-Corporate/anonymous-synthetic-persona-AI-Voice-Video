@@ -1,0 +1,17 @@
+{
+  "output": "staff_level.mp4",
+  "renderer_version": "0.4.0",
+  "renderer_commit": "6d0a32c",
+  "rendered_at": "2026-11-08T11:01:28+00:00",
+  "duration_s": 216.64,
+  "lines": 55,
+  "mask": null,
+  "cast": {
+    "NARRATOR": null,
+    "WADE": "rancher",
+    "COLLEEN": "organizer",
+    "BRENT": "official",
+    "KAYLEIGH": "aide"
+  },
+  "resolution": "1280x720@30"
+}

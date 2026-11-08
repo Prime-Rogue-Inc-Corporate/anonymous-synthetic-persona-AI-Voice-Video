@@ -1,0 +1,129 @@
+{
+  "subtitle": "staff level: a fictional recreation",
+  "cast": {
+    "NARRATOR": {
+      "name": "Anonymous",
+      "mask": null,
+      "color": [
+        190,
+        190,
+        190
+      ]
+    },
+    "WADE": {
+      "name": "Wade Brannigan, Alberta independence organizer (fictional)",
+      "mask": "rancher",
+      "x": 0.14,
+      "card": "ALBERTA",
+      "color": [
+        235,
+        120,
+        110
+      ],
+      "voice": {
+        "voice": "en-us+m1",
+        "speed": 146,
+        "pitch": 90,
+        "filter": "asetrate=22050*0.98,aresample=44100,atempo=1.02,aecho=0.8:0.5:30:0.2,highpass=f=80,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "COLLEEN": {
+      "name": "Colleen Varga, movement finance lead (fictional)",
+      "mask": "organizer",
+      "x": 0.38,
+      "card": "ALBERTA",
+      "color": [
+        235,
+        160,
+        160
+      ],
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 152,
+        "pitch": 46,
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.03,aecho=0.8:0.5:30:0.2,highpass=f=120,lowpass=f=6500,volume=1.6"
+      }
+    },
+    "BRENT": {
+      "name": "Brent Holloway, State Department staffer (fictional)",
+      "mask": "official",
+      "x": 0.62,
+      "card": "STATE",
+      "color": [
+        140,
+        170,
+        240
+      ],
+      "voice": {
+        "voice": "en-us+m3",
+        "speed": 160,
+        "pitch": 48,
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.03,aecho=0.8:0.5:30:0.2,highpass=f=90,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "KAYLEIGH": {
+      "name": "Kayleigh Ames, note-taker (fictional)",
+      "mask": "aide",
+      "x": 0.86,
+      "card": "STATE",
+      "color": [
+        170,
+        200,
+        255
+      ],
+      "voice": {
+        "voice": "en-us+f2",
+        "speed": 170,
+        "pitch": 66,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.02,aecho=0.8:0.5:30:0.2,highpass=f=140,lowpass=f=7000,volume=1.6"
+      }
+    }
+  },
+  "set": {
+    "table": true,
+    "placard": "SCIF  ·  NO PERSONAL ELECTRONIC DEVICES BEYOND THIS POINT",
+    "lockbox": true
+  },
+  "pronounce": {
+    "SCIF": "skiff",
+    "Kayleigh": "Kaylee"
+  },
+  "signoff_lines": 6,
+  "gaps": {
+    "after": {
+      "What has been reported": 0.6,
+      "Washington. December.": 1.4,
+      "It's a room.": 0.8,
+      "Five hundred billion.": 1.8,
+      "Zero.": 1.0,
+      "Mostly society.": 0.9,
+      "That's high.": 0.9,
+      "And a feeling.": 0.9,
+      "It's a phrase.": 1.2,
+      "Of course.": 1.6,
+      "Within weeks": 1.0,
+      "On October nineteenth": 2.0,
+      "Expect us.": 1.0
+    }
+  },
+  "light": {
+    "line": "A line of credit. Five hundred billion.",
+    "color": [
+      255,
+      196,
+      110
+    ],
+    "ramp": 0.3,
+    "tint": [
+      0.4,
+      0.3,
+      0.12
+    ]
+  },
+  "credits": [
+    "A fictional recreation. All characters are invented.",
+    "Reporting: Financial Times, NBC News, The Globe and Mail, CTV News (Jan–Feb 2026);",
+    "referendum result: Reuters / AP (Oct 20, 2026)"
+  ],
+  "output": "staff_level.mp4"
+}
