@@ -5,13 +5,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
-### Added
-- Episode 008 video in the repo: the full hour at 540p in four ~15-minute parts (`episodes/008-special-order-full-hour/video/`, 27–28 MB each). The 720p original (266 MB) exceeds GitHub's 100 MB per-file limit, and Git LFS uploads are blocked from the authoring environment.
-
 ### Planned
 - 003 Davos: replace the WEF credit line with "Source: Office of the Prime Minister" and re-render the end card.
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
+
+## [0.7.1] - 2026-11-08
+
+### Added
+- Episode 008 video in the repo: the full hour at 540p in four ~15-minute parts (`episodes/008-special-order-full-hour/video/`, 27–28 MB each). The 720p original (266 MB) exceeds GitHub's 100 MB per-file limit, and Git LFS uploads are blocked from the authoring environment.
 
 ## [0.7.0] - 2026-11-08
 
@@ -92,7 +94,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
   Repo copy is re-encoded to 540p to stay under the push size limit; render locally for 720p.
 - Versioning: `VERSION`, this changelog, semver git tags.
 
-[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.7.1...HEAD
+[0.7.1]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.4.0...v0.5.0
