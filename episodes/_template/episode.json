@@ -1,0 +1,10 @@
+{
+  "subtitle": "message to target",
+  "mask": "moth",
+  "credits": ["Source of the text"],
+  "voice": {"speed": 138},
+  "pronounce": {},
+  "gaps": {"after": {}},
+  "light": {"line": "Your text goes here", "color": [255, 210, 120], "ramp": 0.5, "tint": [0.45, 0.38, 0.18]},
+  "output": "out.mp4"
+}
