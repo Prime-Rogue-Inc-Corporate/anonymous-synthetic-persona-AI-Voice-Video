@@ -16,6 +16,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 006 | [The Lame Duck](episodes/006-lame-duck) | Original walk-and-talk: Senate staffers vs. the Nov. 2026 lame-duck session · corridor, 2 walkers + 2 walk-ons | ~2:37 |
 | 007 | [Special Order](episodes/007-special-order) | A fictional lame-duck congressman's hour on the House floor · chamber, lectern, gavel, chyron clock | ~4:17 |
 | 008 | [Special Order: The Full Hour](episodes/008-special-order-full-hour) | The 60-minute cut of 007 (59:59). In the repo as four 15-minute 540p parts (`video/`); 720p original renders locally | 59:59 |
+| 009 | [The Barn](episodes/009-the-barn) | A fictional ex-cable anchor's barn podcast reacts to the midterms; Whitlow by satellite · barn, desk, monitor, dog, cackle | ~5:23 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
@@ -39,6 +40,7 @@ The persona's head changes per episode and moves with the voice.
 | `congressman` | grey hair, short grey beard, rectangular glasses, flat brows | mouth opens in the beard |
 | `presiding` | white hair, half-moon glasses low on the nose | mouth opens with the voice; leans into the gavel |
 | `whip` | slicked-back hair, too many teeth, pocket square | grin opens with the voice |
+| `pundit` | swept hair with a cowlick, one eyebrow cocked, outdoorsman vest | smirk opens with the voice; cackles |
 
 Add one by writing a function in `persona/masks.py` decorated with `@mask("name")`. It gets the frame's voice loudness (`amp`, 0–1) and time (`t`), and draws on a 520×520 canvas with the suit's collar at y=300.
 
@@ -151,6 +153,24 @@ Walk-ons appear for each burst of their lines and leave afterwards. A short `gap
 ```
 
 Put `[gavel]` in a line (`CHAIR: [gavel] The gentleman will suspend.`) for a knock. Note that `gaps.after` prefixes match the raw line, so include the cue if you key a gap off a gavelled line.
+
+### Barn podcast, remote guests and sound cues
+
+```json
+"cast": {
+  "HOST":    {"mask": "pundit", "x": 0.36, "scale": 0.95, "top": 116},
+  "WHITLOW": {"mask": "congressman", "x": 0.8, "top": 150, "screen": true, "screen_label": "REP. WHITLOW · OHIO"},
+  "DALE":    {"mask": null}
+},
+"set": {
+  "barn": {"moose_x": 0.8, "frame_x": 0.6, "headshot_caption": "PRIME TIME"},
+  "desk": {"x": 0.36, "y": 506, "w": 640, "mic": true, "mic_x": 640, "mic_y": 420, "mug": true},
+  "dog":  {"x": 0.09, "y": 610},
+  "chyron": {"title": "THE TRIPP HALLORAN SHOW", "sub": "LIVE FROM A BARN"}
+}
+```
+
+Sound cues go inline: `HOST: [cackle] Greetings.` (before), `HOST: Expect us. [bark]` (after), `DALE: [bark]` (cue only, no caption).
 
 ## Loop clips
 

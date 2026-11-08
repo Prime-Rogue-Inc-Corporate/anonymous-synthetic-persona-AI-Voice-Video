@@ -10,6 +10,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
 
+## [0.8.0] - 2026-11-08
+
+### Added
+- Barn podcast scenes: `"set": {"barn": {...}}` draws a converted-barn studio (planks, beam, a dusk window onto pines, a moose mount, a framed "prime time" headshot drawn from the host's own mask, bookshelf, lantern glow). `"desk"` adds a plank anchor desk with a boom-arm broadcast mic and a mug; `"dog"` adds a dog that barks on cue.
+- Remote guests: cast `"screen": true` shows a speaker inside a TV monitor (head-and-shoulders crop, blue cast, scanlines, red name label, blinking LIVE dot).
+- Sound cues generalized: `[gavel]`, `[bark]`, `[cackle]`. Cues before a line's words play first, cues after play after, and a line can be cues only (`DALE: [bark]`, no caption shown). Cackles move the speaker's mouth; barks move the dog's.
+- Mask: `pundit`.
+- Episode 009, *The Barn*: a fictional ex-cable anchor turned barn podcaster, who broke with the President over the Iran war, reacts to the midterms and brings Rep. Whitlow on by satellite. Same universe as 006–008.
+- Barn smoke test (`tests/barn`).
+
 ## [0.7.1] - 2026-11-08
 
 ### Added
@@ -94,7 +104,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
   Repo copy is re-encoded to 540p to stay under the push size limit; render locally for 720p.
 - Versioning: `VERSION`, this changelog, semver git tags.
 
-[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.7.1...HEAD
+[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.7.1...v0.8.0
 [0.7.1]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.5.0...v0.6.0

@@ -1,0 +1,15 @@
+{
+  "output": "the_barn.mp4",
+  "renderer_version": "0.8.0",
+  "renderer_commit": "d3725db",
+  "rendered_at": "2026-11-08T20:53:48+00:00",
+  "duration_s": 323.12,
+  "lines": 59,
+  "mask": null,
+  "cast": {
+    "HOST": "pundit",
+    "WHITLOW": "congressman",
+    "DALE": null
+  },
+  "resolution": "1280x720@30"
+}

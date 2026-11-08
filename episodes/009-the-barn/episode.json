@@ -1,0 +1,128 @@
+{
+  "subtitle": "live from the barn",
+  "cast": {
+    "HOST": {
+      "name": "Tripp Halloran, former cable anchor, now a podcast in a barn (fictional)",
+      "mask": "pundit",
+      "x": 0.36,
+      "scale": 0.95,
+      "top": 116,
+      "color": [
+        150,
+        200,
+        130
+      ],
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 166,
+        "pitch": 64,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.35:20:0.12,highpass=f=110,lowpass=f=6500,volume=1.6"
+      }
+    },
+    "WHITLOW": {
+      "name": "Rep. Clay Whitlow (R-Ohio), via satellite (fictional)",
+      "mask": "congressman",
+      "x": 0.8,
+      "top": 150,
+      "screen": true,
+      "screen_w": 330,
+      "screen_h": 226,
+      "screen_label": "REP. WHITLOW · OHIO",
+      "color": [
+        235,
+        210,
+        150
+      ],
+      "voice": {
+        "voice": "en-us+m5",
+        "speed": 150,
+        "pitch": 34,
+        "filter": "asetrate=22050*0.92,aresample=44100,atempo=1.05,aecho=0.8:0.5:60:0.25,highpass=f=300,lowpass=f=3400,volume=1.9"
+      }
+    },
+    "DALE": {
+      "name": "Dale, producer (off camera)",
+      "mask": null,
+      "color": [
+        190,
+        190,
+        190
+      ],
+      "voice": {
+        "voice": "en-us+m6",
+        "speed": 150,
+        "pitch": 18,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.3:20:0.1,highpass=f=90,lowpass=f=5000,volume=1.4"
+      }
+    }
+  },
+  "set": {
+    "barn": {
+      "headshot_caption": "PRIME TIME",
+      "moose_x": 0.8,
+      "frame_x": 0.6,
+      "window_x": 0.05,
+      "shelf_x": 0.02,
+      "lantern_x": 0.5
+    },
+    "desk": {
+      "x": 0.36,
+      "y": 506,
+      "w": 640,
+      "mic": true,
+      "mic_x": 640,
+      "mic_y": 420,
+      "mug": true
+    },
+    "dog": {
+      "x": 0.09,
+      "y": 610,
+      "scale": 0.95
+    },
+    "chyron": {
+      "title": "THE TRIPP HALLORAN SHOW",
+      "sub": "LIVE FROM A BARN, SOMEWHERE IN MAINE (FICTIONAL)"
+    }
+  },
+  "pronounce": {
+    "Halloran": "Hal-oran",
+    "Whitlow": "Whit-low"
+  },
+  "gaps": {
+    "default": 0.45,
+    "after_greeting": 0.4,
+    "after_intro": 0.3,
+    "after": {
+      "Think about that.": 0.9,
+      "Let me take a wild guess.": 0.8,
+      "That's arithmetic.": 0.9,
+      "I was wrong.": 1.0,
+      "That's how I know, Dale.": 0.2,
+      "That's a restraining order.": 1.2,
+      "But he clears it.": 0.7,
+      "woke up a libertarian.": 0.2,
+      "I've seen the building.": 0.2,
+      "You just hit the moose.": 0.9
+    }
+  },
+  "light": {
+    "line": "Because the voters didn't elect you",
+    "color": [
+      255,
+      200,
+      120
+    ],
+    "ramp": 0.6,
+    "tint": [
+      0.3,
+      0.22,
+      0.08
+    ]
+  },
+  "credits": [
+    "An original sketch. Tripp Halloran, Rep. Whitlow, Dale and Biscuit are fictional.",
+    "Context: Nov. 3, 2026 midterms; the Iran war began Feb. 28, 2026 (AP, NPR).",
+    "Previously: 006 The Lame Duck, 007/008 Special Order"
+  ],
+  "output": "the_barn.mp4"
+}

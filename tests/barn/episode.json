@@ -1,0 +1,7 @@
+{"subtitle": "barn smoke test", "credits": ["ci"],
+ "cast": {"HOST": {"mask": "pundit", "x": 0.36, "scale": 0.95, "top": 116},
+          "GUEST": {"mask": "congressman", "x": 0.8, "top": 150, "screen": true, "screen_label": "GUEST"},
+          "PROD": {"mask": null}},
+ "set": {"barn": {"moose_x": 0.8, "frame_x": 0.6}, "desk": {"x": 0.36, "y": 506, "w": 640, "mic": true, "mic_x": 640, "mic_y": 420},
+         "dog": {"x": 0.09, "y": 610}, "chyron": {"title": "TEST", "sub": "BARN"}},
+ "light": {"line": "The light"}}
