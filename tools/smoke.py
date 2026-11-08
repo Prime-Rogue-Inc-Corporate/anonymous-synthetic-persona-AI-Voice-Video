@@ -17,11 +17,12 @@ for name in MASKS:
         n = len([f for f in os.listdir(os.path.join(ep, "build")) if f.startswith("preview_")])
         assert n >= 3, f"{name}: expected preview frames, got {n}"
         print(f"ok  {name}: {n} frames")
-# dialogue: two speakers, two masks, two voices
-with tempfile.TemporaryDirectory() as tmp:
-    ep = os.path.join(tmp, "smoke-dialogue")
-    shutil.copytree(os.path.join(ROOT, "tests", "dialogue"), ep)
-    subprocess.run([sys.executable, os.path.join(ROOT, "persona", "render.py"), ep, "--preview"], check=True)
-    assert len([f for f in os.listdir(os.path.join(ep, "build")) if f.startswith("preview_")]) >= 3
-    print("ok  dialogue")
+# scene tests: dialogue (two voices, two masks) and walk-and-talk (corridor, gait, walk-on)
+for name in ("dialogue", "walk"):
+    with tempfile.TemporaryDirectory() as tmp:
+        ep = os.path.join(tmp, f"smoke-{name}")
+        shutil.copytree(os.path.join(ROOT, "tests", name), ep)
+        subprocess.run([sys.executable, os.path.join(ROOT, "persona", "render.py"), ep, "--preview"], check=True)
+        assert len([f for f in os.listdir(os.path.join(ep, "build")) if f.startswith("preview_")]) >= 3
+        print(f"ok  {name}")
 print("smoke passed")

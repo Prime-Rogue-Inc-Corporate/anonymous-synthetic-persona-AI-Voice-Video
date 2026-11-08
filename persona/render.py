@@ -32,7 +32,8 @@ DEFAULTS = {
     "subtitle": "message",
     "mask": "moth",
     "cast": {},
-    "set": {"table": False, "placard": None, "lockbox": False},
+    "set": {"table": False, "placard": None, "lockbox": False, "corridor": None},
+    "layout": {},
     "credits": [],
     "voice": {"voice": "en-us+m3", "speed": 138, "pitch": 22,
               "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.6:40:0.25,highpass=f=90,lowpass=f=6000,volume=1.6"},
@@ -189,13 +190,17 @@ class Renderer:
             self.figures = [(sp, c["mask"], c.get("x", (k + 1) / (n + 1))) for k, (sp, c) in enumerate(shown)]
         else:
             self.figures = [(None, cfg["mask"], 0.5)]
+        self.windows = self.appearances()
         for _, m, _ in self.figures:
             if m not in MASKS:
                 raise SystemExit(f"unknown mask {m!r}; available: {', '.join(MASKS)}")
         self.suits = {m: suit(MASKS[m].tie) for _, m, _ in self.figures}
         n = len(self.figures)
-        self.fig_scale = {1: 1.0, 2: 0.74, 3: 0.64}.get(n, 0.58)
-        self.fig_top = {1: 40, 2: 78, 3: 130}.get(n, 165)
+        lay = cfg["layout"]
+        self.fig_scale = lay.get("scale", {1: 1.0, 2: 0.74, 3: 0.64}.get(n, 0.58))
+        self.fig_top = lay.get("top", {1: 40, 2: 78, 3: 130}.get(n, 165))
+        if cfg["set"].get("corridor"):
+            self.corridor = Corridor(cfg["set"]["corridor"])
         self.card_font = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 15)
         lt = cfg["light"]["line"]
         self.light_t = next((starts[i] for i, l in enumerate(lines) if lt and l.startswith(lt)), None)
@@ -223,6 +228,34 @@ class Renderer:
             if s - 0.05 <= t: last = self.speakers[i]
             else: break
         return last
+
+    # ---- walk-and-talk
+    def appearances(self):
+        """For cast members with "enter": time windows when they're on screen (around each burst of their lines)."""
+        out = {}
+        for sp, c in self.cfg["cast"].items():
+            if not c.get("enter"):
+                continue
+            idx = [i for i, s in enumerate(self.speakers) if s == sp]
+            groups, cur = [], [idx[0]] if idx else []
+            for a, b in zip(idx, idx[1:]):
+                if self.starts[b] - (self.starts[a] + self.durs[a]) > c.get("linger", 10):
+                    groups.append(cur); cur = [b]
+                else:
+                    cur.append(b)
+            if cur: groups.append(cur)
+            out[sp] = [(self.starts[g[0]] - 0.9, self.starts[g[-1]] + self.durs[g[-1]] + 1.1) for g in groups]
+        return out
+
+    def presence(self, sp, t):
+        """0..1 how far a walk-on character has slid into frame (1 = in place); 1 for regulars."""
+        if sp not in self.windows:
+            return 1.0
+        for a, b in self.windows[sp]:
+            if a <= t <= b:
+                p = min(1, (t - a) / 0.6, (b - t) / 0.6)
+                return 0.5 - 0.5 * math.cos(math.pi * max(0, p))      # ease in/out
+        return 0.0
 
     # ---- set dressing
     def draw_placard(self, im):
@@ -279,7 +312,12 @@ class Renderer:
             glow = min(1, (t - self.light_t) / cfg["light"]["ramp"]) * (0.85 + 0.15 * (rng.random() > 0.1))
             if t >= self.sign_t: glow *= max(0, 1 - (t - self.sign_t) / 1.5)
         tr, tg, tb = cfg["light"]["tint"]
-        img = np.stack([base * 0.8 + glow * tr * self.beam, base * 0.85 + glow * tg * self.beam, base + glow * tb * self.beam], -1)
+        if hasattr(self, "corridor"):
+            hall = self.corridor.draw(t)
+            base3 = hall * (0.82 + 0.18 * sky[..., None])
+            img = base3 + glow * np.stack([tr * self.beam, tg * self.beam, tb * self.beam], -1)
+        else:
+            img = np.stack([base * 0.8 + glow * tr * self.beam, base * 0.85 + glow * tg * self.beam, base + glow * tb * self.beam], -1)
         img = img * self.vign[..., None] * flick
         im = Image.fromarray((np.clip(img, 0, 1) * 255).astype(np.uint8))
 
@@ -301,7 +339,11 @@ class Renderer:
                 im.paste(halo, (0, 0), halo)
             self.draw_placard(im)
             for k, (sp, m, xf) in enumerate(self.figures):
-                s = base_scale * (1 + 0.015 * math.sin(t * 0.4 + k * 1.7))
+                c = cfg["cast"].get(sp, {}) if sp else {}
+                pres = self.presence(sp, t)
+                if pres <= 0:
+                    continue
+                s = c.get("scale", base_scale) * (1 + 0.015 * math.sin(t * 0.4 + k * 1.7))
                 head = self.suits[m].copy()
                 MASKS[m](ImageDraw.Draw(head), self.amp(sp, fi), t + k * 0.9)
                 if duo and sp != active:                       # dim whoever isn't speaking
@@ -309,9 +351,16 @@ class Renderer:
                     dimmed = Image.merge("RGB", (r_, g_, b_)).point(lambda v: int(v * 0.62))
                     head = Image.merge("RGBA", (*dimmed.split(), a_))
                 e = head.resize((int(520 * s), int(520 * s)), Image.BICUBIC)
-                ex = int(xf * W - e.width / 2)
-                ey = top + int(4 * math.sin(t * 1.3 + k * 2.1))
-                im.paste(e, (ex, ey), e)
+                ex = xf * W - e.width / 2
+                ey = c.get("top", top) + 4 * math.sin(t * 1.3 + k * 2.1)
+                if c.get("walk"):                                  # gait: bounce on each step, slight sway
+                    ph = t * 2 * math.pi * c.get("cadence", 1.9) + k * 1.3
+                    ey -= 9 * abs(math.sin(ph / 2))
+                    ex += 4 * math.sin(ph / 2)
+                if c.get("enter"):                                  # slide in from the named side
+                    side = -1 if c["enter"] == "left" else 1
+                    ex += side * (1 - pres) * (W * 0.45)
+                im.paste(e, (int(ex), int(ey)), e)
             self.draw_table(im, active)
             ci = self.caption(t)
             if ci is not None:
@@ -349,6 +398,90 @@ class Renderer:
                 arr[y0:y0 + h] = np.roll(arr[y0:y0 + h], rng.integers(-40, 41), 1)
             arr[..., 0] = np.roll(arr[..., 0], 4, 1)
         return np.clip(arr, 0, 255).astype(np.uint8)
+
+
+class Corridor:
+    """One-point-perspective hallway with the camera tracking backward (walk-and-talk).
+
+    Config (episode.json "set": {"corridor": {...}}): speed (units/s), plaques (list of room labels),
+    color ([r,g,b] wall tint 0..255).
+    """
+    NEAR, FAR = 1.0, 16.0
+
+    def __init__(self, conf):
+        conf = conf if isinstance(conf, dict) else {}
+        self.speed = conf.get("speed", 1.4)
+        self.plaques = conf.get("plaques", ["S-219", "S-230", "CLOAKROOM", "S-207", "S-128", "S-211"])
+        self.tint = np.array(conf.get("color", [150, 140, 125]), np.float32) / 255
+        self.vx, self.vy = W / 2, 250
+        self.fonts = {sz: ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", sz) for sz in range(8, 31, 2)}
+        self.ceil, self.floor = -self.vy / 460, 1.0
+
+    def P(self, X, Y, z):
+        return (self.vx + X * (W / 2) / z, self.vy + Y * 460 / z)
+
+    def quad(self, d, X0, X1, Y0, Y1, z0, z1, fill, wall=None):
+        if wall is not None:   # vertical strip on a side wall: X fixed, z varies
+            pts = [self.P(wall, Y0, z0), self.P(wall, Y0, z1), self.P(wall, Y1, z1), self.P(wall, Y1, z0)]
+        else:                  # horizontal patch on ceiling/floor: Y fixed (Y0), X and z vary
+            pts = [self.P(X0, Y0, z0), self.P(X1, Y0, z0), self.P(X1, Y0, z1), self.P(X0, Y0, z1)]
+        d.polygon(pts, fill=fill)
+
+    def fog(self, z, rgb):
+        f = max(0.0, min(1.0, (z - self.NEAR) / (self.FAR - self.NEAR)))
+        k = (1 - f) ** 1.3
+        return tuple(int(c * (0.18 + 0.82 * k)) for c in rgb)
+
+    def draw(self, t):
+        im = Image.new("RGB", (W, H), (0, 0, 0)); d = ImageDraw.Draw(im)
+        tint = self.tint
+        wall, ceil, floor = (tint * 150).astype(int), (tint * 120).astype(int), (tint * 70).astype(int)
+        # base planes (near frame to vanishing box)
+        fz = self.FAR
+        bx0, by0 = self.P(-1, self.ceil, fz); bx1, by1 = self.P(1, self.floor, fz)
+        d.polygon([(0, 0), (W, 0), (bx1, by0), (bx0, by0)], fill=tuple(ceil))
+        d.polygon([(0, H), (W, H), (bx1, by1), (bx0, by1)], fill=tuple(floor))
+        d.polygon([(0, 0), (bx0, by0), (bx0, by1), (0, H)], fill=tuple(wall))
+        d.polygon([(W, 0), (bx1, by0), (bx1, by1), (W, H)], fill=tuple(wall))
+        d.rectangle([bx0, by0, bx1, by1], fill=tuple((tint * 40).astype(int)))
+        # chair rail + baseboard along both walls
+        for side in (-1, 1):
+            for Y, col, wdt in ((0.28, (tint * 190).astype(int), 4), (0.95, (tint * 60).astype(int), 6)):
+                d.line([self.P(side, Y, self.NEAR), self.P(side, Y, fz)], fill=tuple(col), width=wdt)
+        # carpet runner
+        r0 = self.P(-0.32, self.floor, self.NEAR); r1 = self.P(0.32, self.floor, self.NEAR)
+        r2 = self.P(0.32, self.floor, fz); r3 = self.P(-0.32, self.floor, fz)
+        d.polygon([r0, r1, r2, r3], fill=(70, 24, 28))
+        # moving elements, far to near; the camera backs away so everything moves away from us... z grows
+        spacing = 3.2
+        off = (t * self.speed) % spacing
+        n = int((self.FAR - self.NEAR) / spacing) + 2
+        items = []
+        for i in range(n):
+            z = self.NEAR + i * spacing + off - spacing
+            if z < 0.35 or z > self.FAR: continue
+            items.append((z, i))
+        for z, i in sorted(items, reverse=True):
+            gi = int((t * self.speed + (self.FAR - z)) // spacing)   # stable id for labels as items travel
+            # ceiling light
+            self.quad(d, -0.22, 0.22, self.ceil, None, z, z + 0.5, self.fog(z, (250, 240, 210)))
+            for side in (-1, 1):
+                # door: dark wood strip on each wall, offset so sides alternate
+                dz = z + (0.0 if side < 0 else spacing / 2)
+                if dz > self.FAR: continue
+                self.quad(d, None, None, -0.36, self.floor, dz, dz + 0.9, self.fog(dz, (64, 44, 34)), wall=side)
+                self.quad(d, None, None, -0.36, -0.30, dz - 0.05, dz + 0.95, self.fog(dz, (120, 100, 70)), wall=side)
+                # brass plaque with a room label, readable only when close
+                if dz < 5.5:
+                    label = self.plaques[(gi * 2 + (side > 0)) % len(self.plaques)]
+                    px, py = self.P(side * 0.999, -0.12, dz - 0.25)
+                    size = max(8, min(30, int(20 / dz) * 2 // 2))
+                    font = self.fonts.get(size - size % 2, self.fonts[8])
+                    tw = font.getlength(label)
+                    bx = px - tw - 10 if side > 0 else px + 4
+                    d.rectangle([bx - 4, py - 3, bx + tw + 4, py + size + 3], fill=self.fog(dz, (150, 124, 64)))
+                    d.text((bx, py), label, font=font, fill=self.fog(dz, (30, 24, 16)))
+        return np.asarray(im).astype(np.float32) / 255
 
 
 # ---------------------------------------------------------------- driver
