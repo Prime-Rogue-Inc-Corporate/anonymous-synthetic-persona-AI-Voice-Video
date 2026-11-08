@@ -5,6 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+### Planned
+- 003 Davos: replace the WEF credit line with "Source: Office of the Prime Minister" and re-render the end card.
+- Host full-quality renders as GitHub Release assets instead of in-tree.
+- More test episodes: another historical speech or two and a comedy bit.
+
+## [0.2.0] - 2026-11-07
+
 ### Added
 - Mask system (`persona/masks.py`): each episode picks its head with `"mask"` in `episode.json`; masks animate with the voice.
 - `lincoln` mask: pale Lincoln face with stovepipe hat, hollow eyes, chin-curtain beard and a jaw that talks.
@@ -15,11 +22,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ### Changed
 - Episode 002 (*Lyceum Address*) re-rendered with the `lincoln` mask.
-
-### Planned
-- 003 Davos: replace the WEF credit line with "Source: Office of the Prime Minister" and re-render the end card.
-- Host full-quality renders as GitHub Release assets instead of in-tree.
-- More test episodes: another historical speech or two and a comedy bit.
 
 ## [0.1.0] - 2026-11-07
 
@@ -32,5 +34,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
   Repo copy is re-encoded to 540p to stay under the push size limit; render locally for 720p.
 - Versioning: `VERSION`, this changelog, semver git tags.
 
-[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/releases/tag/v0.1.0
