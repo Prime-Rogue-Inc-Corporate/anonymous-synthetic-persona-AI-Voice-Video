@@ -113,3 +113,71 @@ def render_head(name, amp, t, base=None):
     im = (base or suit(MASKS[name].tie)).copy()
     MASKS[name](ImageDraw.Draw(im), amp, t)
     return im
+
+
+@mask("anchor", tie=False)
+def anchor(d, amp, t):
+    """News anchor: pale mask, sleek dark bob, earpiece, composed mouth."""
+    cx = CX
+    skin, dark = (234, 228, 216, 255), (30, 24, 22, 255)
+    jaw = 6 * amp
+    # hair back layer (bob)
+    d.polygon([(cx - 92, 150), (cx - 80, 100), (cx - 40, 70), (cx + 40, 70), (cx + 80, 100), (cx + 92, 150),
+               (cx + 96, 268), (cx + 70, 276), (cx - 70, 276), (cx - 96, 268)], fill=dark)
+    # face
+    d.ellipse([cx - 66, 110, cx + 66, 292 + jaw], fill=skin)
+    # side-swept fringe
+    d.polygon([(cx - 70, 150), (cx - 50, 96), (cx + 10, 84), (cx + 74, 110), (cx + 30, 118), (cx - 20, 140)], fill=dark)
+    # brows and hollow almond eyes
+    for s in (-1, 1):
+        d.line([(cx + s * 14, 176), (cx + s * 48, 170)], fill=dark, width=5)
+        d.ellipse([cx + s * 31 - 18, 186, cx + s * 31 + 18, 204], fill=(160, 150, 140, 255))
+        d.ellipse([cx + s * 31 - 11, 189, cx + s * 31 + 11, 201], fill=(12, 10, 12, 255))
+    # nose
+    d.polygon([(cx - 3, 200), (cx + 3, 200), (cx + 8, 236), (cx - 8, 236)], fill=(214, 206, 192, 255))
+    # mouth
+    my = 262 + jaw * 0.4
+    if amp > 0.08:
+        d.ellipse([cx - 16, my - 2, cx + 16, my + 3 + 10 * amp], fill=(110, 40, 46, 255))
+    else:
+        d.line([(cx - 15, my), (cx + 15, my)], fill=(130, 60, 64, 255), width=4)
+    # earpiece + coil
+    d.ellipse([cx + 62, 196, cx + 74, 210], fill=(200, 200, 205, 255))
+    d.line([(cx + 68, 210), (cx + 76, 250), (cx + 70, 300)], fill=(170, 170, 176, 255), width=2)
+    # blouse collar
+    d.polygon([(cx - 40, 300), (cx, 330), (cx + 40, 300), (cx + 30, 296), (cx, 318), (cx - 30, 296)], fill=(245, 245, 245, 255))
+
+
+@mask("expert", tie=True)
+def expert(d, amp, t):
+    """Government expert: bald dome, round wire glasses, grey goatee, permanent smile."""
+    cx = CX
+    skin, grey = (232, 224, 208, 255), (150, 148, 144, 255)
+    jaw = 7 * amp
+    for s in (-1, 1):
+        d.ellipse([cx + s * 76 - 12, 186, cx + s * 76 + 12, 232], fill=(206, 198, 182, 255))
+    # head (tall bald dome)
+    d.ellipse([cx - 70, 96, cx + 70, 296 + jaw], fill=skin)
+    d.arc([cx - 46, 108, cx + 30, 160], 200, 290, fill=(250, 248, 240, 255), width=5)   # shine
+    # grey fringe
+    for s in (-1, 1):
+        d.polygon([(cx + s * 70, 170), (cx + s * 74, 200), (cx + s * 64, 226), (cx + s * 58, 190)], fill=grey)
+    # brows, raised (eternally upbeat)
+    for s in (-1, 1):
+        d.arc([cx + s * 31 - 22, 160, cx + s * 31 + 22, 186], 200, 340, fill=grey, width=5)
+    # hollow eyes behind round wire glasses
+    for s in (-1, 1):
+        d.ellipse([cx + s * 31 - 11, 186, cx + s * 31 + 11, 202], fill=(14, 12, 14, 255))
+        d.ellipse([cx + s * 31 - 24, 176, cx + s * 31 + 24, 212], outline=(60, 60, 66, 255), width=3)
+    d.line([(cx - 7, 192), (cx + 7, 192)], fill=(60, 60, 66, 255), width=3)
+    # nose
+    d.polygon([(cx - 4, 200), (cx + 4, 200), (cx + 11, 238), (cx, 243), (cx - 11, 238)], fill=(210, 200, 182, 255))
+    # moustache + goatee, follow the jaw
+    d.polygon([(cx - 28, 252), (cx, 246), (cx + 28, 252), (cx + 22, 258), (cx, 254), (cx - 22, 258)], fill=grey)
+    d.polygon([(cx - 22, 274 + jaw), (cx + 22, 274 + jaw), (cx + 14, 300 + jaw), (cx, 306 + jaw), (cx - 14, 300 + jaw)], fill=grey)
+    # smile that opens with the voice
+    my = 262 + jaw * 0.4
+    if amp > 0.08:
+        d.chord([cx - 22, my - 8, cx + 22, my + 8 + 12 * amp], 0, 180, fill=(70, 30, 30, 255))
+    else:
+        d.arc([cx - 22, my - 10, cx + 22, my + 6], 20, 160, fill=(110, 70, 64, 255), width=4)
