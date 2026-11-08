@@ -265,6 +265,7 @@ def main():
     a = ap.parse_args()
 
     ep = os.path.abspath(a.episode)
+    commit = git_commit()  # capture before rendering so the stamp matches the code that ran
     cfg = merge(DEFAULTS, json.load(open(os.path.join(ep, "episode.json"))))
     lines = [l.strip() for l in open(os.path.join(ep, "script.txt"), encoding="utf-8") if l.strip()]
     build = os.path.join(ep, "build"); os.makedirs(build, exist_ok=True)
@@ -292,7 +293,6 @@ def main():
     lst = os.path.join(build, "parts.txt")
     open(lst, "w").write("".join(f"file '{p}'\n" for p in parts))
     out = os.path.join(ep, cfg["output"]); tmp = out[:-4] + ".tmp.mp4"
-    commit = git_commit()
     stamp = f"anonymous-synthetic-persona v{__version__} ({commit}) | episode {os.path.basename(ep)}"
     subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-i", audio,
                     "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "160k", "-shortest",
@@ -314,8 +314,11 @@ def main():
 
 
 def git_commit():
+    """Short HEAD hash, with -dirty if the renderer itself has uncommitted changes."""
     try:
-        return subprocess.run(["git", "-C", ROOT, "rev-parse", "--short", "HEAD"], capture_output=True, text=True, check=True).stdout.strip()
+        run = lambda *a: subprocess.run(["git", "-C", ROOT, *a], capture_output=True, text=True, check=True).stdout.strip()
+        dirty = run("status", "--porcelain", "--", "persona", "VERSION")
+        return run("rev-parse", "--short", "HEAD") + ("-dirty" if dirty else "")
     except Exception:
         return "unknown"
 
