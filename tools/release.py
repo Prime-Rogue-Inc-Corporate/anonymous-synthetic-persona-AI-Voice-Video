@@ -74,7 +74,7 @@ def main():
         sys.exit("only Planned items under [Unreleased]; nothing to release")
 
     today = datetime.date.today().isoformat()
-    log = log[:m.start(1)] + (keep + "\n\n" if keep else "\n") + f"## [{new}] - {today}\n\n{released}\n\n" + log[m.end(1):]
+    log = log[:m.start(1)] + ("\n" + keep + "\n\n" if keep else "\n") + f"## [{new}] - {today}\n\n{released}\n\n" + log[m.end(1):]
     log = re.sub(r"^\[Unreleased\]: .*$", f"[Unreleased]: {REPO_URL}/compare/v{new}...HEAD", log, flags=re.M)
     link = f"[{new}]: {REPO_URL}/compare/v{prev}...v{new}"
     log = re.sub(r"(^\[Unreleased\]: .*$)", r"\1\n" + link, log, count=1, flags=re.M)
