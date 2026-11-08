@@ -5,6 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+### Planned
+- 003 Davos: replace the WEF credit line with "Source: Office of the Prime Minister" and re-render the end card.
+- Host full-quality renders as GitHub Release assets instead of in-tree.
+- More test episodes: another historical speech or two.
+
+## [0.6.0] - 2026-11-08
+
 ### Added
 - House floor scenes: `"set": {"chamber": {...}}` draws the chamber (walnut wall, marble pilasters, rostrum tiers, flag behind the chair); `"lectern"` adds a foreground lectern with gooseneck mics and a seal.
 - C-SPAN-style chyron (`"chyron"`): title, subtitle and an optional countdown clock that runs from `from` seconds at the `start` line to 00:00 (blinking red) at the `zero` line.
@@ -13,11 +20,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Masks: `congressman`, `presiding`, `whip`.
 - Episode 007, *Special Order*: a fictional lame-duck congressman who lost his primary takes an hour on the House floor in the first week of the lame duck and torches both parties, set in the same universe as 006.
 - Floor-speech smoke test (`tests/floor`).
-
-### Planned
-- 003 Davos: replace the WEF credit line with "Source: Office of the Prime Minister" and re-render the end card.
-- Host full-quality renders as GitHub Release assets instead of in-tree.
-- More test episodes: another historical speech or two.
 
 ## [0.5.0] - 2026-11-08
 
@@ -76,7 +78,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
   Repo copy is re-encoded to 540p to stay under the push size limit; render locally for 720p.
 - Versioning: `VERSION`, this changelog, semver git tags.
 
-[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.2.0...v0.3.0
