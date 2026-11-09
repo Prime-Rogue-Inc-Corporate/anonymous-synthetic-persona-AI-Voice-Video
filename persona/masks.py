@@ -1037,3 +1037,61 @@ def pcoanalyst(d, amp, t):
     _mouth(d, cx, 258 + jaw * 0.5, amp, w=14)
     d.line([(cx - 34, 300), (cx - 10, 420), (cx + 34, 300)], fill=(200, 40, 40, 255), width=4)
     d.rectangle([cx - 30, 418, cx + 10, 456], fill=(236, 236, 236, 255))
+
+
+def _back_suit(d, cx, col=(28, 28, 32, 255)):
+    """A suit seen from behind: shoulders, a centre seam, a collar."""
+    d.polygon([(cx - 200, 520), (cx - 180, 340), (cx - 90, 290), (cx + 90, 290), (cx + 180, 340), (cx + 200, 520)], fill=col)
+    d.line([(cx, 330), (cx, 520)], fill=tuple(max(0, c - 12) for c in col[:3]) + (255,), width=3)
+    d.polygon([(cx - 60, 292), (cx + 60, 292), (cx + 40, 318), (cx - 40, 318)], fill=tuple(min(255, c + 14) for c in col[:3]) + (255,))
+
+
+@mask("mandarin_back", tie=False)
+def mandarin_back(d, amp, t):
+    """The Clerk, followed from behind: silver hair, ears, a pink neck above the collar. The head bobs when he talks."""
+    cx = CX
+    _back_suit(d, cx)
+    nod = 3 * amp
+    d.rectangle([cx - 30, 260, cx + 30, 300], fill=(222, 190, 170, 255))                       # neck
+    for s in (-1, 1):
+        d.ellipse([cx + s * 62 - 10, 186 + nod, cx + s * 62 + 10, 226 + nod], fill=(222, 190, 170, 255))   # ears
+    d.ellipse([cx - 62, 110 + nod, cx + 62, 280 + nod], fill=(214, 214, 220, 255))             # silver back of head
+    for k in range(5):
+        d.arc([cx - 50 + k * 4, 130 + nod + k * 6, cx + 50 - k * 4, 270 + nod], 200, 340, fill=(190, 190, 198, 255), width=2)
+
+
+@mask("official_back", tie=False)
+def official_back(d, amp, t):
+    """A senior official nobody names, followed from behind: a dark overcoat, a grey crew cut, a fedora brim."""
+    cx = CX
+    _back_suit(d, cx, (36, 34, 30, 255))
+    nod = 3 * amp
+    d.polygon([(cx - 70, 300), (cx - 30, 292), (cx - 50, 360)], fill=(60, 56, 50, 255))          # coat collar up
+    d.polygon([(cx + 70, 300), (cx + 30, 292), (cx + 50, 360)], fill=(60, 56, 50, 255))
+    d.rectangle([cx - 28, 262, cx + 28, 300], fill=(200, 170, 150, 255))
+    d.ellipse([cx - 60, 130 + nod, cx + 60, 284 + nod], fill=(120, 120, 124, 255))
+    d.ellipse([cx - 92, 132 + nod, cx + 92, 160 + nod], fill=(30, 30, 34, 255))                # hat brim
+    d.chord([cx - 62, 70 + nod, cx + 62, 190 + nod], 180, 360, fill=(40, 40, 44, 255))         # crown
+    d.rectangle([cx - 62, 128 + nod, cx + 62, 140 + nod], fill=(90, 70, 50, 255))             # band
+
+
+@mask("cseliaison", tie=False)
+def cseliaison(d, amp, t):
+    """A signals-intelligence liaison: a hoodie under a blazer, one earbud in, a badge on a retractable reel."""
+    cx = CX
+    d.polygon([(cx - 200, 520), (cx - 180, 340), (cx - 90, 290), (cx + 90, 290), (cx + 180, 340), (cx + 200, 520)], fill=(46, 52, 64, 255))
+    d.polygon([(cx - 70, 300), (cx + 70, 300), (cx + 60, 520), (cx - 60, 520)], fill=(110, 116, 124, 255))     # hoodie
+    d.arc([cx - 60, 270, cx + 60, 340], 0, 180, fill=(90, 96, 104, 255), width=12)
+    skin, hair, jaw = (226, 196, 172, 255), (90, 70, 50, 255), 6 * amp
+    d.ellipse([cx - 56, 118, cx + 56, 286 + jaw], fill=skin)
+    d.chord([cx - 62, 102, cx + 62, 172], 180, 360, fill=hair)
+    d.polygon([(cx - 56, 236), (cx + 56, 236), (cx + 40, 290 + jaw), (cx - 40, 290 + jaw)], fill=(120, 96, 70, 255))   # short beard
+    _eyes(d, cx, 188, gap=26, socket=(210, 180, 158, 255))
+    d.polygon([(cx - 4, 200), (cx + 4, 200), (cx + 9, 230), (cx - 9, 230)], fill=(210, 180, 158, 255))
+    if amp > 0.08:
+        d.ellipse([cx - 14, 252, cx + 14, 256 + 12 * amp], fill=(60, 26, 26, 255))
+    else:
+        d.line([(cx - 14, 254), (cx + 14, 254)], fill=(80, 60, 40, 255), width=3)
+    d.ellipse([cx + 52, 200, cx + 62, 212], fill=(240, 240, 240, 255))                          # earbud
+    d.ellipse([cx - 120, 400, cx - 96, 424], fill=(40, 40, 44, 255))                            # badge reel
+    d.rectangle([cx - 126, 424, cx - 90, 470], fill=(236, 236, 236, 255))

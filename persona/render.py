@@ -60,10 +60,10 @@ def merge(a, b):
 
 # ---------------------------------------------------------------- script
 SPEAKER = re.compile(r"^([A-Z][A-Z0-9 .'-]{0,24}):\s+(.*)$")
-CUE = re.compile(r"\[(gavel|bark|cackle|hear|cheer|slam|shot|ding|laugh|jet)\]\s*", re.I)
+CUE = re.compile(r"\[(gavel|bark|cackle|hear|cheer|slam|shot|ding|laugh|jet|ring)\]\s*", re.I)
 CUE_LEAD = 0.55          # seconds of room left before a gavelled line (kept for compatibility)
-CUE_LEN = {"gavel": 0.55, "bark": 0.75, "cackle": 1.45, "hear": 1.6, "cheer": 2.4, "slam": 0.7, "shot": 0.9, "ding": 0.6, "laugh": 1.7, "jet": 2.6}   # room each sound effect takes on the timeline
-CUE_OWNER = {"gavel": None, "bark": "_dog", "cackle": "speaker", "hear": None, "cheer": None, "slam": None, "shot": None, "ding": None, "laugh": None, "jet": None}   # whose mouth moves with it
+CUE_LEN = {"gavel": 0.55, "bark": 0.75, "cackle": 1.45, "hear": 1.6, "cheer": 2.4, "slam": 0.7, "shot": 0.9, "ding": 0.6, "laugh": 1.7, "jet": 2.6, "ring": 2.2}   # room each sound effect takes on the timeline
+CUE_OWNER = {"gavel": None, "bark": "_dog", "cackle": "speaker", "hear": None, "cheer": None, "slam": None, "shot": None, "ding": None, "laugh": None, "jet": None, "ring": None}   # whose mouth moves with it
 
 
 TRANS = re.compile(r"\s*\{=\s*(.*?)\s*\}\s*$")
@@ -296,6 +296,16 @@ def hear_hear():
     return out / (np.abs(out).max() + 1e-6) * 0.5
 
 
+def phone_ring():
+    """A phone ringing: the North American 440 + 480 Hz pair, two short bursts, with a cheap-speaker buzz."""
+    n = int((CUE_LEN["ring"] - 0.05) * SR); tt = np.arange(n) / SR
+    tone = (np.sin(2 * np.pi * 440 * tt) + np.sin(2 * np.pi * 480 * tt)) * 0.5
+    gate = (((tt % 1.0) < 0.4) & (tt < 1.9)).astype(np.float32)
+    buzz = np.sign(np.sin(2 * np.pi * 20 * tt)) * 0.15 + 0.85
+    out = (tone * gate * buzz).astype(np.float32)
+    return gaussian_filter(out, 0.6) * 0.3
+
+
 def jet_pass():
     """A fighter passing low overhead: filtered roar swelling and falling, with a Doppler-ish drop in the whine."""
     rng = np.random.default_rng(71)
@@ -380,7 +390,7 @@ def cheer():
 SFX = {"gavel": lambda: gavel_knock(), "bark": lambda: bark(), "cackle": lambda: cackle(), "hear": lambda: hear_hear(),
        "cheer": lambda: cheer(), "slam": lambda: door_slam(),
        "shot": lambda: gunshot(), "ding": lambda: steel_ding(), "laugh": lambda: group_laugh(),
-       "jet": lambda: jet_pass()}
+       "jet": lambda: jet_pass(), "ring": lambda: phone_ring()}
 
 
 def mix_audio(path, clips, starts, total, speakers=None, lines=None, block_s=60):

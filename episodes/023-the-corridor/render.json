@@ -1,0 +1,20 @@
+{
+  "output": "the_corridor.mp4",
+  "renderer_version": "0.18.0",
+  "renderer_commit": "fb64a8a-dirty",
+  "rendered_at": "2026-11-09T23:53:28+00:00",
+  "duration_s": 287.16,
+  "lines": 73,
+  "mask": null,
+  "cast": {
+    "CLERK": "mandarin_back",
+    "OFFICIAL": "official_back",
+    "DOREEN": "atipcoord",
+    "MARGARET": "deputyclerk",
+    "DESMOND": "comms",
+    "NATHAN": "pcoanalyst",
+    "TREVOR": "cseliaison",
+    "BOTH": null
+  },
+  "resolution": "1280x720@30"
+}
