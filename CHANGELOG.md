@@ -10,6 +10,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
 
+### Added
+- Episode 021, *The Addresses*: a plain-language explainer, in universe, of a real complaint to the Information Commissioner about Shared Services Canada withholding its IP address allocations under ATIA 16(2)(c). Fictional characters; the complaint is real and under investigation.
+
 ## [0.16.0] - 2026-11-09
 
 ### Added

@@ -1,0 +1,196 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "the addresses",
+  "cast": {
+    "CLERK": {
+      "name": "The Clerk of the Privy Council (fictional)",
+      "mask": "mandarin",
+      "x": 0.3,
+      "scale": 0.5,
+      "top": 226,
+      "color": [
+        230,
+        210,
+        160
+      ],
+      "voice": {
+        "voice": "en-gb+m3",
+        "speed": 140,
+        "pitch": 24,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.5:40:0.2,highpass=f=80,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "MARGARET": {
+      "name": "Margaret, Deputy Secretary to the Cabinet (fictional)",
+      "mask": "deputyclerk",
+      "x": 0.1,
+      "scale": 0.5,
+      "top": 226,
+      "color": [
+        200,
+        190,
+        240
+      ],
+      "voice": {
+        "voice": "en-gb+f2",
+        "speed": 150,
+        "pitch": 40,
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.04,aecho=0.8:0.5:40:0.2,highpass=f=120,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "DOREEN": {
+      "name": "Doreen, access to information (fictional)",
+      "mask": "atipcoord",
+      "x": 0.72,
+      "scale": 0.5,
+      "top": 226,
+      "color": [
+        240,
+        180,
+        200
+      ],
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 170,
+        "pitch": 56,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.5:40:0.2,highpass=f=130,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "NATHAN": {
+      "name": "Nathan, analyst (fictional)",
+      "mask": "pcoanalyst",
+      "x": 0.9,
+      "scale": 0.5,
+      "top": 226,
+      "color": [
+        180,
+        230,
+        170
+      ],
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 176,
+        "pitch": 62,
+        "filter": "asetrate=22050*0.98,aresample=44100,atempo=1.03,aecho=0.8:0.5:40:0.2,highpass=f=110,lowpass=f=6000,volume=1.6"
+      }
+    }
+  },
+  "set": {
+    "boardroom": {
+      "on": true
+    },
+    "table": true,
+    "slides": {
+      "x": 0.51,
+      "y": 56,
+      "w": 330,
+      "h": 176,
+      "banner": "NOT FOR NOTES",
+      "first": "OIC COMPLAINT\nShared Services Canada\nIP address ranges",
+      "cues": [
+        [
+          "Every computer on the internet has an address.",
+          "AN IP ADDRESS\n= a phone number\nfor a computer"
+        ],
+        [
+          "A public registry.",
+          "THE PHONE BOOK\nARIN: who owns\nwhich block (public)"
+        ],
+        [
+          "That's what he asked for.",
+          "THE REQUEST\nAddress ranges SSC manages\n+ which department has which"
+        ],
+        [
+          "Paragraph sixteen two c",
+          "ATIA 16(2)(c)\nVulnerability of systems\n(discretionary)"
+        ],
+        [
+          "Here's his answer.",
+          "1. ALREADY VISIBLE\nWhole old internet:\nscanned in < 1 hour"
+        ],
+        [
+          "Second. Accountability.",
+          "2. ACCOUNTABILITY\nAnonymous Wikipedia edits\nfrom government addresses"
+        ],
+        [
+          "Without Shared Services' list",
+          "WHO MADE THE EDIT?\nGovernment: yes\nWhich department: ???"
+        ],
+        [
+          "Third. This is the part he just added.",
+          "3. SECURITY\n2–3% of range on threat lists\n(likely unintentional)"
+        ],
+        [
+          "Secrecy doesn't protect a broken machine.",
+          "SECRECY DOESN'T FIX\nA BROKEN MACHINE\nIT HIDES IT"
+        ],
+        [
+          "The search.",
+          "4. THE SEARCH\nSomebody keeps an inventory.\nWhere is it?"
+        ],
+        [
+          "Since twenty nineteen",
+          "NEXT\nSSC replies → review\n→ Commissioner can order release"
+        ]
+      ]
+    },
+    "chyron": {
+      "title": "PRIVY COUNCIL OFFICE  ·  OTTAWA",
+      "sub": "MEANWHILE  ·  A TECHNICAL BRIEFING  ·  ORAL ONLY"
+    }
+  },
+  "layout": {
+    "top": 226
+  },
+  "pronounce": {
+    "ARIN": "Air-in",
+    "gccaedits": "G C C A edits",
+    "I P": "I. P.",
+    "Doreen": "Dor-een"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.42,
+    "after_greeting": 0.5,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "Not in writing.": 0.8,
+      "Margaret, please.": 0.9,
+      "The internet doesn't work otherwise.": 1.0,
+      "They don't have to.": 1.0,
+      "Here's his answer.": 0.8,
+      "It only stops the public.": 1.2,
+      "And in his field, it's not a compliment.": 1.0,
+      "We all remember that bot.": 1.0,
+      "It works both ways.": 1.1,
+      "He says that too.": 0.8,
+      "That's unusual for a requester.": 0.9,
+      "It hides it.": 1.3,
+      "That's his argument, sir.": 1.0,
+      "He wants the Commissioner to check.": 1.0,
+      "The Commissioner tells us.": 1.1,
+      "There's no exemption for that.": 1.3
+    }
+  },
+  "light": {
+    "line": "Secrecy doesn't protect a broken machine.",
+    "color": [
+      255,
+      230,
+      180
+    ],
+    "ramp": 2.0,
+    "tint": [
+      0.3,
+      0.25,
+      0.15
+    ]
+  },
+  "credits": [
+    "An original sketch. The Clerk, Margaret, Doreen and Nathan are fictional. The complaint is real and still under investigation.",
+    "Facts: ATIA 16(2)(c); ZMap (2013) scans all IPv4 in under an hour; English Wikipedia hid logged-out editors' IPs from Nov. 4, 2025;",
+    "the Information Commissioner has had order-making power since 2019. Previously: 020 Privy Council"
+  ],
+  "output": "the_addresses.mp4"
+}
