@@ -10,6 +10,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
 
+## [0.9.0] - 2026-11-08
+
+### Added
+- Verbatim mode for real speeches: `"signoff_lines": 0` (no sign-off; previously crashed), configurable `"end_title"` for the end card, and a README section on the rules (public-domain source, one contiguous excerpt, non-likeness persona, framing only in a narrator voice, `pronounce` changes audio only).
+- General-assembly set: `"set": {"assembly": {...}}` draws a green-marble rostrum wall with a blank gold-framed panel (no emblem), slatted side walls and curved delegate tiers.
+- Lecterns take `"color"` and `"marble": true`.
+- Episode 010, *General Assembly, 2025*: 07:25–14:04 of the President's Sept. 23, 2025 address to the 80th UN General Assembly, contiguous and unedited, with a narrator disclosure before and after. `SOURCE.md` records the source and the check.
+
 ## [0.8.0] - 2026-11-08
 
 ### Added
@@ -104,7 +112,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
   Repo copy is re-encoded to 540p to stay under the push size limit; render locally for 720p.
 - Versioning: `VERSION`, this changelog, semver git tags.
 
-[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.7.1...v0.8.0
 [0.7.1]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.6.0...v0.7.0
