@@ -1,0 +1,18 @@
+{
+  "output": "truck_stop.mp4",
+  "renderer_version": "0.11.0",
+  "renderer_commit": "b0a97af-dirty",
+  "rendered_at": "2026-11-09T09:32:42+00:00",
+  "duration_s": 220.15,
+  "lines": 56,
+  "mask": null,
+  "cast": {
+    "TRIPP": "pundit",
+    "GORD": "trucker",
+    "DARCY": "truckerdarcy",
+    "PREMIER": "premier",
+    "WADE": null,
+    "DALE": null
+  },
+  "resolution": "1280x720@30"
+}

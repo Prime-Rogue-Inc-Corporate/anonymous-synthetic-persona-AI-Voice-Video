@@ -1,0 +1,157 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "truck stop",
+  "cast": {
+    "TRIPP": {
+      "mask": "pundit",
+      "color": [
+        150,
+        200,
+        130
+      ],
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 166,
+        "pitch": 64,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.35:20:0.12,highpass=f=110,lowpass=f=6500,volume=1.6"
+      },
+      "name": "Tripp Halloran, out of the barn (fictional)",
+      "x": 0.2,
+      "scale": 0.7,
+      "top": 150
+    },
+    "GORD": {
+      "name": "Gord, long-haul trucker (fictional)",
+      "mask": "trucker",
+      "x": 0.45,
+      "scale": 0.68,
+      "top": 156,
+      "color": [
+        230,
+        160,
+        150
+      ],
+      "voice": {
+        "voice": "en-us+m7",
+        "speed": 150,
+        "pitch": 20,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.4:30:0.2,highpass=f=80,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "DARCY": {
+      "name": "Darcy, owner-operator (fictional)",
+      "mask": "truckerdarcy",
+      "x": 0.66,
+      "scale": 0.66,
+      "top": 160,
+      "color": [
+        230,
+        200,
+        140
+      ],
+      "voice": {
+        "voice": "en-us+f3",
+        "speed": 168,
+        "pitch": 52,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.4:30:0.2,highpass=f=130,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "PREMIER": {
+      "name": "Premier Lorna Whitcombe, in the next booth (fictional)",
+      "mask": "premier",
+      "x": 0.87,
+      "scale": 0.6,
+      "top": 176,
+      "enter": "right",
+      "linger": 40,
+      "color": [
+        170,
+        210,
+        240
+      ],
+      "voice": {
+        "voice": "en-us+f5",
+        "speed": 172,
+        "pitch": 62,
+        "filter": "asetrate=22050*0.98,aresample=44100,atempo=1.03,aecho=0.8:0.4:30:0.2,highpass=f=140,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "WADE": {
+      "name": "Wade, at the counter (fictional, from 005)",
+      "mask": null,
+      "color": [
+        220,
+        190,
+        140
+      ],
+      "voice": {
+        "voice": "en-us+m7",
+        "speed": 150,
+        "pitch": 28,
+        "filter": "asetrate=22050*0.9,aresample=44100,atempo=1.05,aecho=0.8:0.4:30:0.2,highpass=f=90,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "DALE": {
+      "name": "Dale, producer (off camera)",
+      "mask": null,
+      "color": [
+        190,
+        190,
+        190
+      ],
+      "voice": {
+        "voice": "en-us+m6",
+        "speed": 150,
+        "pitch": 18,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.3:20:0.1,highpass=f=90,lowpass=f=5000,volume=1.4"
+      }
+    }
+  },
+  "set": {
+    "diner": {
+      "neon_x": 0.8,
+      "pie_x": 0.08
+    },
+    "desk": {
+      "x": 0.45,
+      "y": 520,
+      "w": 900,
+      "mug": true
+    },
+    "chyron": {
+      "title": "THE TRIPP HALLORAN SHOW",
+      "sub": "ON THE ROAD  ·  A TRUCK STOP ON HIGHWAY 4, ALBERTA"
+    }
+  },
+  "pronounce": {
+    "Whitcombe": "Witcum",
+    "litres": "leeters"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.4,
+    "after_greeting": 0.5,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "He's not handling it well.": 0.9,
+      "The front line is the pie case.": 1.0,
+      "Don't.": 0.9,
+      "Some taken.": 0.8,
+      "And pie.": 1.2,
+      "Let's park that.": 0.9,
+      "Whichever side is on the show.": 0.5,
+      "It's still cold.": 0.9,
+      "I left my own barn.": 1.0
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "credits": [
+    "An original sketch. Tripp, Dale, Biscuit, Gord, Darcy, Wade and Premier Whitcombe are fictional.",
+    "Context: Alberta voted to stay in Canada, Oct. 19, 2026; US tariffs on Canadian goods.",
+    "Previously: 009 The Barn, 012 Forever Canadian"
+  ],
+  "output": "truck_stop.mp4"
+}

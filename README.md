@@ -21,6 +21,8 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 011 | [The Despatch Box](episodes/011-the-despatch-box) | A fictional British PM gives a Churchillian Commons statement on the state of the United States · commons set, hear-hear cue | ~8:05 |
 | 012 | [Forever Canadian](episodes/012-forever-canadian) | The PM's full Oct. 15, 2026 Calgary rally speech as prepared, verbatim; the moth introduces, Wade (005) shows up for the sign-off · rally set, crowd, cheer cue | ~15:44 (repo copy 540p) |
 | 013 | [Canada Options](episodes/013-canada-options) | A CIA working group plans for Canada until an old case officer explains the cold and the Canadian Rangers · slides, slam cue | ~5:23 |
+| 014 | [Thursday](episodes/014-thursday) | Vic flies to Cambridge Bay in costume to meet the Rangers' "secret cell" · arctic set, aurora, breath | ~3:33 |
+| 015 | [Truck Stop](episodes/015-truck-stop) | Tripp leaves the barn to meet Alberta truckers; a fictional premier listens from the next booth · diner set | ~3:40 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
@@ -52,6 +54,10 @@ The persona's head changes per episode and moves with the voice.
 | `deputy` | tight bun, rimless glasses, lanyard with the badge turned backwards | mouth opens with the voice |
 | `analyst` | overgrown side-swept hair, earnest brows, quarter-zip | mouth opens with the voice |
 | `caseofficer` | tinted aviators, heavy moustache, stubble, loose tie, cigarette behind the ear | mouth opens under the moustache |
+| `vicparka` | the case officer in a new orange parka with a fur ruff, a fake beard and the store tag still on | mouth opens under the beard |
+| `rangersgt`, `rangerjonah`, `rangerdoug` | red Ranger hoodies; toque and round glasses / flat-brim cap / ginger beard and striped toque | mouths open with the voice |
+| `trucker`, `truckerdarcy` | mesh cap and big beard in plaid / ponytail through a cap, sunglasses up, work jacket | mouths open with the voice |
+| `premier` | big blonde blowout, pastel blazer and brooch, eyes that drift side to side | mouth opens with the voice |
 
 Add one by writing a function in `persona/masks.py` decorated with `@mask("name")`. It gets the frame's voice loudness (`amp`, 0–1) and time (`t`), and draws on a 520×520 canvas with the suit's collar at y=300.
 
@@ -206,6 +212,10 @@ An arena with a lighting truss, a red-and-white banner and flags, and a foregrou
 ```
 
 A projector screen whose slide changes when each phrase is spoken. `"MAP"` draws a crude map of Canada. `[slam]` is a door flung open.
+
+### The North and the road
+
+`"set": {"arctic": {"breath": true}}` is an Arctic night with moving aurora, distant hamlet lights, a research station, a snowmobile and a sled; with `breath`, whoever is speaking puffs visible breath. `"set": {"diner": {}}` is a highway truck stop at night: panelling, a window onto idling semis, a neon EAT sign, a counter and a pie case. Pair it with `"desk"` for the booth table.
 
 ### Verbatim episodes
 
