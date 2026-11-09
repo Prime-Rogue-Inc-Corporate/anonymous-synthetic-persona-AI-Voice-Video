@@ -17,6 +17,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 007 | [Special Order](episodes/007-special-order) | A fictional lame-duck congressman's hour on the House floor · chamber, lectern, gavel, chyron clock | ~4:17 |
 | 008 | [Special Order: The Full Hour](episodes/008-special-order-full-hour) | The 60-minute cut of 007 (59:59). In the repo as four 15-minute 540p parts (`video/`); 720p original renders locally | 59:59 |
 | 009 | [The Barn](episodes/009-the-barn) | A fictional ex-cable anchor's barn podcast reacts to the midterms; Whitlow by satellite · barn, desk, monitor, dog, cackle | ~5:23 |
+| 010 | [General Assembly, 2025 (verbatim)](episodes/010-unga-2025) | A contiguous, unedited excerpt of the President's Sept. 23, 2025 UN address (07:25–14:04), read by the channel persona · assembly set, verbatim mode | ~6:50 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
@@ -171,6 +172,25 @@ Put `[gavel]` in a line (`CHAIR: [gavel] The gentleman will suspend.`) for a kno
 ```
 
 Sound cues go inline: `HOST: [cackle] Greetings.` (before), `HOST: Expect us. [bark]` (after), `DALE: [bark]` (cue only, no caption).
+
+### Verbatim episodes
+
+For real speeches by real people, the rule is: the words are theirs, exactly, and nothing else is.
+
+- Use a public-domain source (US federal works by officials in their official capacity, 17 U.S.C. 105) and cite it in `credits`.
+- Pick one contiguous stretch. Lines are only split at sentence or comma boundaries; joined back together they must equal the source excerpt (010 checks this against `SOURCE.md`).
+- Speak through the channel persona (`moth`) or another non-likeness mask; never draw a caricature of a living person.
+- Put framing in a voice-only `NARRATOR`, never in the speaker's mouth. `"signoff_lines": 0` drops the "We are Anonymous" sign-off, and `"end_title"` replaces "EXPECT US." on the end card.
+- Number and symbol fixes for the synth go in `pronounce`, which changes the audio only, never the captions.
+
+```json
+"set": {
+  "assembly": {"x": 0.5, "width": 0.42},
+  "lectern":  {"x": 0.5, "y": 500, "color": [46, 84, 66], "marble": true}
+},
+"signoff_lines": 0,
+"end_title": "AS DELIVERED."
+```
 
 ## Loop clips
 

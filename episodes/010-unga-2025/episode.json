@@ -1,0 +1,86 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "verbatim: general assembly, 2025",
+  "cast": {
+    "NARRATOR": {
+      "name": "Narrator",
+      "mask": null,
+      "color": [
+        180,
+        180,
+        180
+      ],
+      "voice": {
+        "voice": "en-us+m3",
+        "speed": 146,
+        "pitch": 22,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.6:40:0.25,highpass=f=90,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "PRESIDENT": {
+      "name": "President Donald J. Trump · as delivered · read by a synthetic voice",
+      "mask": "moth",
+      "x": 0.5,
+      "scale": 0.82,
+      "top": 70,
+      "color": [
+        226,
+        200,
+        120
+      ],
+      "voice": {
+        "voice": "en-us+m1",
+        "speed": 164,
+        "pitch": 30,
+        "filter": "asetrate=22050*0.9,aresample=44100,atempo=1.06,aecho=0.8:0.55:70:0.3,highpass=f=90,lowpass=f=6000,volume=1.6"
+      }
+    }
+  },
+  "set": {
+    "assembly": {
+      "x": 0.5,
+      "width": 0.42
+    },
+    "lectern": {
+      "x": 0.5,
+      "y": 500,
+      "color": [
+        46,
+        84,
+        66
+      ],
+      "marble": true
+    },
+    "chyron": {
+      "title": "80TH SESSION · GENERAL DEBATE",
+      "sub": "VERBATIM EXCERPT  ·  SEPT. 23, 2025  ·  07:25–14:04"
+    }
+  },
+  "pronounce": {
+    "$500 million": "five hundred million dollars",
+    "$4 billion": "four billion dollars",
+    "$5 billion": "five billion dollars",
+    "UAE": "U A E",
+    "un-glorious": "un glorious",
+    "Rwanda": "Ruwanda"
+  },
+  "signoff_lines": 0,
+  "gaps": {
+    "default": 0.35,
+    "after_greeting": 1.2,
+    "after_intro": 0.35,
+    "after": {
+      "much, much bigger.": 1.2
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "end_title": "AS DELIVERED.",
+  "credits": [
+    "U.N. General Assembly, New York, Sept. 23, 2025. A U.S. government work: public domain.",
+    "Official text: Daily Comp. Pres. Docs., DCPD-202500944. Wording here follows the delivered audio.",
+    "Excerpt 07:25–14:04, contiguous and unedited. The persona is the channel's, not a likeness."
+  ],
+  "output": "unga_2025_verbatim.mp4"
+}

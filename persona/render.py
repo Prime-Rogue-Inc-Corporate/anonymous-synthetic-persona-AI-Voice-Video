@@ -33,9 +33,11 @@ DEFAULTS = {
     "mask": "moth",
     "cast": {},
     "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
-            "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None},
+            "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None,
+            "assembly": None},
     "layout": {},
     "credits": [],
+    "end_title": "EXPECT US.",
     "voice": {"voice": "en-us+m3", "speed": 138, "pitch": 22,
               "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.6:40:0.25,highpass=f=90,lowpass=f=6000,volume=1.6"},
     "pronounce": {},
@@ -367,6 +369,8 @@ class Renderer:
             self.chamber_bg = chamber_backdrop(cfg["set"]["chamber"])
         if cfg["set"].get("barn"):
             self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
+        if cfg["set"].get("assembly"):
+            self.chamber_bg = assembly_backdrop(cfg["set"]["assembly"])
         ch = cfg["set"].get("chyron")
         self.clock = None
         if ch and ch.get("clock"):
@@ -377,7 +381,7 @@ class Renderer:
         self.card_font = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 15)
         lt = cfg["light"]["line"]
         self.light_t = next((starts[i] for i, l in enumerate(lines) if lt and l.startswith(lt)), None)
-        self.sign_t = starts[len(lines) - cfg["signoff_lines"]]
+        self.sign_t = starts[len(lines) - cfg["signoff_lines"]] if cfg["signoff_lines"] else float("inf")
 
     def wrap(self, text):
         out, cur = [], ""
@@ -517,9 +521,16 @@ class Renderer:
         for s in (-1, 1):   # two gooseneck mics
             d.line([(cx + s * 40, y + 6), (cx + s * 30, y - 40), (cx + s * 14, y - 70)], fill=(30, 30, 32), width=4)
             d.ellipse([cx + s * 14 - 7, y - 78, cx + s * 14 + 7, y - 62], fill=(20, 20, 22))
-        d.polygon([(cx - 150, y), (cx + 150, y), (cx + 120, H), (cx - 120, H)], fill=(78, 54, 38))
-        d.rectangle([cx - 160, y - 10, cx + 160, y + 8], fill=(98, 70, 50))
-        d.line([(cx - 150, y + 8), (cx + 150, y + 8)], fill=(50, 34, 24), width=3)
+        body = tuple(lc.get("color", [78, 54, 38]))
+        top = tuple(min(255, v + 20) for v in body); edge = tuple(int(v * 0.64) for v in body)
+        d.polygon([(cx - 150, y), (cx + 150, y), (cx + 120, H), (cx - 120, H)], fill=body)
+        if lc.get("marble"):                                  # pale veins across the front
+            vr = np.random.default_rng(9)
+            for _ in range(9):
+                x0 = cx - 130 + vr.integers(0, 260); y0 = y + vr.integers(10, H - y - 10)
+                d.line([(x0, y0), (x0 + vr.integers(-60, 60), y0 + vr.integers(20, 90))], fill=top, width=1)
+        d.rectangle([cx - 160, y - 10, cx + 160, y + 8], fill=top)
+        d.line([(cx - 150, y + 8), (cx + 150, y + 8)], fill=edge, width=3)
         if lc.get("seal"):
             d.ellipse([cx - 34, y + 40, cx + 34, y + 108], outline=(190, 160, 90), width=4)
             d.ellipse([cx - 22, y + 52, cx + 22, y + 96], outline=(190, 160, 90), width=2)
@@ -686,7 +697,7 @@ class Renderer:
                 a = int(255 * min(1, (t - (self.total - 4.2)) / 0.5) * min(1, (self.total - t) / 0.6))
                 layer = Image.new("RGBA", (W, H), (0, 0, 0, 0)); ld = ImageDraw.Draw(layer)
                 ld.rectangle([0, 0, W, H], fill=(0, 0, 0, int(a * 0.85)))
-                self.centered(ld, "EXPECT US.", self.big, H / 2 - 50, (235, 235, 235, a))
+                self.centered(ld, cfg["end_title"], self.big, H / 2 - 50, (235, 235, 235, a))
                 for k, line in enumerate(cfg["credits"]):
                     shade = 160 if k == 0 else 120
                     self.centered(ld, line, self.small, H / 2 + 40 + 32 * k, (shade, shade, shade, a))
@@ -737,6 +748,36 @@ def chamber_backdrop(conf):
     d.rectangle([0, 0, int(0.06 * W), H], fill=(36, 26, 40))
     # floor
     d.rectangle([0, 430, W, H], fill=(52, 30, 34))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def assembly_backdrop(conf):
+    """Static general-assembly hall: a tall green-marble wall behind the speaker's rostrum, a gold-framed
+    panel (deliberately blank: no emblem), wood-panelled side walls and the curve of the delegates' tiers."""
+    conf = conf if isinstance(conf, dict) else {}
+    rng = np.random.default_rng(12)
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    for y in range(H):                               # dim hall above, warm wood below
+        k = y / H
+        d.line([(0, y), (W, y)], fill=(int(30 + 30 * k), int(34 + 22 * k), int(44 + 8 * k)))
+    for x in range(0, W, 64):                        # wood slats on the side walls
+        d.line([(x, 0), (x, 470)], fill=(70, 56, 44), width=2)
+    cx = int(conf.get("x", 0.5) * W); half = int(conf.get("width", 0.36) * W / 2)
+    d.rectangle([cx - half, 0, cx + half, 470], fill=(44, 82, 64))          # green marble wall
+    for _ in range(70):                                                       # marble veining
+        x0 = cx - half + int(rng.integers(0, 2 * half)); y0 = int(rng.integers(0, 470))
+        pts = [(x0, y0)]
+        for _k in range(5):
+            x0 += int(rng.integers(-26, 26)); y0 += int(rng.integers(6, 30)); pts.append((x0, y0))
+        d.line(pts, fill=(int(rng.integers(70, 110)), int(rng.integers(118, 150)), int(rng.integers(96, 120))), width=1)
+    d.rectangle([cx - half, 0, cx + half, 470], outline=(160, 136, 70), width=6)
+    pw, ph = int(half * 0.62), 150                                            # blank gold-framed panel
+    d.rectangle([cx - pw, 40, cx + pw, 40 + ph], fill=(36, 66, 52), outline=(190, 160, 84), width=5)
+    d.rectangle([cx - pw + 14, 54, cx + pw - 14, 26 + ph], outline=(150, 126, 66), width=2)
+    for k in range(4):                                                        # delegates' tiers, curving away
+        y0 = 470 + k * 62
+        d.chord([-W * 0.3, y0 - 40, W * 1.3, y0 + 260], 180, 360, fill=(58 - k * 6, 42 - k * 4, 38 - k * 4))
+        d.arc([-W * 0.3, y0 - 40, W * 1.3, y0 + 260], 180, 360, fill=(110, 84, 58), width=3)
     return np.asarray(im).astype(np.float32) / 255
 
 
