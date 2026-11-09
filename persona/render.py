@@ -34,7 +34,7 @@ DEFAULTS = {
     "cast": {},
     "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
             "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None,
-            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None},
+            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None},
     "layout": {},
     "credits": [],
     "end_title": "EXPECT US.",
@@ -503,6 +503,8 @@ class Renderer:
             self.chamber_bg = chamber_backdrop(cfg["set"]["chamber"])
         if cfg["set"].get("barn"):
             self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
+        if cfg["set"].get("hall"):
+            self.chamber_bg = hall_backdrop(cfg["set"]["hall"])
         if cfg["set"].get("prairie"):
             self.chamber_bg = prairie_backdrop(cfg["set"]["prairie"])
         if cfg["set"].get("diner"):
@@ -1169,6 +1171,31 @@ def commons_backdrop(conf):
             pts = [(far, ytop_far), (near, ytop_near), (near, ytop_near + 40), (far, ytop_far + 10)]
             d.polygon(pts, fill=(48 + k * 4, 104 - k * 6, 70 - k * 4))
             d.line(pts[:2], fill=(90, 140, 100), width=2)
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def hall_backdrop(conf):
+    """Static northern community hall: painted block walls, a bingo board, a coffee urn on a folding table,
+    a whiteboard with the search-and-rescue roster, a window full of dark, and a roof patch with a bucket under it."""
+    conf = conf if isinstance(conf, dict) else {}
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    for y in range(0, H, 28):                                                     # painted cinder block
+        for x in range(-(y // 28 % 2) * 40, W, 80):
+            d.rectangle([x, y, x + 78, y + 26], fill=(196, 202, 188), outline=(170, 176, 162))
+    d.rectangle([0, 0, W, 30], fill=(120, 110, 96))                               # ceiling edge
+    d.ellipse([W * 0.47, 22, W * 0.47 + 70, 44], fill=(150, 120, 80))           # roof stain
+    d.rectangle([60, 70, 300, 230], fill=(30, 30, 34)); d.rectangle([66, 76, 294, 224], fill=(10, 14, 30))   # window, dark
+    d.rectangle([W - 330, 70, W - 60, 230], fill=(246, 246, 244), outline=(160, 160, 160), width=4)          # whiteboard
+    f = ImageFont.truetype(f"{FONT_DIR}/DejaVuSans-Bold.ttf", 18)
+    for k, line in enumerate(conf.get("board", ["SAR ROSTER - THURSDAY", "Mary  Jonah  Doug", "Vic (tea)", "Gas: ask Doug"])):
+        d.text((W - 316, 82 + k * 32), line, font=f, fill=(30, 60, 150) if k else (180, 30, 30))
+    bx = int(W * 0.36)                                                            # bingo board
+    d.rectangle([bx, 60, bx + 150, 160], fill=(40, 40, 46))
+    for r in range(5):
+        for c in range(5):
+            on = (r * 5 + c) % 3 == 0
+            d.ellipse([bx + 10 + c * 28, 68 + r * 18, bx + 24 + c * 28, 82 + r * 18], fill=(250, 200, 60) if on else (70, 70, 76))
+    d.rectangle([0, 390, W, H], fill=(140, 120, 96))                              # floor
     return np.asarray(im).astype(np.float32) / 255
 
 

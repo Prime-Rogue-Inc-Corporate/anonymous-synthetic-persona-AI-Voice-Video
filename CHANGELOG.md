@@ -10,6 +10,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
 
+## [0.15.0] - 2026-11-09
+
+### Added
+- Community hall set: `"set": {"hall": {...}}`.
+- Masks: `minister`, `general`, `admiral`, `sofcom`, `rangerjosie`.
+- Episode 019, *The Hall* (11:15): the Minister, the Chief of the Defence Staff, the Navy and Special Forces commanders meet Mary, Josie and Jonah in Cambridge Bay. All characters fictional; facts on the end card.
+
 ## [0.14.0] - 2026-11-09
 
 ### Added
@@ -170,7 +177,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
   Repo copy is re-encoded to 540p to stay under the push size limit; render locally for 720p.
 - Versioning: `VERSION`, this changelog, semver git tags.
 
-[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.14.0...HEAD
+[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.15.0...HEAD
+[0.15.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.14.0...v0.15.0
 [0.14.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.13.0...v0.14.0
 [0.13.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.12.0...v0.13.0
 [0.12.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.11.0...v0.12.0

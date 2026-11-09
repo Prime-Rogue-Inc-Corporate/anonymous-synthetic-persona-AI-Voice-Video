@@ -845,3 +845,101 @@ def zoomermac(d, amp, t):
     d.rounded_rectangle([cx - 56, 176, cx + 56, 208], radius=12, fill=(240, 180, 60, 170), outline=(60, 60, 60, 255), width=3)  # amber glasses
     d.polygon([(cx - 4, 206), (cx + 4, 206), (cx + 9, 234), (cx - 9, 234)], fill=(210, 176, 148, 255))
     _mouth(d, cx, 256 + jaw * 0.5, amp, w=15, lip=(170, 90, 90, 255))
+
+
+def _uniform(d, cx, col, braid=False):
+    """Dress tunic: the suit shape recoloured, with shoulder boards and medal ribbons."""
+    d.polygon([(cx - 200, 520), (cx - 180, 340), (cx - 90, 290), (cx + 90, 290), (cx + 180, 340), (cx + 200, 520)], fill=col)
+    d.polygon([(cx - 40, 300), (cx + 40, 300), (cx, 380)], fill=(236, 236, 236, 255))
+    d.polygon([(cx - 12, 312), (cx + 12, 312), (cx + 16, 400), (cx, 420), (cx - 16, 400)], fill=(20, 20, 24, 255))
+    for s in (-1, 1):
+        d.rectangle([cx + s * 150 - 30, 330, cx + s * 150 + 30, 346], fill=(20, 20, 30, 255) if not braid else (200, 170, 70, 255))
+    for k, c in enumerate([(200, 40, 40, 255), (40, 80, 160, 255), (220, 190, 60, 255), (40, 130, 70, 255)]):
+        d.rectangle([cx - 140 + (k % 2) * 30, 380 + (k // 2) * 12, cx - 112 + (k % 2) * 30, 390 + (k // 2) * 12], fill=c)
+
+
+@mask("minister", tie=True)
+def minister(d, amp, t):
+    """A defence minister: a tidy grey part, a flag lapel pin, a very practised smile."""
+    cx = CX
+    skin, jaw = (232, 200, 178, 255), 6 * amp
+    d.ellipse([cx - 60, 114, cx + 60, 290 + jaw], fill=skin)
+    d.chord([cx - 66, 96, cx + 66, 196], 180, 360, fill=(170, 170, 176, 255))
+    d.polygon([(cx - 66, 146), (cx + 10, 120), (cx + 66, 146), (cx + 66, 130), (cx - 66, 130)], fill=(170, 170, 176, 255))
+    _eyes(d, cx, 190, gap=27, socket=(214, 184, 164, 255))
+    d.polygon([(cx - 5, 200), (cx + 5, 200), (cx + 10, 232), (cx - 10, 232)], fill=(214, 184, 164, 255))
+    my = 256 + jaw * 0.5
+    if amp > 0.08:
+        d.chord([cx - 22, my - 6, cx + 22, my + 8 + 12 * amp], 0, 180, fill=(70, 30, 30, 255))
+    else:
+        d.arc([cx - 22, my - 12, cx + 22, my + 6], 20, 160, fill=(150, 80, 80, 255), width=4)   # the smile
+    d.rectangle([cx - 74, 344, cx - 60, 352], fill=(220, 40, 40, 255))                             # flag pin
+    d.rectangle([cx - 70, 344, cx - 64, 352], fill=(240, 240, 240, 255))
+
+
+@mask("general", tie=False)
+def general(d, amp, t):
+    """Chief of the Defence Staff: a dark green tunic with ribbons, a cropped grey moustache, tired eyes."""
+    cx = CX
+    _uniform(d, cx, (60, 74, 54, 255))
+    skin, jaw = (224, 190, 166, 255), 6 * amp
+    d.ellipse([cx - 60, 114, cx + 60, 290 + jaw], fill=skin)
+    d.chord([cx - 64, 100, cx + 64, 180], 180, 360, fill=(120, 120, 124, 255))                    # cropped grey
+    _eyes(d, cx, 190, gap=27, socket=(204, 170, 148, 255))
+    for s in (-1, 1):
+        d.arc([cx + s * 27 - 15, 198, cx + s * 27 + 15, 214], 20, 160, fill=(170, 130, 110, 255), width=2)   # bags
+    d.polygon([(cx - 5, 200), (cx + 5, 200), (cx + 10, 232), (cx - 10, 232)], fill=(204, 170, 148, 255))
+    d.rectangle([cx - 26, 240, cx + 26, 250], fill=(130, 130, 134, 255))                            # moustache
+    _mouth(d, cx, 262 + jaw * 0.5, amp, w=15)
+
+
+@mask("admiral", tie=False)
+def admiral(d, amp, t):
+    """Commander of the Navy: a navy tunic with gold shoulder boards, a short dark bob, a calm, flat stare."""
+    cx = CX
+    _uniform(d, cx, (24, 30, 54, 255), braid=True)
+    skin, hair, jaw = (236, 206, 186, 255), (50, 40, 36, 255), 6 * amp
+    d.ellipse([cx - 76, 100, cx + 76, 270], fill=hair)
+    d.ellipse([cx - 58, 114, cx + 58, 288 + jaw], fill=skin)
+    d.chord([cx - 66, 100, cx + 66, 190], 180, 360, fill=hair)
+    for s in (-1, 1):
+        d.ellipse([cx + s * 27 - 14, 184, cx + s * 27 + 14, 200], fill=(240, 236, 230, 255))
+        d.ellipse([cx + s * 27 - 6, 186, cx + s * 27 + 6, 198], fill=(30, 40, 60, 255))
+        d.line([(cx + s * 27 - 16, 178), (cx + s * 27 + 16, 178)], fill=(60, 50, 44, 255), width=4)    # flat brows
+    d.polygon([(cx - 4, 200), (cx + 4, 200), (cx + 9, 232), (cx - 9, 232)], fill=(220, 190, 170, 255))
+    _mouth(d, cx, 258 + jaw * 0.5, amp, w=15, lip=(160, 90, 90, 255))
+
+
+@mask("sofcom", tie=False)
+def sofcom(d, amp, t):
+    """Commander of special forces: a black balaclava, dark glasses, and a face that is pixelated anyway."""
+    cx = CX
+    _uniform(d, cx, (46, 50, 40, 255))
+    d.ellipse([cx - 62, 110, cx + 62, 292], fill=(26, 26, 30, 255))                                  # balaclava
+    for y in range(140, 290, 18):                                                                    # pixelation
+        for x in range(cx - 54, cx + 54, 18):
+            v = 30 + int(20 * math.sin(x * 0.3 + y * 0.7 + t * 0.5) ** 2)
+            d.rectangle([x, y, x + 16, y + 16], fill=(v, v, v + 4, 255))
+    d.rectangle([cx - 50, 180, cx + 50, 204], fill=(10, 10, 12, 255))                                # glasses band
+    if amp > 0.08:
+        d.rectangle([cx - 16, 252, cx + 16, 256 + 10 * amp], fill=(10, 10, 12, 255))
+
+
+@mask("rangerjosie", tie=False)
+def rangerjosie(d, amp, t):
+    """The eldest Ranger: white hair under a hood with a fur ruff, deep smile lines, the red hoodie."""
+    cx = CX
+    _ranger_hoodie(d, cx)
+    d.ellipse([cx - 92, 96, cx + 92, 312], fill=(150, 130, 110, 255))                               # fur ruff
+    d.ellipse([cx - 76, 110, cx + 76, 304], fill=(120, 30, 36, 255))                                # hood
+    skin, jaw = (186, 140, 108, 255), 5 * amp
+    d.ellipse([cx - 56, 126, cx + 56, 290 + jaw], fill=skin)
+    d.chord([cx - 58, 120, cx + 58, 186], 180, 360, fill=(236, 236, 236, 255))                       # white hair
+    for s in (-1, 1):
+        d.arc([cx + s * 26 - 14, 182, cx + s * 26 + 14, 200], 200, 340, fill=(40, 30, 24, 255), width=4)   # smiling eyes
+        for k in range(3):
+            d.line([(cx + s * 44, 188 + k * 5), (cx + s * 54, 184 + k * 7)], fill=(150, 106, 80, 255), width=2)
+    d.polygon([(cx - 5, 198), (cx + 5, 198), (cx + 10, 230), (cx - 10, 230)], fill=(168, 124, 94, 255))
+    for s in (-1, 1):
+        d.arc([cx + s * 30 - 16, 230, cx + s * 30 + 16, 262], 90 - s * 60, 90 + s * 60, fill=(150, 106, 80, 255), width=2)
+    _mouth(d, cx, 256 + jaw * 0.5, amp, w=16, lip=(130, 70, 60, 255))
