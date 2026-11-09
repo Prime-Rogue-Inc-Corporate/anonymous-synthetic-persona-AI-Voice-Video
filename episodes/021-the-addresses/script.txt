@@ -42,6 +42,29 @@ DOREEN: That's unusual for a requester.
 NATHAN: His point is this. If a few government machines might be part of someone else's attack, the public, the researchers, and the Commissioner can only help find them if they can see who owns them. Secrecy doesn't protect a broken machine. It hides it.
 CLERK: So the exemption meant to protect the systems is protecting the problems.
 NATHAN: That's his argument, sir.
+NATHAN: There's something else. He's noticed a pattern.
+CLERK: Go on.
+NATHAN: Fantasy hockey.
+CLERK: I beg your pardon.
+NATHAN: Public servants run fantasy hockey leagues. Some of the league sites are old, and they log the internet address every time someone signs a player or makes a trade.
+NATHAN: And some of our people make their trades from work. On their government computers. Under their real names.
+CLERK: Are you fucking kidding me?
+DOREEN: No, sir. We are not.
+MARGARET: It's November. The trade deadline is in March. People take it very seriously.
+DOREEN: It's very Canadian.
+NATHAN: So he's building another bot. It reads the league transaction logs. A roster move comes in from a government address, under a real name. He looks that name up on LinkedIn. That person works at, say, Fisheries and Oceans. Now that address has a likely department.
+DOREEN: Isn't looking people up on LinkedIn exactly the kind of thing the Privacy Commissioner gets cranky about?
+NATHAN: He says he's mapping addresses, not people. The names never get published. A name is just a pin on the map, and then it's thrown away.
+MARGARET: And if that person is on a connection a lot of departments share?
+NATHAN: That's the clever part. Some addresses are what he calls egress points. One big exit door that many departments share. Like everyone in a building leaving through the same lobby.
+NATHAN: If one address shows up with hockey managers from five different departments, it's a lobby. If it's always the same department, it's probably that department's own door.
+NATHAN: Then he checks the reverse lookup. The name the address gives itself. If the address name says Fisheries, and the trades say Fisheries, and LinkedIn says Fisheries, that's three independent signals agreeing. High confidence. One signal on its own, low. He grades every single one.
+CLERK: So our public servants are leaking the network map one waiver claim at a time.
+NATHAN: Yes, sir. And none of it would be necessary if Shared Services just released the list.
+CLERK: That is the most Canadian security breach I have ever heard of.
+MARGARET: Who's in first place?
+DOREEN: Margaret.
+MARGARET: I'm asking for a friend.
 CLERK: Is there a fourth?
 DOREEN: There's always a fourth.
 NATHAN: The search. Shared Services said they'd never had a request like this. He says any network team that runs millions of addresses must keep an inventory. Spreadsheets, an address management system, something. So either they searched and didn't find it, or they didn't search properly. He wants the Commissioner to check.

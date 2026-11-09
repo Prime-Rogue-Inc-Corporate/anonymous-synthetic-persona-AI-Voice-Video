@@ -1,10 +1,10 @@
 {
   "output": "the_addresses.mp4",
-  "renderer_version": "0.16.0",
-  "renderer_commit": "faf7a4d",
-  "rendered_at": "2026-11-09T20:27:31+00:00",
-  "duration_s": 376.63,
-  "lines": 62,
+  "renderer_version": "0.17.0",
+  "renderer_commit": "2ac2978",
+  "rendered_at": "2026-11-09T20:43:41+00:00",
+  "duration_s": 514.23,
+  "lines": 85,
   "mask": null,
   "cast": {
     "CLERK": "mandarin",

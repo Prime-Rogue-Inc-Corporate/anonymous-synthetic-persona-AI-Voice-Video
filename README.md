@@ -28,7 +28,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 018 | [The Call](episodes/018-the-call) | Vic calls Tripp; two shooting ranges, one realization · video call, duet lines | ~1:15 |
 | 019 | [The Hall](episodes/019-the-hall) | The defence brass fly to Cambridge Bay on a Thursday and get a briefing from three Rangers · hall set, slides | ~11:15 |
 | 020 | [Privy Council](episodes/020-privy-council) | Meanwhile at the Privy Council Office: seven cheap commitments made on community radio, four hundred access requests, and a rich oral culture · boardroom set | ~4:53 |
-| 021 | [The Addresses](episodes/021-the-addresses) | Nathan gives the Clerk a plain-language briefing on a real access complaint about Shared Services Canada's IP address ranges · slides | ~6:17 |
+| 021 | [The Addresses](episodes/021-the-addresses) | Nathan gives the Clerk a plain-language briefing on a real access complaint about Shared Services Canada's IP address ranges, plus fantasy hockey · slides | ~8:31 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 

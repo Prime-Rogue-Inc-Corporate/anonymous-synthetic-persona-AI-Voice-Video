@@ -125,6 +125,22 @@
           "SECRECY DOESN'T FIX\nA BROKEN MACHINE\nIT HIDES IT"
         ],
         [
+          "Fantasy hockey.",
+          "A PATTERN\nFantasy hockey trades\nfrom government addresses"
+        ],
+        [
+          "So he's building another bot.",
+          "BOT #2\nTrade log → address\nname → LinkedIn → dept"
+        ],
+        [
+          "Some addresses are what he calls egress points.",
+          "EGRESS POINT\nOne exit door,\nmany departments"
+        ],
+        [
+          "Then he checks the reverse lookup.",
+          "CONFIDENCE\nReverse DNS + trades + LinkedIn\n3 agree = high · 1 = low"
+        ],
+        [
           "The search.",
           "4. THE SEARCH\nSomebody keeps an inventory.\nWhere is it?"
         ],
@@ -146,7 +162,8 @@
     "ARIN": "Air-in",
     "gccaedits": "G C C A edits",
     "I P": "I. P.",
-    "Doreen": "Dor-een"
+    "Doreen": "Dor-een",
+    "LinkedIn": "Linked In"
   },
   "signoff_lines": 5,
   "gaps": {
@@ -170,7 +187,15 @@
       "That's his argument, sir.": 1.0,
       "He wants the Commissioner to check.": 1.0,
       "The Commissioner tells us.": 1.1,
-      "There's no exemption for that.": 1.3
+      "There's no exemption for that.": 1.3,
+      "I beg your pardon.": 0.8,
+      "Are you fucking kidding me?": 0.6,
+      "No, sir. We are not.": 0.9,
+      "It's very Canadian.": 1.0,
+      "and then it's thrown away.": 0.9,
+      "He grades every single one.": 1.0,
+      "That is the most Canadian security breach I have ever heard of.": 1.0,
+      "I'm asking for a friend.": 1.2
     }
   },
   "light": {
@@ -188,7 +213,7 @@
     ]
   },
   "credits": [
-    "An original sketch. The Clerk, Margaret, Doreen and Nathan are fictional. The complaint is real and still under investigation.",
+    "An original sketch. The Clerk, Margaret, Doreen and Nathan are fictional. The complaint is real and still under investigation; no individuals are named.",
     "Facts: ATIA 16(2)(c); ZMap (2013) scans all IPv4 in under an hour; English Wikipedia hid logged-out editors' IPs from Nov. 4, 2025;",
     "the Information Commissioner has had order-making power since 2019. Previously: 020 Privy Council"
   ],
