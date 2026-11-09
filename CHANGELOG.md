@@ -10,6 +10,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
 
+### Added
+- House of Commons set: `"set": {"commons": {...}}` (panelling, Speaker's chair, converging green benches, red lines, the Table with the mace and despatch boxes).
+- Sound cue `[hear]`: a muffled bench of "hear, hear" (a dozen espeak voices at scattered pitches and offsets over a low rumble).
+- Masks: `bulldog` (jowls, underbite, unlit cigar, polka-dot bow tie) and `shadow`.
+- Episode 011, *The Despatch Box*: a fictional Prime Minister gives the Commons a Churchillian statement on the state of the United States, heckled by a fictional Leader of the Opposition. Original text; no Churchill text is used (his wartime speeches are still under copyright). Same universe as 006–010.
+
 ## [0.9.1] - 2026-11-09
 
 ### Added

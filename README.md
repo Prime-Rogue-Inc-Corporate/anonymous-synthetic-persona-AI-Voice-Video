@@ -18,6 +18,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 008 | [Special Order: The Full Hour](episodes/008-special-order-full-hour) | The 60-minute cut of 007 (59:59). In the repo as four 15-minute 540p parts (`video/`); 720p original renders locally | 59:59 |
 | 009 | [The Barn](episodes/009-the-barn) | A fictional ex-cable anchor's barn podcast reacts to the midterms; Whitlow by satellite · barn, desk, monitor, dog, cackle | ~5:23 |
 | 010 | [General Assembly, 2025 (verbatim)](episodes/010-unga-2025) | A contiguous, unedited excerpt of the President's Sept. 23, 2025 UN address (07:25–14:04), the moth introduces, a gilded orator delivers · assembly set, phrase-timed props, verbatim mode | ~6:50 |
+| 011 | [The Despatch Box](episodes/011-the-despatch-box) | A fictional British PM gives a Churchillian Commons statement on the state of the United States · commons set, hear-hear cue | ~8:05 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
@@ -42,6 +43,9 @@ The persona's head changes per episode and moves with the voice.
 | `presiding` | white hair, half-moon glasses low on the nose | mouth opens with the voice; leans into the gavel |
 | `whip` | slicked-back hair, too many teeth, pocket square | grin opens with the voice |
 | `pundit` | swept hair with a cowlick, one eyebrow cocked, outdoorsman vest | smirk opens with the voice; cackles |
+| `orator` | gilded statue bust, blank sculpted eyes, laurel wreath, gold tie | hinged jaw drops with the voice |
+| `bulldog` | British bulldog, jowls, two-tooth underbite, unlit cigar, polka-dot bow tie | underjaw drops with the voice |
+| `shadow` | sharp silver bob, half-moon glasses low on the nose, pearls | mouth opens with the voice |
 
 Add one by writing a function in `persona/masks.py` decorated with `@mask("name")`. It gets the frame's voice loudness (`amp`, 0–1) and time (`t`), and draws on a 520×520 canvas with the suit's collar at y=300.
 
@@ -172,6 +176,14 @@ Put `[gavel]` in a line (`CHAIR: [gavel] The gentleman will suspend.`) for a kno
 ```
 
 Sound cues go inline: `HOST: [cackle] Greetings.` (before), `HOST: Expect us. [bark]` (after), `DALE: [bark]` (cue only, no caption).
+
+### House of Commons
+
+```json
+"set": {"commons": {"chair_x": 0.56, "table_y": 492, "boxes": [0.3, 0.78]}}
+```
+
+Oak panelling, the Speaker's chair at the far end, green benches converging on it, the red lines on the carpet, and the Table in front with the mace and a despatch box at each `boxes` position. `[hear]` is a bench of members growling "hear, hear".
 
 ### Verbatim episodes
 

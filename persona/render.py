@@ -34,7 +34,7 @@ DEFAULTS = {
     "cast": {},
     "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
             "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None,
-            "assembly": None},
+            "assembly": None, "commons": None},
     "layout": {},
     "credits": [],
     "end_title": "EXPECT US.",
@@ -60,10 +60,10 @@ def merge(a, b):
 
 # ---------------------------------------------------------------- script
 SPEAKER = re.compile(r"^([A-Z][A-Z0-9 .'-]{0,24}):\s+(.*)$")
-CUE = re.compile(r"\[(gavel|bark|cackle)\]\s*", re.I)
+CUE = re.compile(r"\[(gavel|bark|cackle|hear)\]\s*", re.I)
 CUE_LEAD = 0.55          # seconds of room left before a gavelled line (kept for compatibility)
-CUE_LEN = {"gavel": 0.55, "bark": 0.75, "cackle": 1.45}   # room each sound effect takes on the timeline
-CUE_OWNER = {"gavel": None, "bark": "_dog", "cackle": "speaker"}   # whose mouth moves with it
+CUE_LEN = {"gavel": 0.55, "bark": 0.75, "cackle": 1.45, "hear": 1.6}   # room each sound effect takes on the timeline
+CUE_OWNER = {"gavel": None, "bark": "_dog", "cackle": "speaker", "hear": None}   # whose mouth moves with it
 
 
 def strip_cues(text):
@@ -244,7 +244,30 @@ def cackle():
     return x * 0.8
 
 
-SFX = {"gavel": lambda: gavel_knock(), "bark": lambda: bark(), "cackle": lambda: cackle()}
+def hear_hear():
+    """A bench of members growling "hear, hear": a dozen espeak voices at scattered pitches and offsets,
+    muffled, over a low rumble of shuffling. Fixed length."""
+    rng = np.random.default_rng(21)
+    n = int((CUE_LEN["hear"] - 0.1) * SR); out = np.zeros(n, np.float32)
+    tmp = "/tmp/_persona_hear"
+    for k in range(12):
+        v = ["en-gb+m1", "en-gb+m3", "en-gb+m5", "en-gb+m7", "en-gb+f2", "en-us+m4"][k % 6]
+        subprocess.run(["espeak-ng", "-v", v, "-s", str(int(rng.integers(120, 170))), "-p", str(int(rng.integers(10, 60))),
+                        "-w", tmp + ".wav", "hear, hear" if k % 3 else "hear, hear, hear"], check=True)
+        with wave.open(tmp + ".wav") as w:
+            x = np.frombuffer(w.readframes(w.getnframes()), np.int16).astype(np.float32) / 32768
+        x = np.interp(np.arange(0, len(x), 22050 / SR), np.arange(len(x)), x).astype(np.float32)   # to 44.1k
+        a = int(rng.uniform(0, 0.45) * SR); m = min(len(x), n - a)
+        out[a:a + m] += x[:m] * rng.uniform(0.25, 0.5)
+    out = gaussian_filter(out, 1.6)                                    # muffle: they're across the chamber
+    rumble = gaussian_filter(rng.standard_normal(n).astype(np.float32), 30) * 6
+    out += rumble * np.hanning(n).astype(np.float32)
+    env = np.minimum(1, np.minimum(np.arange(n) / (0.08 * SR), (n - np.arange(n)) / (0.3 * SR))).astype(np.float32)
+    out *= env
+    return out / (np.abs(out).max() + 1e-6) * 0.5
+
+
+SFX = {"gavel": lambda: gavel_knock(), "bark": lambda: bark(), "cackle": lambda: cackle(), "hear": lambda: hear_hear()}
 
 
 def mix_audio(path, clips, starts, total, speakers=None, lines=None, block_s=60):
@@ -369,6 +392,8 @@ class Renderer:
             self.chamber_bg = chamber_backdrop(cfg["set"]["chamber"])
         if cfg["set"].get("barn"):
             self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
+        if cfg["set"].get("commons"):
+            self.chamber_bg = commons_backdrop(cfg["set"]["commons"])
         if cfg["set"].get("assembly"):
             asm = cfg["set"]["assembly"]
             self.chamber_bg = assembly_backdrop(asm)
@@ -421,6 +446,27 @@ class Renderer:
             if int(t * 2) % 2 == 0 or t - self.esc_stop > 6:
                 d.rectangle([sx - 54, sy - 62, sx + 54, sy - 36], fill=(150, 30, 30))
                 d.text((sx - 46, sy - 58), "STOPPED", font=self.card_font, fill=(250, 230, 230))
+
+    def draw_commons_table(self, im):
+        """The Table of the House in front of the frontbenches: green baize, the mace lying along it, and a
+        brass-bound despatch box in front of each speaker's place."""
+        cm = self.cfg["set"].get("commons")
+        if not cm:
+            return
+        d = ImageDraw.Draw(im)
+        y = cm.get("table_y", 470)
+        d.polygon([(120, y), (W - 120, y), (W - 40, H), (40, H)], fill=(60, 40, 28))
+        d.polygon([(150, y), (W - 150, y), (W - 110, y + 46), (110, y + 46)], fill=(40, 88, 58))     # baize top
+        d.line([(120, y), (W - 120, y)], fill=(110, 80, 50), width=4)
+        mx0, mx1, my = W * 0.42, W * 0.6, y + 26                                                      # the mace
+        d.line([(mx0, my), (mx1, my)], fill=(214, 176, 74), width=9)
+        d.ellipse([mx1 - 6, my - 18, mx1 + 34, my + 18], fill=(224, 186, 80))
+        d.polygon([(mx1 + 8, my - 18), (mx1 + 14, my - 30), (mx1 + 20, my - 18)], fill=(224, 186, 80))
+        for xf in cm.get("boxes", [0.3, 0.78]):                                                      # despatch boxes
+            bx = xf * W
+            d.rectangle([bx - 70, y - 40, bx + 70, y + 6], fill=(92, 60, 38), outline=(200, 166, 84), width=3)
+            for cxk in (bx - 70, bx + 70):
+                d.rectangle([cxk - 6, y - 40, cxk + 6, y + 6], fill=(190, 156, 76))
 
     def draw_teleprompters(self, im, t):
         """Two glass teleprompter panes on poles: dead, then (on cue) flicker back to life."""
@@ -741,6 +787,7 @@ class Renderer:
                     dd.rectangle([xf * W - hw + 14, dy + 16, xf * W + hw - 14, dy + 124], outline=(96, 70, 48), width=2)
             self.draw_table(im, active)
             self.draw_teleprompters(im, t)
+            self.draw_commons_table(im)
             self.draw_lectern(im)
             self.draw_desk(im)
             self.draw_dog(im, fi, t)
@@ -853,6 +900,38 @@ def assembly_backdrop(conf):
         y0 = 470 + k * 62
         d.chord([-W * 0.3, y0 - 40, W * 1.3, y0 + 260], 180, 360, fill=(58 - k * 6, 42 - k * 4, 38 - k * 4))
         d.arc([-W * 0.3, y0 - 40, W * 1.3, y0 + 260], 180, 360, fill=(110, 84, 58), width=3)
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def commons_backdrop(conf):
+    """Static House of Commons: carved oak panelling and a gallery front above, the canopied Speaker's chair at
+    the far end, green benches on both sides receding toward it, and green carpet with the two red lines."""
+    conf = conf if isinstance(conf, dict) else {}
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    for y in range(H):
+        k = y / H
+        d.line([(0, y), (W, y)], fill=(int(40 + 22 * k), int(30 + 16 * k), int(22 + 10 * k)))
+    for x in range(0, W, 56):                                                    # oak panels with pointed tops
+        d.rectangle([x + 6, 40, x + 50, 220], outline=(82, 60, 40), width=2)
+        d.polygon([(x + 6, 40), (x + 28, 14), (x + 50, 40)], outline=(82, 60, 40))
+    d.rectangle([0, 220, W, 244], fill=(66, 46, 30)); d.line([(0, 244), (W, 244)], fill=(110, 80, 50), width=3)   # gallery front
+    cx = int(conf.get("chair_x", 0.56) * W)                                     # the Speaker's chair, far end
+    d.rectangle([cx - 46, 150, cx + 46, 330], fill=(44, 30, 22))
+    d.polygon([(cx - 60, 150), (cx, 70), (cx + 60, 150)], fill=(56, 38, 26))
+    d.rectangle([cx - 30, 210, cx + 30, 300], fill=(40, 86, 58))
+    d.polygon([(cx - 20, 210), (cx + 20, 210), (cx, 186)], fill=(200, 166, 84))
+    # green carpet with the red lines, narrowing toward the chair
+    d.polygon([(cx - 70, 330), (cx + 70, 330), (W * 0.84, H), (W * 0.16, H)], fill=(44, 82, 56))
+    for side in (-1, 1):
+        d.line([(cx + side * 56, 330), (W / 2 + side * W * 0.3, H)], fill=(170, 40, 40), width=4)
+    # benches: tiers on both sides converging toward the chair
+    for side in (-1, 1):
+        for k in range(5):
+            near = W / 2 + side * (W * 0.36 + k * 90); far = cx + side * (90 + k * 18)
+            ytop_far, ytop_near = 300 - k * 22, 430 - k * 60
+            pts = [(far, ytop_far), (near, ytop_near), (near, ytop_near + 40), (far, ytop_far + 10)]
+            d.polygon(pts, fill=(48 + k * 4, 104 - k * 6, 70 - k * 4))
+            d.line(pts[:2], fill=(90, 140, 100), width=2)
     return np.asarray(im).astype(np.float32) / 255
 
 
