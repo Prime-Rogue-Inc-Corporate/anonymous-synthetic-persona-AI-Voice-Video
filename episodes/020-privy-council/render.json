@@ -1,0 +1,17 @@
+{
+  "output": "privy_council.mp4",
+  "renderer_version": "0.15.0",
+  "renderer_commit": "3d600fb-dirty",
+  "rendered_at": "2026-11-09T12:23:20+00:00",
+  "duration_s": 293.29,
+  "lines": 74,
+  "mask": null,
+  "cast": {
+    "DEPUTY": "deputyclerk",
+    "COMMS": "comms",
+    "CLERK": "mandarin",
+    "ATIP": "atipcoord",
+    "ANALYST": "pcoanalyst"
+  },
+  "resolution": "1280x720@30"
+}

@@ -27,6 +27,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 017 | [Cold Lake](episodes/017-cold-lake) | Tripp at a gun club near an air force base; two young Albertans explain who radicalized them · prairie range, jet cue | ~2:19 |
 | 018 | [The Call](episodes/018-the-call) | Vic calls Tripp; two shooting ranges, one realization · video call, duet lines | ~1:15 |
 | 019 | [The Hall](episodes/019-the-hall) | The defence brass fly to Cambridge Bay on a Thursday and get a briefing from three Rangers · hall set, slides | ~11:15 |
+| 020 | [Privy Council](episodes/020-privy-council) | Meanwhile at the Privy Council Office: seven cheap commitments made on community radio, four hundred access requests, and a rich oral culture · boardroom set | ~4:53 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
@@ -65,6 +66,7 @@ The persona's head changes per episode and moves with the voice.
 | `zoomertyson`, `zoomermac` | mullet, ear protection round the neck, camo / amber shooting glasses, braid, toque, puffer vest | mouths open with the voice |
 | `minister`, `general`, `admiral`, `sofcom` | grey part and flag pin / green tunic, grey moustache / navy tunic, gold boards / balaclava and a pixelated face | mouths open with the voice |
 | `rangerjosie` | eldest Ranger: white hair under a fur-ruffed red hood, smile lines | mouth opens with the voice |
+| `mandarin`, `deputyclerk`, `atipcoord`, `comms`, `pcoanalyst` | silver hair, glasses on a chain, bow tie / grey bob, scarf / frizz with a pencil, sticky notes / fade and phone / round glasses, cowlick, lanyard | mouths open with the voice |
 
 Add one by writing a function in `persona/masks.py` decorated with `@mask("name")`. It gets the frame's voice loudness (`amp`, 0–1) and time (`t`), and draws on a 520×520 canvas with the suit's collar at y=300.
 
@@ -224,7 +226,7 @@ A projector screen whose slide changes when each phrase is spoken. `"MAP"` draws
 
 `"set": {"arctic": {"breath": true}}` is an Arctic night with moving aurora, distant hamlet lights, a research station, a snowmobile and a sled; with `breath`, whoever is speaking puffs visible breath. `"set": {"diner": {}}` is a highway truck stop at night: panelling, a window onto idling semis, a neon EAT sign, a counter and a pie case. Pair it with `"desk"` for the booth table. On the arctic set, `"twilight": true` swaps night for a November noon (no stars), `"aurora": false` turns the lights off, and `"range": {"plates": [...]}` adds steel plates that swing on each `[ding]`; `[shot]` adds a muzzle flash at the shooter. `[laugh]` is a few people cracking up.
 
-`"set": {"prairie": {"on": true}}` is a rifle range on the prairie in November, seen from under the firing-line shelter; `[jet]` sends a fighter across the sky with a roar. `"set": {"hall": {"board": ["line", ...]}}` is a northern community hall: block walls, a bingo board, a whiteboard roster, a dark window and a roof stain. A cast entry with `"duet": ["A", "B"]` (and `"mask": null`) speaks its lines in both voices at once and moves both mouths: `BOTH: Oh.`
+`"set": {"prairie": {"on": true}}` is a rifle range on the prairie in November, seen from under the firing-line shelter; `[jet]` sends a fighter across the sky with a roar. `"set": {"boardroom": {"on": true}}` is an Ottawa boardroom at dusk with a snowy view of the Hill. `"set": {"hall": {"board": ["line", ...]}}` is a northern community hall: block walls, a bingo board, a whiteboard roster, a dark window and a roof stain. A cast entry with `"duet": ["A", "B"]` (and `"mask": null`) speaks its lines in both voices at once and moves both mouths: `BOTH: Oh.`
 
 ### Verbatim episodes
 

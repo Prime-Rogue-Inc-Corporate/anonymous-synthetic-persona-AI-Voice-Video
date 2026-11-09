@@ -34,7 +34,7 @@ DEFAULTS = {
     "cast": {},
     "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
             "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None,
-            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None},
+            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None},
     "layout": {},
     "credits": [],
     "end_title": "EXPECT US.",
@@ -503,6 +503,8 @@ class Renderer:
             self.chamber_bg = chamber_backdrop(cfg["set"]["chamber"])
         if cfg["set"].get("barn"):
             self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
+        if cfg["set"].get("boardroom"):
+            self.chamber_bg = boardroom_backdrop(cfg["set"]["boardroom"])
         if cfg["set"].get("hall"):
             self.chamber_bg = hall_backdrop(cfg["set"]["hall"])
         if cfg["set"].get("prairie"):
@@ -1171,6 +1173,41 @@ def commons_backdrop(conf):
             pts = [(far, ytop_far), (near, ytop_near), (near, ytop_near + 40), (far, ytop_far + 10)]
             d.polygon(pts, fill=(48 + k * 4, 104 - k * 6, 70 - k * 4))
             d.line(pts[:2], fill=(90, 140, 100), width=2)
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def boardroom_backdrop(conf):
+    """Static Ottawa boardroom at dusk: dark wood panelling, a tall window onto a snowy Parliament Hill with the
+    clock tower lit, a flag in the corner, a portrait frame turned to the wall."""
+    conf = conf if isinstance(conf, dict) else {}
+    rng = np.random.default_rng(23)
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    for x in range(0, W, 64):
+        d.rectangle([x, 0, x + 64, H], fill=(70 + (x // 64) % 2 * 5, 46, 32))
+        d.line([(x, 0), (x, H)], fill=(46, 30, 20), width=2)
+    wx0, wx1, wy0, wy1 = int(W * 0.6), W - 50, 50, 380                         # window
+    for y in range(wy0, wy1):
+        k = (y - wy0) / (wy1 - wy0)
+        d.line([(wx0, y), (wx1, y)], fill=(int(40 + 60 * k), int(50 + 40 * k), int(90 + 20 * k)))
+    tx = (wx0 + wx1) // 2                                                       # clock tower silhouette
+    d.rectangle([tx - 26, 130, tx + 26, 330], fill=(30, 30, 40))
+    d.polygon([(tx - 30, 130), (tx, 70), (tx + 30, 130)], fill=(40, 70, 70))
+    d.ellipse([tx - 14, 150, tx + 14, 178], fill=(250, 230, 160))
+    d.rectangle([wx0, 300, wx1, wy1], fill=(30, 30, 40))                        # the long building
+    for x in range(wx0 + 10, wx1 - 10, 24):
+        d.rectangle([x, 316, x + 10, 330], fill=(250, 220, 150))
+    for _ in range(120):                                                        # snow
+        x, y = int(rng.integers(wx0, wx1)), int(rng.integers(wy0, wy1))
+        d.ellipse([x - 1, y - 1, x + 1, y + 1], fill=(235, 235, 240))
+    d.rectangle([wx0, wy0, wx1, wy1], outline=(46, 30, 20), width=10)
+    d.line([(tx, wy0), (tx, wy1)], fill=(46, 30, 20), width=6)
+    d.rectangle([80, 90, 260, 300], fill=(60, 44, 30), outline=(170, 140, 70), width=8)          # portrait, turned to the wall
+    d.line([(90, 100), (250, 290)], fill=(80, 60, 40), width=2); d.line([(250, 100), (90, 290)], fill=(80, 60, 40), width=2)
+    fx = int(W * 0.53)                                                          # flag on a pole
+    d.line([(fx, 80), (fx, 420)], fill=(180, 160, 90), width=4)
+    d.rectangle([fx + 2, 90, fx + 82, 130], fill=(240, 240, 236))
+    d.rectangle([fx + 2, 90, fx + 22, 130], fill=(200, 30, 40)); d.rectangle([fx + 62, 90, fx + 82, 130], fill=(200, 30, 40))
+    d.rectangle([0, 420, W, H], fill=(40, 30, 26))
     return np.asarray(im).astype(np.float32) / 255
 
 

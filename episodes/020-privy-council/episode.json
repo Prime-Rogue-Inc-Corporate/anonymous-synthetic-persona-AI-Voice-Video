@@ -1,0 +1,158 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "privy council",
+  "cast": {
+    "DEPUTY": {
+      "name": "Margaret, Deputy Secretary to the Cabinet (fictional)",
+      "mask": "deputyclerk",
+      "x": 0.1,
+      "scale": 0.52,
+      "top": 210,
+      "color": [
+        200,
+        190,
+        240
+      ],
+      "voice": {
+        "voice": "en-gb+f2",
+        "speed": 150,
+        "pitch": 40,
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.04,aecho=0.8:0.5:40:0.2,highpass=f=120,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "COMMS": {
+      "name": "Desmond, communications (fictional)",
+      "mask": "comms",
+      "x": 0.29,
+      "scale": 0.52,
+      "top": 210,
+      "color": [
+        150,
+        220,
+        240
+      ],
+      "voice": {
+        "voice": "en-us+m5",
+        "speed": 176,
+        "pitch": 40,
+        "filter": "asetrate=22050*0.94,aresample=44100,atempo=1.05,aecho=0.8:0.5:40:0.2,highpass=f=100,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "CLERK": {
+      "name": "The Clerk of the Privy Council (fictional)",
+      "mask": "mandarin",
+      "x": 0.48,
+      "scale": 0.52,
+      "top": 210,
+      "color": [
+        230,
+        210,
+        160
+      ],
+      "voice": {
+        "voice": "en-gb+m3",
+        "speed": 140,
+        "pitch": 24,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.5:40:0.2,highpass=f=80,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "ATIP": {
+      "name": "Doreen, access to information (fictional)",
+      "mask": "atipcoord",
+      "x": 0.67,
+      "scale": 0.52,
+      "top": 210,
+      "color": [
+        240,
+        180,
+        200
+      ],
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 170,
+        "pitch": 56,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.5:40:0.2,highpass=f=130,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "ANALYST": {
+      "name": "Nathan, analyst (fictional)",
+      "mask": "pcoanalyst",
+      "x": 0.86,
+      "scale": 0.52,
+      "top": 210,
+      "color": [
+        180,
+        230,
+        170
+      ],
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 176,
+        "pitch": 62,
+        "filter": "asetrate=22050*0.98,aresample=44100,atempo=1.03,aecho=0.8:0.5:40:0.2,highpass=f=110,lowpass=f=6000,volume=1.6"
+      }
+    }
+  },
+  "set": {
+    "boardroom": {
+      "on": true
+    },
+    "table": true,
+    "chyron": {
+      "title": "PRIVY COUNCIL OFFICE  ·  OTTAWA",
+      "sub": "MEANWHILE  ·  NOT FOR ATTRIBUTION  ·  NOT FOR NOTES"
+    }
+  },
+  "layout": {
+    "top": 210
+  },
+  "pronounce": {
+    "Hartigan": "Hartigan",
+    "Doreen": "Dor-een"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.4,
+    "after_greeting": 0.5,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "It's different.": 1.0,
+      "Outside of process.": 0.9,
+      "Seven.": 0.9,
+      "That's what worries me.": 0.8,
+      "Then we'll consult on the consultation.": 1.1,
+      "Of course.": 0.8,
+      "It is not that flexible, Margaret.": 1.0,
+      "Good.": 0.6,
+      "We have a rich oral culture.": 1.0,
+      "There is a very strong cultural duty not to.": 1.2,
+      "The roof is implied.": 1.0,
+      "Then we'll need a security clearance for the tea.": 1.0,
+      "And he is extremely busy.": 1.0,
+      "The most dangerous thing we could do right now is make them wait.": 1.4,
+      "Let them read it.": 0.9,
+      "That's the whole problem.": 1.1
+    }
+  },
+  "light": {
+    "line": "What if we just did it?",
+    "color": [
+      255,
+      230,
+      180
+    ],
+    "ramp": 2.0,
+    "tint": [
+      0.3,
+      0.25,
+      0.15
+    ]
+  },
+  "credits": [
+    "An original sketch. Everyone in this room is fictional; no real officials are depicted.",
+    "Facts: cabinet confidences are excluded from the Access to Information Act (s. 69);",
+    "Canada has no legislated duty to document. Previously: 011, 017, 018, 019"
+  ],
+  "output": "privy_council.mp4"
+}
