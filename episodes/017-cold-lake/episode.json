@@ -1,0 +1,115 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "cold lake",
+  "cast": {
+    "TRIPP": {
+      "mask": "pundit",
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 166,
+        "pitch": 64,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.35:20:0.12,highpass=f=110,lowpass=f=6500,volume=1.6"
+      },
+      "color": [
+        150,
+        200,
+        130
+      ],
+      "name": "Tripp Halloran, on the road (fictional)",
+      "x": 0.22,
+      "scale": 0.68,
+      "top": 170
+    },
+    "TYSON": {
+      "name": "Tyson, 19 (fictional)",
+      "mask": "zoomertyson",
+      "color": [
+        200,
+        220,
+        150
+      ],
+      "voice": {
+        "voice": "en-us+m3",
+        "speed": 176,
+        "pitch": 56,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.6:0.3:20:0.1,highpass=f=100,lowpass=f=6500,volume=1.6"
+      },
+      "x": 0.52,
+      "scale": 0.64,
+      "top": 186
+    },
+    "MACKENZIE": {
+      "name": "Mackenzie, 20 (fictional)",
+      "mask": "zoomermac",
+      "color": [
+        240,
+        190,
+        120
+      ],
+      "voice": {
+        "voice": "en-us+f2",
+        "speed": 172,
+        "pitch": 58,
+        "filter": "asetrate=22050*0.98,aresample=44100,atempo=1.03,aecho=0.6:0.3:20:0.1,highpass=f=130,lowpass=f=6500,volume=1.6"
+      },
+      "x": 0.78,
+      "scale": 0.64,
+      "top": 184
+    },
+    "DALE": {
+      "name": "Dale, producer (off camera)",
+      "mask": null,
+      "color": [
+        190,
+        190,
+        190
+      ],
+      "voice": {
+        "voice": "en-us+m6",
+        "speed": 150,
+        "pitch": 18,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.3:20:0.1,highpass=f=90,lowpass=f=5000,volume=1.4"
+      }
+    }
+  },
+  "set": {
+    "prairie": {
+      "on": true
+    },
+    "chyron": {
+      "title": "THE TRIPP HALLORAN SHOW",
+      "sub": "ON THE ROAD  ·  A GUN CLUB NEAR COLD LAKE, ALBERTA"
+    }
+  },
+  "pronounce": {
+    "Kek.": "Keck.",
+    "Mackenzie": "Mackenzie"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.4,
+    "after_greeting": 0.5,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "You get used to it.": 0.9,
+      "Grandpa's deer rifle.": 0.6,
+      "We also shoot.": 0.9,
+      "It's not gonna be the Russians, eh.": 0.7,
+      "Kek.": 0.8,
+      "It's a laugh, Tripp.": 1.0,
+      "This is really real. It is real.": 0.7,
+      "Is real.": 0.9,
+      "Israel?": 1.0
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "credits": [
+    "An original sketch. Tripp, Dale, Tyson and Mackenzie are fictional.",
+    "Context: 2022 handgun freeze; banned-firearm disposal deadline Oct. 30, 2026; record licence applications, mostly young men (CBC, RCMP).",
+    "Previously: 015 Truck Stop"
+  ],
+  "output": "cold_lake.mp4"
+}
