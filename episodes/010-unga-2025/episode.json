@@ -4,7 +4,7 @@
   "cast": {
     "NARRATOR": {
       "name": "Narrator",
-      "mask": null,
+      "mask": "moth",
       "color": [
         180,
         180,
@@ -15,11 +15,16 @@
         "speed": 146,
         "pitch": 22,
         "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.6:40:0.25,highpass=f=90,lowpass=f=6000,volume=1.6"
-      }
+      },
+      "x": 0.5,
+      "scale": 0.82,
+      "top": 70,
+      "enter": "left",
+      "linger": 5
     },
     "PRESIDENT": {
       "name": "President Donald J. Trump · as delivered · read by a synthetic voice",
-      "mask": "moth",
+      "mask": "orator",
       "x": 0.5,
       "scale": 0.82,
       "top": 70,
@@ -33,13 +38,20 @@
         "speed": 164,
         "pitch": 30,
         "filter": "asetrate=22050*0.9,aresample=44100,atempo=1.06,aecho=0.8:0.55:70:0.3,highpass=f=90,lowpass=f=6000,volume=1.6"
-      }
+      },
+      "enter": "right",
+      "linger": 30
     }
   },
   "set": {
     "assembly": {
       "x": 0.5,
-      "width": 0.42
+      "width": 0.42,
+      "escalator": true,
+      "escalator_stops": "stopped right in the middle",
+      "teleprompters": true,
+      "teleprompter_on": "It just went on",
+      "terrazzo_at": "You walk on terrazzo"
     },
     "lectern": {
       "x": 0.5,
@@ -80,7 +92,7 @@
   "credits": [
     "U.N. General Assembly, New York, Sept. 23, 2025. A U.S. government work: public domain.",
     "Official text: Daily Comp. Pres. Docs., DCPD-202500944. Wording here follows the delivered audio.",
-    "Excerpt 07:25–14:04, contiguous and unedited. The persona is the channel's, not a likeness."
+    "Excerpt 07:25–14:04, contiguous and unedited. The orator is an invented figure, not a likeness."
   ],
   "output": "unga_2025_verbatim.mp4"
 }

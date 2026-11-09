@@ -461,3 +461,33 @@ def pundit(d, amp, t):
         d.chord([cx - 20, my - 6, cx + 24, my + 8 + 12 * amp], 0, 180, fill=(70, 30, 30, 255))
     else:
         d.line([(cx - 18, my + 2), (cx + 20, my - 3)], fill=(130, 80, 70, 255), width=4)
+
+
+@mask("orator", tie=True)
+def orator(d, amp, t):
+    """A gilded statue bust come to life: polished gold face, blank sculpted eyes, a laurel wreath, a jaw that
+    works on a hinge. Grandeur, not a likeness."""
+    cx = CX
+    gold, shade, hi = (204, 160, 62, 255), (150, 110, 36, 255), (246, 214, 128, 255)
+    jaw = 9 * amp
+    d.ellipse([cx - 70, 100, cx + 70, 290], fill=shade)                       # head (shadow side)
+    d.ellipse([cx - 64, 100, cx + 66, 284], fill=gold)
+    d.ellipse([cx - 40, 112, cx + 6, 170], fill=hi)                           # polish highlight
+    d.rectangle([cx - 46, 250, cx + 46, 288 + jaw], fill=gold)                # hinged jaw block
+    d.line([(cx - 46, 252), (cx + 46, 252)], fill=shade, width=2)
+    d.line([(cx - 64, 176), (cx + 64, 176)], fill=shade, width=5)             # heavy sculpted brow
+    for s in (-1, 1):                                                         # blank statue eyes
+        d.ellipse([cx + s * 30 - 18, 184, cx + s * 30 + 18, 206], fill=(230, 196, 104, 255), outline=shade, width=3)
+    d.polygon([(cx - 6, 196), (cx + 6, 196), (cx + 14, 236), (cx - 14, 236)], fill=shade)    # nose
+    my = 252 + jaw * 0.3
+    if amp > 0.08:
+        d.rectangle([cx - 24, my - 4, cx + 24, my + 4 + 14 * amp], fill=(60, 36, 12, 255))
+    else:
+        d.line([(cx - 24, my), (cx + 24, my)], fill=shade, width=4)
+    sway = 2 * math.sin(t * 1.7)
+    for s in (-1, 1):                                                         # laurel wreath
+        for k in range(6):
+            a = math.radians(200 - k * 18) if s < 0 else math.radians(-20 + k * 18)
+            lx, ly = cx + s * abs(70 * math.cos(a)), 150 - 50 * abs(math.sin(a)) + k * 4 + sway
+            d.ellipse([lx - 16, ly - 7, lx + 16, ly + 7], fill=(90, 140, 70, 255), outline=(60, 100, 46, 255))
+    d.polygon([(cx - 12, 312), (cx + 12, 312), (cx + 18, 420), (cx, 445), (cx - 18, 420)], fill=(190, 150, 60, 255))  # gold tie

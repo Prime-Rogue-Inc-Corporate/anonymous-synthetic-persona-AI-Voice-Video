@@ -10,6 +10,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
 
+## [0.9.1] - 2026-11-09
+
+### Added
+- Mask: `orator`, a gilded statue bust with a laurel wreath and a hinged jaw (an invented figure, not a likeness).
+- Assembly-set props, each timed to a phrase in the script: `"escalator": true` with `"escalator_stops": "<phrase>"` (steps climb until the phrase, then freeze under a blinking STOPPED sign); `"teleprompters": true` with `"teleprompter_on": "<phrase>"` (two dead glass panes reading NO SIGNAL flicker back to life); `"terrazzo_at": "<phrase>"` (the green-marble wall crossfades to terrazzo).
+- `Renderer.phrase_time()`: when a phrase is spoken (its line's start plus its character share of the line). Unknown phrases fail loudly.
+- `--preview --at`: preview chosen moments, as seconds or script phrases with an optional `+offset` (e.g. `--at "It just went on+2"`).
+
+### Changed
+- Episode 010 re-rendered: the moth walks on to introduce and close; the orator takes the podium for the speech. The words are unchanged (same byte-for-byte check).
+
 ## [0.9.0] - 2026-11-08
 
 ### Added
@@ -112,7 +123,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
   Repo copy is re-encoded to 540p to stay under the push size limit; render locally for 720p.
 - Versioning: `VERSION`, this changelog, semver git tags.
 
-[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.9.1...HEAD
+[0.9.1]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.7.1...v0.8.0
 [0.7.1]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.7.0...v0.7.1
