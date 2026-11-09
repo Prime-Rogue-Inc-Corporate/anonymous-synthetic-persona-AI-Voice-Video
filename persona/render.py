@@ -60,10 +60,10 @@ def merge(a, b):
 
 # ---------------------------------------------------------------- script
 SPEAKER = re.compile(r"^([A-Z][A-Z0-9 .'-]{0,24}):\s+(.*)$")
-CUE = re.compile(r"\[(gavel|bark|cackle|hear|cheer|slam)\]\s*", re.I)
+CUE = re.compile(r"\[(gavel|bark|cackle|hear|cheer|slam|shot|ding|laugh)\]\s*", re.I)
 CUE_LEAD = 0.55          # seconds of room left before a gavelled line (kept for compatibility)
-CUE_LEN = {"gavel": 0.55, "bark": 0.75, "cackle": 1.45, "hear": 1.6, "cheer": 2.4, "slam": 0.7}   # room each sound effect takes on the timeline
-CUE_OWNER = {"gavel": None, "bark": "_dog", "cackle": "speaker", "hear": None, "cheer": None, "slam": None}   # whose mouth moves with it
+CUE_LEN = {"gavel": 0.55, "bark": 0.75, "cackle": 1.45, "hear": 1.6, "cheer": 2.4, "slam": 0.7, "shot": 0.9, "ding": 0.6, "laugh": 1.7}   # room each sound effect takes on the timeline
+CUE_OWNER = {"gavel": None, "bark": "_dog", "cackle": "speaker", "hear": None, "cheer": None, "slam": None, "shot": None, "ding": None, "laugh": None}   # whose mouth moves with it
 
 
 def strip_cues(text):
@@ -267,6 +267,44 @@ def hear_hear():
     return out / (np.abs(out).max() + 1e-6) * 0.5
 
 
+def gunshot():
+    """A rifle shot outdoors: a sharp crack, a low thump, and a long flat echo off open ground."""
+    rng = np.random.default_rng(51)
+    n = int((CUE_LEN["shot"] - 0.05) * SR); tt = np.arange(n) / SR
+    crack = rng.standard_normal(n) * np.exp(-tt * 90)
+    thump = np.sin(2 * np.pi * 55 * tt) * np.exp(-tt * 20) * 0.9
+    echo = gaussian_filter(rng.standard_normal(n), 3) * np.exp(-np.clip(tt - 0.18, 0, None) * 6) * (tt > 0.18) * 0.35
+    out = (crack + thump + echo).astype(np.float32)
+    return out / np.abs(out).max() * 0.6
+
+
+def steel_ding():
+    """A steel target ringing at distance: a few inharmonic partials, decaying."""
+    n = int((CUE_LEN["ding"] - 0.05) * SR); tt = np.arange(n) / SR
+    out = sum(a * np.sin(2 * np.pi * f * tt) for f, a in ((880, 1.0), (1370, 0.6), (2210, 0.35), (3020, 0.2)))
+    out = (out * np.exp(-tt * 7) * np.minimum(1, tt / 0.003)).astype(np.float32)
+    return out / np.abs(out).max() * 0.32
+
+
+def group_laugh():
+    """A few people cracking up: several espeak voices on "ha ha ha", scattered, muffled by parkas."""
+    rng = np.random.default_rng(61)
+    n = int((CUE_LEN["laugh"] - 0.1) * SR); out = np.zeros(n, np.float32)
+    tmp = "/tmp/_persona_laugh"
+    for k in range(5):
+        v = ["en-us+m2", "en-us+f4", "en-gb+m4", "en-us+m7", "en-us+f2"][k]
+        subprocess.run(["espeak-ng", "-v", v, "-s", str(int(rng.integers(190, 260))), "-p", str(int(rng.integers(40, 90))),
+                        "-w", tmp + ".wav", "ha ha ha ha. ha ha"], check=True)
+        with wave.open(tmp + ".wav") as w:
+            x = np.frombuffer(w.readframes(w.getnframes()), np.int16).astype(np.float32) / 32768
+        x = np.interp(np.arange(0, len(x), 22050 / SR), np.arange(len(x)), x).astype(np.float32)
+        a = int(rng.uniform(0, 0.35) * SR); m = min(len(x), n - a)
+        out[a:a + m] += x[:m] * rng.uniform(0.35, 0.6)
+    out = gaussian_filter(out, 1.2)
+    env = np.minimum(1, (n - np.arange(n)) / (0.3 * SR)).astype(np.float32)
+    return out * env / (np.abs(out).max() + 1e-6) * 0.5
+
+
 def door_slam():
     """A door flung open into a wall: a deep thump, a wooden crack, a short rattle."""
     rng = np.random.default_rng(41)
@@ -299,7 +337,8 @@ def cheer():
 
 
 SFX = {"gavel": lambda: gavel_knock(), "bark": lambda: bark(), "cackle": lambda: cackle(), "hear": lambda: hear_hear(),
-       "cheer": lambda: cheer(), "slam": lambda: door_slam()}
+       "cheer": lambda: cheer(), "slam": lambda: door_slam(),
+       "shot": lambda: gunshot(), "ding": lambda: steel_ding(), "laugh": lambda: group_laugh()}
 
 
 def mix_audio(path, clips, starts, total, speakers=None, lines=None, block_s=60):
@@ -421,6 +460,9 @@ class Renderer:
             self.corridor = Corridor(cfg["set"]["corridor"])
         self.gavels = [t for t, c, _ in cue_events(lines, starts, durs) if c == "gavel"]
         self.cheers = [t for t, c, _ in cue_events(lines, starts, durs) if c == "cheer"]
+        evs = cue_events(lines, starts, durs)
+        self.shots = [(t, speakers[i]) for t, c, i in evs if c == "shot"]
+        self.dings = [t for t, c, _ in evs if c == "ding"]
         sl = cfg["set"].get("slides")
         self.slides = [(self.phrase_time(p), txt) for p, txt in sl["cues"]] if sl else []
         if cfg["set"].get("chamber"):
@@ -482,6 +524,32 @@ class Renderer:
         a = np.clip(a, 0, 1.2) * np.clip(1.6 - v * 2.4, 0, 1)
         big = np.array(Image.fromarray((np.clip(a, 0, 1) * 255).astype(np.uint8)).resize((W, H), Image.BILINEAR)).astype(np.float32) / 255
         return big[..., None] * np.array([0.12, 0.62, 0.36], np.float32)
+
+    def draw_range(self, im, t):
+        """Steel plates on stakes far down the range; each [ding] swings the next plate. Each [shot] puts a brief
+        muzzle flash at the shooter's shoulder."""
+        rg = (self.cfg["set"].get("arctic") or {}).get("range")
+        if not rg:
+            return
+        d = ImageDraw.Draw(im)
+        xs = rg.get("plates", [0.52, 0.6, 0.68, 0.76])
+        hits = [i for i, dt in enumerate(self.dings) if dt <= t]
+        for k, xf in enumerate(xs):
+            x, y = xf * W, rg.get("y", 392)
+            swing = 0.0
+            for i in hits:
+                if i % len(xs) == k:
+                    age = t - self.dings[i]
+                    swing = 10 * math.exp(-age * 2.5) * math.sin(age * 18)
+            d.line([(x, y), (x, y + 22)], fill=(40, 40, 44), width=3)
+            d.line([(x - 8, y), (x + 8, y)], fill=(40, 40, 44), width=2)
+            d.ellipse([x - 7 + swing, y + 2, x + 7 + swing, y + 16], fill=(230, 120, 40))
+        for st, sp in self.shots:
+            if 0 <= t - st < 0.12 and sp:
+                c = self.cfg["cast"].get(sp, {}); xf = c.get("x", 0.5)
+                s = c.get("scale", self.fig_scale); top = c.get("top", self.fig_top)
+                fx, fy = xf * W + 150 * s, top + 360 * s
+                d.polygon([(fx, fy - 14), (fx + 46, fy), (fx, fy + 14), (fx + 12, fy)], fill=(255, 230, 150))
 
     def draw_breath(self, im, fi, t):
         """Puffs of breath from whoever is speaking (cold sets)."""
@@ -828,7 +896,7 @@ class Renderer:
                 m = min(1.0, (t - self.swap_t) / 0.8)
                 hall = hall * (1 - m) + self.swap_bg * m
             img = hall * (0.86 + 0.14 * sky[..., None])
-            if hasattr(self, "aur_grid"):
+            if hasattr(self, "aur_grid") and (cfg["set"].get("arctic") or {}).get("aurora", True):
                 img = img + self.aurora(t)
             if glow > 0:
                 img = img + glow * np.stack([tr * self.beam, tg * self.beam, tb * self.beam], -1)
@@ -898,6 +966,7 @@ class Renderer:
             self.draw_table(im, active)
             self.draw_teleprompters(im, t)
             self.draw_commons_table(im)
+            self.draw_range(im, t)
             self.draw_breath(im, fi, t)
             if hasattr(self, "crowd"):
                 hype = max([max(0.0, 1 - abs(t - c - 1.0) / 1.6) for c in self.cheers] + [0.0])
@@ -1103,8 +1172,11 @@ def arctic_backdrop(conf):
     im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
     for y in range(H):
         k = y / H
-        d.line([(0, y), (W, y)], fill=(int(6 + 14 * k), int(10 + 20 * k), int(28 + 40 * k)))
-    for _ in range(260):
+        if conf.get("twilight"):                                                     # noon in November: a pink-blue glow, no sun
+            d.line([(0, y), (W, y)], fill=(int(40 + 150 * k ** 2), int(60 + 70 * k ** 2), int(110 + 30 * k)))
+        else:
+            d.line([(0, y), (W, y)], fill=(int(6 + 14 * k), int(10 + 20 * k), int(28 + 40 * k)))
+    for _ in range(0 if conf.get("twilight") else 260):
         x, y = int(rng.integers(0, W)), int(rng.integers(0, 380)); b = int(rng.integers(120, 255))
         d.point((x, y), fill=(b, b, b))
     d.polygon([(0, 420), (300, 400), (700, 412), (1000, 396), (W, 410), (W, H), (0, H)], fill=(170, 184, 206))   # snow

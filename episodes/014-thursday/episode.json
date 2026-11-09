@@ -117,10 +117,14 @@
       "He means Thursday.": 0.8,
       "He saw it up close.": 1.1,
       "That's worse.": 0.9,
-      "until we went home embarrassed.": 0.9,
       "That's incredible.": 1.0,
       "Nobody up here has been.": 1.0,
-      "come and find us.": 0.9
+      "come and find us.": 0.9,
+      "Didn't say that.": 0.9,
+      "And you'd shoot us.": 0.8,
+      "The elders.": 0.9,
+      "Took three winters.": 1.0,
+      "And then maybe shoot us.": 0.8
     }
   },
   "light": {

@@ -10,6 +10,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
 
+## [0.13.0] - 2026-11-09
+
+### Changed
+- Episode 014, *Thursday*: the Rangers now make it clear shooting is on the table. Everybody gets rescued first; then they stay put while the elders decide whether to shoot ("They take their time").
+
+### Added
+- Sound cues `[shot]` (rifle crack with a flat outdoor echo), `[ding]` (steel plate at distance) and `[laugh]` (a few people cracking up).
+- Arctic set options: `"twilight"`, `"aurora": false`, and `"range"` (steel plates that swing on each `[ding]`; a muzzle flash on each `[shot]`).
+- Episode 016, *Range Day*: Vic shoots with the Rangers and can't feel his finger.
+
 ## [0.12.0] - 2026-11-09
 
 ### Added
@@ -150,7 +160,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
   Repo copy is re-encoded to 540p to stay under the push size limit; render locally for 720p.
 - Versioning: `VERSION`, this changelog, semver git tags.
 
-[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.12.0...HEAD
+[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.13.0...HEAD
+[0.13.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.12.0...v0.13.0
 [0.12.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.9.1...v0.10.0

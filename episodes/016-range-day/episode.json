@@ -1,0 +1,132 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "range day",
+  "cast": {
+    "VIC": {
+      "name": "Vic, case officer, in costume (fictional)",
+      "mask": "vicparka",
+      "x": 0.2,
+      "scale": 0.66,
+      "top": 200,
+      "color": [
+        240,
+        200,
+        120
+      ],
+      "voice": {
+        "voice": "en-us+m1",
+        "speed": 172,
+        "pitch": 24,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.1,aecho=0.6:0.3:20:0.1,highpass=f=80,lowpass=f=6500,volume=1.6"
+      }
+    },
+    "MARY": {
+      "name": "Mary, sergeant, Ranger patrol (fictional)",
+      "mask": "rangersgt",
+      "x": 0.5,
+      "scale": 0.62,
+      "top": 214,
+      "color": [
+        240,
+        140,
+        140
+      ],
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 150,
+        "pitch": 44,
+        "filter": "asetrate=22050*0.96,aresample=44100,atempo=1.03,aecho=0.6:0.3:20:0.1,highpass=f=120,lowpass=f=6500,volume=1.6"
+      }
+    },
+    "JONAH": {
+      "name": "Jonah, Ranger (fictional)",
+      "mask": "rangerjonah",
+      "x": 0.68,
+      "scale": 0.6,
+      "top": 222,
+      "color": [
+        200,
+        170,
+        240
+      ],
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 150,
+        "pitch": 48,
+        "filter": "asetrate=22050*0.96,aresample=44100,atempo=1.03,aecho=0.6:0.3:20:0.1,highpass=f=100,lowpass=f=6500,volume=1.6"
+      }
+    },
+    "DOUG": {
+      "name": "Doug, Ranger, from Newfoundland (fictional)",
+      "mask": "rangerdoug",
+      "x": 0.86,
+      "scale": 0.62,
+      "top": 216,
+      "color": [
+        240,
+        190,
+        120
+      ],
+      "voice": {
+        "voice": "en-gb+m4",
+        "speed": 176,
+        "pitch": 40,
+        "filter": "asetrate=22050*0.94,aresample=44100,atempo=1.04,aecho=0.6:0.3:20:0.1,highpass=f=90,lowpass=f=6500,volume=1.6"
+      }
+    }
+  },
+  "set": {
+    "arctic": {
+      "breath": true,
+      "twilight": true,
+      "aurora": false,
+      "station_x": 0.9,
+      "sled_x": 0.12,
+      "range": {
+        "plates": [
+          0.56,
+          0.62,
+          0.68,
+          0.74
+        ],
+        "y": 384
+      }
+    },
+    "chyron": {
+      "title": "IQALUKTUUTTIAQ (CAMBRIDGE BAY), NUNAVUT",
+      "sub": "THE RANGE  ·  −34°C  ·  NOON, NOVEMBER"
+    }
+  },
+  "pronounce": {
+    "MARSOC": "Mar-sock",
+    "Panera": "Pa-nair-a",
+    "Kowalski": "Ko-walski"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.4,
+    "after_greeting": 0.5,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "From myself. Give me the rifle.": 0.6,
+      "This isn't the desert.": 0.6,
+      "Is that normal?": 0.6,
+      "It's just not with you right now.": 1.0,
+      "It's warm.": 1.0,
+      "So's the cold.": 0.6,
+      "Not bad for the south.": 1.0,
+      "We'll pass.": 1.0,
+      "You can stay for supper.": 1.1
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "credits": [
+    "An original sketch. Vic, Mary, Jonah and Doug are fictional.",
+    "MARSOC (U.S. Marine Forces Special Operations Command) was established in 2006.",
+    "Previously: 013 Canada Options, 014 Thursday"
+  ],
+  "output": "range_day.mp4"
+}
