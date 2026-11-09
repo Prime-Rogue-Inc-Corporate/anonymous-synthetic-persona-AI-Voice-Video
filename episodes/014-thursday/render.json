@@ -1,0 +1,17 @@
+{
+  "output": "thursday.mp4",
+  "renderer_version": "0.11.0",
+  "renderer_commit": "b0a97af-dirty",
+  "rendered_at": "2026-11-09T09:28:33+00:00",
+  "duration_s": 213.31,
+  "lines": 51,
+  "mask": null,
+  "cast": {
+    "VIC": "vicparka",
+    "MARY": "rangersgt",
+    "JONAH": "rangerjonah",
+    "DOUG": "rangerdoug",
+    "KYLE": null
+  },
+  "resolution": "1280x720@30"
+}

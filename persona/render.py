@@ -34,7 +34,7 @@ DEFAULTS = {
     "cast": {},
     "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
             "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None,
-            "assembly": None, "commons": None, "rally": None},
+            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None},
     "layout": {},
     "credits": [],
     "end_title": "EXPECT US.",
@@ -427,6 +427,12 @@ class Renderer:
             self.chamber_bg = chamber_backdrop(cfg["set"]["chamber"])
         if cfg["set"].get("barn"):
             self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
+        if cfg["set"].get("diner"):
+            self.chamber_bg = diner_backdrop(cfg["set"]["diner"])
+        if cfg["set"].get("arctic"):
+            self.chamber_bg = arctic_backdrop(cfg["set"]["arctic"])
+            yy, xx = np.mgrid[0:H // 4, 0:W // 4].astype(np.float32)
+            self.aur_grid = (xx / (W // 4), yy / (H // 4))
         if cfg["set"].get("rally"):
             self.chamber_bg = rally_backdrop(cfg["set"]["rally"])
             self.crowd = Crowd(cfg["set"]["rally"])
@@ -462,6 +468,38 @@ class Renderer:
             if k >= 0:
                 return self.starts[i] + self.durs[i] * k / max(1, len(txt))
         raise SystemExit(f"phrase not found in script: {phrase!r}")
+
+    def aurora(self, t):
+        """Moving green curtains of aurora over the upper sky (computed at quarter resolution, then upscaled)."""
+        u, v = self.aur_grid
+        a = np.zeros_like(u)
+        for k, (f, sp, ph, y0) in enumerate(((3.0, 0.07, 0.0, 0.22), (5.0, -0.05, 1.7, 0.32), (2.2, 0.04, 3.1, 0.15))):
+            band = y0 + 0.06 * np.sin(2 * np.pi * (u * f * 0.5 + t * sp) + ph)
+            curtain = np.exp(-((v - band) / 0.05) ** 2)
+            rays = 0.6 + 0.4 * np.sin(2 * np.pi * (u * f * 6 + t * sp * 3) + ph) ** 2
+            tail = np.clip((v - band + 0.02) / 0.25, 0, 1) * np.exp(-np.clip(v - band, 0, None) / 0.12)
+            a += (curtain + tail * 0.8) * rays * (0.55 - 0.1 * k)
+        a = np.clip(a, 0, 1.2) * np.clip(1.6 - v * 2.4, 0, 1)
+        big = np.array(Image.fromarray((np.clip(a, 0, 1) * 255).astype(np.uint8)).resize((W, H), Image.BILINEAR)).astype(np.float32) / 255
+        return big[..., None] * np.array([0.12, 0.62, 0.36], np.float32)
+
+    def draw_breath(self, im, fi, t):
+        """Puffs of breath from whoever is speaking (cold sets)."""
+        if not (self.cfg["set"].get("arctic") or {}).get("breath"):
+            return
+        layer = Image.new("RGBA", (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(layer)
+        for sp, m, xf in self.figures:
+            if self.presence(sp, t) < 1 or self.amp(sp, fi) < 0.12:
+                continue
+            c = self.cfg["cast"].get(sp, {})
+            s = c.get("scale", self.fig_scale); top = c.get("top", self.fig_top)
+            mx, my = xf * W, top + 262 * s
+            for k in range(4):
+                age = ((t * 1.6 + k / 4) % 1)
+                r = (8 + 26 * age) * s
+                x = mx + (18 + 60 * age) * s * (1 if xf < 0.5 else -1); y = my - 30 * age * s
+                d.ellipse([x - r, y - r * 0.7, x + r, y + r * 0.7], fill=(235, 240, 250, int(110 * (1 - age))))
+        im.paste(layer.filter(ImageFilter.GaussianBlur(4)), (0, 0), layer.filter(ImageFilter.GaussianBlur(4)))
 
     def draw_slides(self, im, t):
         """A projector screen behind the table; its slide changes on phrases. A slide is lines of text joined
@@ -790,6 +828,8 @@ class Renderer:
                 m = min(1.0, (t - self.swap_t) / 0.8)
                 hall = hall * (1 - m) + self.swap_bg * m
             img = hall * (0.86 + 0.14 * sky[..., None])
+            if hasattr(self, "aur_grid"):
+                img = img + self.aurora(t)
             if glow > 0:
                 img = img + glow * np.stack([tr * self.beam, tg * self.beam, tb * self.beam], -1)
         elif hasattr(self, "corridor"):
@@ -858,6 +898,7 @@ class Renderer:
             self.draw_table(im, active)
             self.draw_teleprompters(im, t)
             self.draw_commons_table(im)
+            self.draw_breath(im, fi, t)
             if hasattr(self, "crowd"):
                 hype = max([max(0.0, 1 - abs(t - c - 1.0) / 1.6) for c in self.cheers] + [0.0])
                 self.crowd.draw(im, t, hype)
@@ -1005,6 +1046,84 @@ def commons_backdrop(conf):
             pts = [(far, ytop_far), (near, ytop_near), (near, ytop_near + 40), (far, ytop_far + 10)]
             d.polygon(pts, fill=(48 + k * 4, 104 - k * 6, 70 - k * 4))
             d.line(pts[:2], fill=(90, 140, 100), width=2)
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def diner_backdrop(conf):
+    """Static highway truck stop at night: wood panelling, a long window onto the lot with semis idling under
+    sodium lights, a neon EAT sign, a pie case and a counter with stools."""
+    conf = conf if isinstance(conf, dict) else {}
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    for x in range(0, W, 48):                                                     # panelling
+        d.rectangle([x, 0, x + 48, H], fill=(92 + (x // 48) % 2 * 6, 64, 42))
+        d.line([(x, 0), (x, H)], fill=(60, 40, 26), width=2)
+    wx0, wx1, wy0, wy1 = 60, W - 60, 60, 330                                     # window onto the lot
+    d.rectangle([wx0, wy0, wx1, wy1], fill=(14, 16, 30))
+    for x in (260, 640, 1000):                                                    # sodium lights
+        glow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        ImageDraw.Draw(glow).ellipse([x - 140, wy0 + 10, x + 140, wy1 + 60], fill=(255, 170, 60, 34))
+        im.paste(glow.filter(ImageFilter.GaussianBlur(30)), (0, 0), glow.filter(ImageFilter.GaussianBlur(30)))
+        d.line([(x, wy0 + 20), (x, wy1)], fill=(40, 40, 46), width=4)
+        d.ellipse([x - 10, wy0 + 14, x + 10, wy0 + 26], fill=(255, 190, 90))
+    for k, x in enumerate((120, 470, 820)):                                       # semis: cab + trailer
+        y = 230 + (k % 2) * 12
+        d.rectangle([x, y - 70, x + 230, y + 30], fill=(170, 172, 178))
+        d.rectangle([x + 236, y - 50, x + 300, y + 30], fill=[(150, 30, 30), (30, 70, 140), (40, 40, 44)][k])
+        d.rectangle([x + 250, y - 40, x + 290, y - 14], fill=(30, 36, 50))
+        for wx in (x + 30, x + 70, x + 260):
+            d.ellipse([wx - 14, y + 20, wx + 14, y + 48], fill=(18, 18, 20))
+        d.ellipse([x + 290, y + 4, x + 302, y + 16], fill=(255, 240, 200))
+    d.rectangle([wx0, wy0, wx1, wy1], outline=(60, 40, 26), width=10)
+    for x in range(wx0 + 290, wx1, 290):
+        d.line([(x, wy0), (x, wy1)], fill=(60, 40, 26), width=8)
+    f = ImageFont.truetype(f"{FONT_DIR}/DejaVuSans-Bold.ttf", 54)                 # neon EAT
+    nx, ny = int(conf.get("neon_x", 0.82) * W), 82
+    for blur, alpha in ((14, 160), (0, 255)):
+        lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        ImageDraw.Draw(lay).text((nx, ny), "EAT", font=f, fill=(255, 60, 90, alpha))
+        lay = lay.filter(ImageFilter.GaussianBlur(blur)) if blur else lay
+        im.paste(lay, (0, 0), lay)
+    d = ImageDraw.Draw(im)
+    d.rectangle([0, 360, W, 400], fill=(170, 40, 40))                             # counter
+    d.rectangle([0, 400, W, H], fill=(60, 44, 34))
+    for x in range(80, W, 150):                                                   # stools
+        d.ellipse([x - 26, 390, x + 26, 410], fill=(190, 30, 40))
+    pc = int(conf.get("pie_x", 0.1) * W)                                          # pie case
+    d.rectangle([pc - 60, 296, pc + 60, 360], fill=(200, 220, 230), outline=(160, 160, 170), width=3)
+    for k in range(3):
+        d.chord([pc - 50 + k * 34, 316, pc - 22 + k * 34, 352], 180, 360, fill=(210, 160, 90))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def arctic_backdrop(conf):
+    """Static Arctic night: deep blue sky with stars, a long low white land, distant hamlet lights, the curved
+    roof of a research station on the rise, a snowmobile and a long wooden sled in the foreground."""
+    conf = conf if isinstance(conf, dict) else {}
+    rng = np.random.default_rng(17)
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    for y in range(H):
+        k = y / H
+        d.line([(0, y), (W, y)], fill=(int(6 + 14 * k), int(10 + 20 * k), int(28 + 40 * k)))
+    for _ in range(260):
+        x, y = int(rng.integers(0, W)), int(rng.integers(0, 380)); b = int(rng.integers(120, 255))
+        d.point((x, y), fill=(b, b, b))
+    d.polygon([(0, 420), (300, 400), (700, 412), (1000, 396), (W, 410), (W, H), (0, H)], fill=(170, 184, 206))   # snow
+    for x in range(40, W, 37):                                                     # hamlet lights, far off
+        if rng.random() < 0.6:
+            oy = int(rng.integers(-6, 6)); d.ellipse([x - 2, 404 + oy, x + 2, 408 + oy], fill=(255, 214, 140))
+    rx = int(conf.get("station_x", 0.83) * W)                                       # the research station's curved roof
+    d.rectangle([rx - 110, 360, rx + 110, 402], fill=(40, 46, 60))
+    d.chord([rx - 120, 320, rx + 120, 400], 180, 360, fill=(60, 70, 90))
+    for k in range(6):
+        d.rectangle([rx - 96 + k * 34, 374, rx - 80 + k * 34, 388], fill=(255, 220, 150))
+    sx = int(conf.get("sled_x", 0.12) * W)                                         # snowmobile + long sled
+    d.polygon([(sx, 560), (sx + 140, 560), (sx + 170, 530), (sx + 110, 500), (sx + 40, 510)], fill=(30, 30, 36))
+    d.polygon([(sx + 60, 500), (sx + 100, 470), (sx + 120, 500)], fill=(160, 40, 40))
+    d.line([(sx - 10, 566), (sx + 190, 566)], fill=(20, 20, 24), width=5)
+    d.rectangle([sx - 260, 540, sx - 20, 554], fill=(120, 90, 60))
+    for k in range(7):
+        d.line([(sx - 250 + k * 36, 540), (sx - 250 + k * 36, 566)], fill=(90, 66, 44), width=4)
+    d.line([(sx - 266, 568), (sx - 12, 568)], fill=(90, 66, 44), width=4)
     return np.asarray(im).astype(np.float32) / 255
 
 

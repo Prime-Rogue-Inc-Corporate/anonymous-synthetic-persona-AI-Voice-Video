@@ -10,6 +10,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
 
+## [0.12.0] - 2026-11-09
+
+### Added
+- Arctic set: `"set": {"arctic": {...}}`, a night scene with animated aurora (computed at quarter resolution), stars, hamlet lights, a research station, snowmobile and sled; `"breath": true` puffs visible breath from whoever is speaking.
+- Diner set: `"set": {"diner": {...}}`, a truck stop at night with semis outside, neon, counter and pie case.
+- Masks: `vicparka`, `rangersgt`, `rangerjonah`, `rangerdoug`, `trucker`, `truckerdarcy`, `premier`.
+- Episode 014, *Thursday*: Vic goes to Cambridge Bay in costume to meet the Rangers' "secret cell", which is search and rescue.
+- Episode 015, *Truck Stop*: Tripp leaves the barn for an Alberta truck stop; a fictional premier listens from the next booth.
+
 ## [0.11.0] - 2026-11-09
 
 ### Added
@@ -141,7 +150,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
   Repo copy is re-encoded to 540p to stay under the push size limit; render locally for 720p.
 - Versioning: `VERSION`, this changelog, semver git tags.
 
-[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.11.0...HEAD
+[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.12.0...HEAD
+[0.12.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.9.1...v0.10.0
 [0.9.1]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.9.0...v0.9.1
