@@ -133,7 +133,13 @@
     "Python": "Paï-tonne",
     "Anonymous": "Anonimous",
     "bot": "botte",
-    "Calgary": "Calgary"
+    "Calgary": "Calgary",
+    "gccaedits": "G C C A edits",
+    "Slafkovský": "Slaf-kov-ski",
+    "Newhook": "Niou-houk",
+    "Kreider": "Kraï-deur",
+    "Danault": "Danault",
+    "Fowler": "Faou-leur"
   },
   "signoff_lines": 5,
   "gaps": {
@@ -152,7 +158,15 @@
       "C'est ben trop canadien, ça.": 1.0,
       "Le bot, y'est en Python, madame.": 0.8,
       "Je prends note.": 1.0,
-      "Tabarnouche.": 1.1
+      "Tabarnouche.": 1.1,
+      "ce n'est pas un compliment.": 0.9,
+      "Ou elle innocente quelqu'un.": 1.0,
+      "Il la cache.": 1.2,
+      "la commissaire peut ordonner la communication.": 1.0,
+      "J'pensais jamais dire ça de ma vie.": 0.8,
+      "Je ne suis pas une amatrice.": 1.0,
+      "Moi, je suis une fan des Sénateurs.": 1.0,
+      "On se reparle le six décembre, madame.": 1.1
     }
   },
   "light": {
@@ -162,7 +176,7 @@
   "credits": [
     "Un sketch original. Tous les personnages sont fictifs. / An original sketch. All characters are fictional.",
     "Loi sur les langues officielles, partie V : langue de travail dans les régions bilingues. / OLA Part V: language of work.",
-    "Précédemment / Previously: 021 The Addresses"
+    "Hockey: MTL 4, TOR 2, Nov. 7, 2026. Précédemment / Previously: 021 The Addresses"
   ],
   "output": "en_francais.mp4"
 }

@@ -29,7 +29,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 019 | [The Hall](episodes/019-the-hall) | The defence brass fly to Cambridge Bay on a Thursday and get a briefing from three Rangers · hall set, slides | ~11:15 |
 | 020 | [Privy Council](episodes/020-privy-council) | Meanwhile at the Privy Council Office: seven cheap commitments made on community radio, four hundred access requests, and a rich oral culture · boardroom set | ~4:53 |
 | 021 | [The Addresses](episodes/021-the-addresses) | Nathan gives the Clerk a plain-language briefing on a real access complaint about Shared Services Canada's IP address ranges, plus fantasy hockey · slides | ~8:38 |
-| 022 | [En français](episodes/022-en-francais) | Official Languages walks in: the meeting must be held again in French. Half perfect French, half joual · English subtitles | ~3:16 |
+| 022 | [En français](episodes/022-en-francais) | Official Languages walks in: the meeting must be held again in French. Half perfect French, half joual, then the Habs · English subtitles | ~5:46 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
