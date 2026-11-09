@@ -10,6 +10,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
 
+## [0.11.0] - 2026-11-09
+
 ### Added
 - Rally set: `"set": {"rally": {...}}` (arena, lighting truss, banner, flags) with a foreground `Crowd` that sways and jumps, raising flags, hockey sticks and signs after each `[cheer]`.
 - Slides: `"set": {"slides": {...}}`, a projector screen whose slide changes on phrases from the script; `"MAP"` draws a crude map of Canada.
@@ -139,7 +141,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
   Repo copy is re-encoded to 540p to stay under the push size limit; render locally for 720p.
 - Versioning: `VERSION`, this changelog, semver git tags.
 
-[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.10.0...HEAD
+[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.11.0...HEAD
+[0.11.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.9.1...v0.10.0
 [0.9.1]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.8.0...v0.9.0
