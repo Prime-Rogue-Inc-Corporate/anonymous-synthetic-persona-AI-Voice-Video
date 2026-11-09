@@ -219,3 +219,7 @@ git push origin HEAD --follow-tags
 ## Licence
 
 Code: MIT, © 2026 Prime Rogue Inc. The emblem, persona name and episode content are **not** covered by the MIT licence — see [`TRADEMARKS.md`](TRADEMARKS.md).
+
+## Contact
+
+contact@primerogueinc.com
