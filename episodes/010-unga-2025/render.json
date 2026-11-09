@@ -1,14 +1,14 @@
 {
   "output": "unga_2025_verbatim.mp4",
-  "renderer_version": "0.9.0",
-  "renderer_commit": "65988c4",
-  "rendered_at": "2026-11-09T01:55:11+00:00",
+  "renderer_version": "0.9.1",
+  "renderer_commit": "620b53f",
+  "rendered_at": "2026-11-09T07:42:26+00:00",
   "duration_s": 410.13,
   "lines": 47,
   "mask": null,
   "cast": {
-    "NARRATOR": null,
-    "PRESIDENT": "moth"
+    "NARRATOR": "moth",
+    "PRESIDENT": "orator"
   },
   "resolution": "1280x720@30"
 }
