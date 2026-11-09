@@ -1,0 +1,15 @@
+{
+  "output": "the_despatch_box.mp4",
+  "renderer_version": "0.10.0",
+  "renderer_commit": "a6be92f",
+  "rendered_at": "2026-11-09T08:16:34+00:00",
+  "duration_s": 485.47,
+  "lines": 55,
+  "mask": null,
+  "cast": {
+    "PM": "bulldog",
+    "OPP": "shadow",
+    "SPEAKER": null
+  },
+  "resolution": "1280x720@30"
+}

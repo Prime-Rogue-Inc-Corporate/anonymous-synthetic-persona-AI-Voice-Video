@@ -1,0 +1,114 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "the despatch box",
+  "cast": {
+    "PM": {
+      "name": "The Rt Hon Sir Ambrose Hartigan, Prime Minister (fictional)",
+      "mask": "bulldog",
+      "x": 0.3,
+      "scale": 0.86,
+      "top": 72,
+      "color": [
+        230,
+        200,
+        130
+      ],
+      "voice": {
+        "voice": "en-gb+m3",
+        "speed": 136,
+        "pitch": 18,
+        "filter": "asetrate=22050*0.84,aresample=44100,atempo=1.1,aecho=0.8:0.6:55:0.3,highpass=f=80,lowpass=f=5200,volume=1.7"
+      }
+    },
+    "OPP": {
+      "name": "The Rt Hon Dame Petra Vossley, Leader of the Opposition (fictional)",
+      "mask": "shadow",
+      "x": 0.78,
+      "scale": 0.7,
+      "top": 128,
+      "color": [
+        170,
+        200,
+        240
+      ],
+      "voice": {
+        "voice": "en-gb+f4",
+        "speed": 160,
+        "pitch": 52,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.6:55:0.3,highpass=f=120,lowpass=f=6500,volume=1.6"
+      }
+    },
+    "SPEAKER": {
+      "name": "Mr Speaker (fictional)",
+      "mask": null,
+      "color": [
+        200,
+        200,
+        200
+      ],
+      "voice": {
+        "voice": "en-gb+m7",
+        "speed": 150,
+        "pitch": 40,
+        "filter": "asetrate=22050*0.93,aresample=44100,atempo=1.04,aecho=0.8:0.7:80:0.35,highpass=f=100,lowpass=f=5500,volume=1.5"
+      }
+    }
+  },
+  "set": {
+    "commons": {
+      "chair_x": 0.56,
+      "table_y": 492,
+      "boxes": [
+        0.3,
+        0.78
+      ]
+    },
+    "chyron": {
+      "title": "HOUSE OF COMMONS",
+      "sub": "PRIME MINISTER'S STATEMENT  ·  THE UNITED STATES"
+    }
+  },
+  "pronounce": {
+    "Hartigan": "Hartigan",
+    "Gladstone": "Gladstone",
+    "Hansard": "Hansard",
+    "Vossley": "Voss lee"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.4,
+    "after_greeting": 0.5,
+    "after_intro": 0.6,
+    "signoff": 0.6,
+    "after": {
+      "This, I am told": 1.0,
+      "Now, I do not mock": 0.9,
+      "Some of them have read": 0.6,
+      "And we shall send them tea": 1.0,
+      "Even the machinery": 0.8,
+      "And so, Mister Speaker": 1.2,
+      "And if, which": 1.2,
+      "It is not in order": 0.9
+    }
+  },
+  "light": {
+    "line": "We shall stand with them in the committee",
+    "color": [
+      255,
+      214,
+      140
+    ],
+    "ramp": 3.0,
+    "tint": [
+      0.36,
+      0.28,
+      0.12
+    ]
+  },
+  "credits": [
+    "An original sketch. Sir Ambrose, Dame Petra and Mr Speaker are fictional.",
+    "Rhetorical cadence after Churchill; no Churchill text is used.",
+    "Same universe as 006–010. Previously: 010 General Assembly, 2025"
+  ],
+  "output": "the_despatch_box.mp4"
+}

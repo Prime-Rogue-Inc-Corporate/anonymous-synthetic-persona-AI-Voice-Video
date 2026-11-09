@@ -491,3 +491,64 @@ def orator(d, amp, t):
             lx, ly = cx + s * abs(70 * math.cos(a)), 150 - 50 * abs(math.sin(a)) + k * 4 + sway
             d.ellipse([lx - 16, ly - 7, lx + 16, ly + 7], fill=(90, 140, 70, 255), outline=(60, 100, 46, 255))
     d.polygon([(cx - 12, 312), (cx + 12, 312), (cx + 18, 420), (cx, 445), (cx - 18, 420)], fill=(190, 150, 60, 255))  # gold tie
+
+
+@mask("bulldog", tie=False)
+def bulldog(d, amp, t):
+    """A British bulldog in a bow tie: jowls, an underbite with two teeth, heavy-lidded eyes, an unlit cigar
+    parked in the corner of the mouth. The underjaw drops with the voice."""
+    cx = CX
+    fawn, dark, pale = (196, 150, 104, 255), (140, 98, 62, 255), (232, 210, 180, 255)
+    drop = 12 * amp
+    for s in (-1, 1):                                                          # rose ears
+        d.polygon([(cx + s * 70, 132), (cx + s * 112, 118), (cx + s * 104, 160)], fill=dark)
+    d.ellipse([cx - 104, 118, cx + 104, 300], fill=fawn)                       # broad skull
+    d.ellipse([cx - 46, 126, cx + 46, 214], fill=pale)                         # blaze
+    for k in range(3):                                                         # brow wrinkles
+        d.arc([cx - 50, 150 + k * 10, cx + 50, 190 + k * 10], 200, 340, fill=dark, width=3)
+    for s in (-1, 1):                                                          # heavy-lidded eyes
+        ex = cx + s * 50
+        d.ellipse([ex - 15, 188, ex + 15, 210], fill=(30, 22, 18, 255))
+        d.chord([ex - 17, 184, ex + 17, 206], 180, 360, fill=fawn)             # drooping lids
+        d.line([(ex - 17, 196), (ex + 17, 196)], fill=dark, width=3)
+    d.ellipse([cx - 30, 214, cx + 30, 246], fill=(40, 30, 28, 255))            # flat nose
+    for s in (-1, 1):                                                          # jowls
+        d.ellipse([cx + s * 62 - 50, 230, cx + s * 62 + 50, 300 + drop * 0.4], fill=fawn)
+        d.line([(cx + s * 4, 246), (cx + s * 30, 262), (cx + s * 70, 268)], fill=dark, width=3)
+    d.chord([cx - 46, 262 + drop, cx + 46, 312 + drop], 0, 180, fill=(120, 60, 56, 255))   # underjaw
+    for s in (-1, 1):                                                          # the two teeth
+        d.polygon([(cx + s * 24 - 6, 272 + drop), (cx + s * 24 + 6, 272 + drop), (cx + s * 24, 258 + drop)], fill=(246, 240, 226, 255))
+    tip = 1.5 * math.sin(t * 1.1)                                              # unlit cigar
+    d.line([(cx + 52, 270 + drop * 0.5), (cx + 118, 252 + tip)], fill=(110, 70, 40, 255), width=11)
+    d.line([(cx + 92, 259), (cx + 100, 257)], fill=(200, 60, 50, 255), width=11)          # band
+    d.ellipse([cx + 112, 246 + tip, cx + 124, 258 + tip], fill=(90, 70, 60, 255))
+    # polka-dot bow tie
+    d.polygon([(cx, 318), (cx - 40, 300), (cx - 40, 336)], fill=(28, 40, 96, 255))
+    d.polygon([(cx, 318), (cx + 40, 300), (cx + 40, 336)], fill=(28, 40, 96, 255))
+    d.ellipse([cx - 9, 309, cx + 9, 327], fill=(36, 50, 110, 255))
+    for x, y in ((-28, 310), (-20, 324), (-32, 326), (26, 312), (20, 326), (32, 322)):
+        d.ellipse([cx + x - 3, y - 3, cx + x + 3, y + 3], fill=(236, 236, 236, 255))
+
+
+@mask("shadow", tie=False)
+def shadow(d, amp, t):
+    """Leader of the Opposition: a sharp silver bob, half-moon reading glasses pushed down the nose, pearls."""
+    cx = CX
+    skin, hair = (232, 210, 192, 255), (196, 198, 204, 255)
+    jaw = 6 * amp
+    d.polygon([(cx - 40, 300), (cx + 40, 300), (cx + 24, 336), (cx - 24, 336)], fill=(150, 30, 46, 255))   # blouse
+    d.polygon([(cx - 84, 150), (cx - 72, 104), (cx, 84), (cx + 72, 104), (cx + 84, 150), (cx + 88, 268), (cx - 88, 268)], fill=hair)
+    d.ellipse([cx - 60, 116, cx + 60, 290 + jaw], fill=skin)
+    d.polygon([(cx - 70, 116), (cx + 40, 104), (cx + 76, 150), (cx + 20, 132), (cx - 66, 150)], fill=hair)   # fringe
+    for s in (-1, 1):
+        d.line([(cx + s * 44, 176), (cx + s * 14, 170)], fill=(120, 112, 110, 255), width=4)
+    _eyes(d, cx, 190, gap=27, socket=(214, 194, 176, 255))
+    for s in (-1, 1):                                                          # half-moon glasses, low
+        d.chord([cx + s * 27 - 20, 196, cx + s * 27 + 20, 226], 0, 180, outline=(60, 60, 64, 255), width=3)
+    d.line([(cx - 7, 210), (cx + 7, 210)], fill=(60, 60, 64, 255), width=3)
+    d.polygon([(cx - 4, 200), (cx + 4, 200), (cx + 9, 236), (cx - 9, 236)], fill=(214, 192, 172, 255))
+    _mouth(d, cx, 260 + jaw * 0.5, amp, w=17, lip=(150, 70, 80, 255))
+    for k in range(9):                                                         # pearls
+        a = math.pi * (0.15 + 0.7 * k / 8)
+        px, py = cx - 46 * math.cos(a), 300 + 26 * math.sin(a)
+        d.ellipse([px - 5, py - 5, px + 5, py + 5], fill=(240, 236, 226, 255))
