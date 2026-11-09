@@ -1,0 +1,171 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "canada options",
+  "cast": {
+    "CHAIR": {
+      "name": "Deputy Chief, Special Activities Center (fictional)",
+      "mask": "deputy",
+      "x": 0.17,
+      "scale": 0.6,
+      "top": 215,
+      "color": [
+        200,
+        190,
+        240
+      ],
+      "voice": {
+        "voice": "en-us+f2",
+        "speed": 160,
+        "pitch": 50,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.5:40:0.2,highpass=f=130,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "KYLE": {
+      "name": "Kyle, analyst, Canada desk (fictional)",
+      "mask": "analyst",
+      "x": 0.4,
+      "scale": 0.56,
+      "top": 235,
+      "color": [
+        160,
+        210,
+        240
+      ],
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 178,
+        "pitch": 66,
+        "filter": "asetrate=22050*0.98,aresample=44100,atempo=1.03,aecho=0.8:0.5:40:0.2,highpass=f=110,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "OGC": {
+      "name": "Office of General Counsel, on speakerphone (fictional)",
+      "mask": null,
+      "color": [
+        180,
+        180,
+        180
+      ],
+      "voice": {
+        "voice": "en-us+m6",
+        "speed": 150,
+        "pitch": 40,
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.04,highpass=f=400,lowpass=f=3200,volume=1.8"
+      }
+    },
+    "VIC": {
+      "name": "Vic, case officer, here since Carter (fictional)",
+      "mask": "caseofficer",
+      "x": 0.78,
+      "scale": 0.7,
+      "top": 170,
+      "enter": "right",
+      "linger": 40,
+      "color": [
+        240,
+        200,
+        120
+      ],
+      "voice": {
+        "voice": "en-us+m1",
+        "speed": 172,
+        "pitch": 24,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.1,aecho=0.8:0.5:40:0.2,highpass=f=80,lowpass=f=6000,volume=1.6"
+      }
+    }
+  },
+  "set": {
+    "table": true,
+    "slides": {
+      "x": 0.56,
+      "y": 24,
+      "w": 420,
+      "h": 196,
+      "banner": "UNCLASSIFIED//FOR OFFICIAL USE ONLY",
+      "first": "CANADA OPTIONS\nWorking Group · meeting 9\nSpecial Activities Center",
+      "cues": [
+        [
+          "Slide one.",
+          "BACKGROUND\n41M people · NORAD partner\nStatus: not interested"
+        ],
+        [
+          "Option one. A strongly",
+          "OPTION 1\nStrongly worded letter"
+        ],
+        [
+          "Option two.",
+          "OPTION 2\nInfluence (windowless room)\nResult: lost by 50 pts"
+        ],
+        [
+          "Option three. Is the word",
+          "OPTION 3\n[REDACTED]"
+        ],
+        [
+          "Option three. Kinetic.",
+          "OPTION 3: KINETIC\nPhase 1: shoot down\nrotary-wing assets (??)"
+        ],
+        [
+          "Pull up a map.",
+          "MAP"
+        ],
+        [
+          "Option one. Write the letter.",
+          "OPTION 1\nStrongly worded letter\n(make it a nice one)"
+        ]
+      ]
+    },
+    "chyron": {
+      "title": "CIA HEADQUARTERS  ·  LANGLEY",
+      "sub": "CANADA OPTIONS WORKING GROUP (FICTIONAL)"
+    }
+  },
+  "layout": {
+    "top": 215
+  },
+  "pronounce": {
+    "SCIF": "skiff",
+    "OGC": "O G C",
+    "Abrams": "Aybrams",
+    "Kenora": "Ken-ora",
+    "Métis": "May-tee",
+    "toque": "took",
+    "Eh.": "Ay."
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.35,
+    "after_greeting": 0.4,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "For a toque.": 1.0,
+      "Toronto thinks you're a condo.": 1.0,
+      "you're dead.": 1.0,
+      "So now every one of them has two.": 0.9,
+      "We'll wait.": 1.1,
+      "watching you through a scope.": 0.6,
+      "we won't.": 1.0,
+      "we are done.": 0.9
+    }
+  },
+  "light": {
+    "line": "And that guy is a Canadian Ranger.",
+    "color": [
+      150,
+      200,
+      255
+    ],
+    "ramp": 1.5,
+    "tint": [
+      0.08,
+      0.2,
+      0.42
+    ]
+  },
+  "credits": [
+    "An original sketch. Everyone in this room is fictional; no real officers are depicted.",
+    "Facts: Cyclone fleet not fully operational until 2029 (Ottawa Citizen, Mar. 2026);",
+    "Canadian Rangers: ~5,000 members, 200+ communities, 26 languages (DND). Previously: 005, 012"
+  ],
+  "output": "canada_options.mp4"
+}

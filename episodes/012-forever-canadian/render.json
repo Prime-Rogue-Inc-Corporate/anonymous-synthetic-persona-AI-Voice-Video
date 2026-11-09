@@ -1,0 +1,16 @@
+{
+  "output": "forever_canadian.mp4",
+  "renderer_version": "0.10.0",
+  "renderer_commit": "f1b0454-dirty",
+  "rendered_at": "2026-11-09T09:05:07+00:00",
+  "duration_s": 943.98,
+  "lines": 143,
+  "mask": null,
+  "cast": {
+    "MOTH": "moth",
+    "PM": "maple",
+    "SHAUNA": null,
+    "WADE": "rancher"
+  },
+  "resolution": "1280x720@30"
+}

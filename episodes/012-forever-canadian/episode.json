@@ -1,0 +1,158 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "forever canadian",
+  "cast": {
+    "MOTH": {
+      "name": "The moth, standing in for the mayor",
+      "mask": "moth",
+      "x": 0.5,
+      "scale": 0.78,
+      "top": 140,
+      "enter": "left",
+      "linger": 8,
+      "color": [
+        210,
+        205,
+        190
+      ],
+      "voice": {
+        "voice": "en-us+m3",
+        "speed": 146,
+        "pitch": 22,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.7:90:0.35,highpass=f=90,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "PM": {
+      "name": "Prime Minister Mark Carney · as prepared for delivery · read by a synthetic voice",
+      "mask": "maple",
+      "x": 0.5,
+      "scale": 0.78,
+      "top": 140,
+      "enter": "right",
+      "linger": 60,
+      "color": [
+        240,
+        120,
+        120
+      ],
+      "voice": {
+        "voice": "en-us+m4",
+        "speed": 168,
+        "pitch": 34,
+        "filter": "asetrate=22050*0.9,aresample=44100,atempo=1.06,aecho=0.8:0.7:90:0.35,highpass=f=90,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "SHAUNA": {
+      "name": "Shauna, volunteer, in the crowd (fictional)",
+      "mask": null,
+      "color": [
+        240,
+        200,
+        200
+      ],
+      "voice": {
+        "voice": "en-us+f3",
+        "speed": 170,
+        "pitch": 60,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.7:90:0.35,highpass=f=130,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "WADE": {
+      "name": "Wade Brannigan, separatist organizer (fictional, from 005)",
+      "mask": "rancher",
+      "x": 0.8,
+      "scale": 0.66,
+      "top": 190,
+      "enter": "right",
+      "linger": 20,
+      "color": [
+        220,
+        190,
+        140
+      ],
+      "voice": {
+        "voice": "en-us+m7",
+        "speed": 150,
+        "pitch": 28,
+        "filter": "asetrate=22050*0.9,aresample=44100,atempo=1.05,aecho=0.8:0.7:90:0.35,highpass=f=90,lowpass=f=6000,volume=1.6"
+      }
+    }
+  },
+  "set": {
+    "rally": {
+      "banner": [
+        "STRONGER",
+        "TOGETHER"
+      ]
+    },
+    "lectern": {
+      "x": 0.5,
+      "y": 480,
+      "color": [
+        34,
+        34,
+        40
+      ]
+    },
+    "chyron": {
+      "title": "FOREVER CANADIAN RALLY  ·  CALGARY",
+      "sub": "PM'S REMARKS AS PREPARED  ·  OCT. 15, 2026"
+    }
+  },
+  "pronounce": {
+    "Lukaszuk": "Loo-ka-shook",
+    "Siksika": "Sik-sika",
+    "Kainai": "Kai-nai",
+    "Piikani": "Pee-gan-ee",
+    "Tsuut’ina": "Tsoo-tina",
+    "Nakoda": "Na-koda",
+    "Lougheed": "Law-heed",
+    "Collip": "Collip",
+    "Saddletowne": "Saddle town",
+    "Métis": "May-tee",
+    "Québec": "Kebeck",
+    "Saint-Albert": "Sant Al-bair",
+    "Saint-Paul": "Sant Pole",
+    "Saint-Jean": "Sant Jhon",
+    "$300 million": "three hundred million dollars",
+    "30%": "30 percent",
+    "80%": "80 percent",
+    "Yedlin": "Yed-lin",
+    "J.B.": "J. B.",
+    "Yahoo!": "Yah-hoo!",
+    "Jeromy": "Jerr-o-mee"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.4,
+    "after_greeting": 0.5,
+    "after_intro": 0.6,
+    "signoff": 0.6,
+    "after": {
+      "Ladies and gentlemen.": 0.3,
+      "Let us build it together.": 1.2,
+      "It was cold.": 0.9
+    }
+  },
+  "light": {
+    "line": "Let Alberta lead, not leave.",
+    "color": [
+      255,
+      200,
+      200
+    ],
+    "ramp": 2.0,
+    "tint": [
+      0.4,
+      0.12,
+      0.12
+    ]
+  },
+  "end_title": "EXPECT US.",
+  "credits": [
+    "PM's remarks, Forever Canadian Rally, Calgary, Oct. 15, 2026, as prepared for delivery (pm.gc.ca), verbatim.",
+    "Not affiliated with or endorsed by the Government of Canada. The maple figure is invented, not a likeness.",
+    "The moth, Shauna and Wade are fictional; the cheering is synthesized. Previously: 005 Staff Level"
+  ],
+  "output": "forever_canadian.mp4"
+}

@@ -10,6 +10,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
 
+## [0.11.0] - 2026-11-09
+
+### Added
+- Rally set: `"set": {"rally": {...}}` (arena, lighting truss, banner, flags) with a foreground `Crowd` that sways and jumps, raising flags, hockey sticks and signs after each `[cheer]`.
+- Slides: `"set": {"slides": {...}}`, a projector screen whose slide changes on phrases from the script; `"MAP"` draws a crude map of Canada.
+- Sound cues `[cheer]` (arena applause, roar and whoops) and `[slam]` (a door flung open).
+- Masks: `maple`, `deputy`, `analyst`, `caseofficer`.
+- Episode 012, *Forever Canadian*: the Prime Minister's full Oct. 15, 2026 Calgary rally speech as prepared for delivery (pm.gc.ca), verbatim, with `SOURCE.md` and a check. The moth stands in for the introducer; fictional characters (Shauna, and Wade from 005) do the sign-off, so no words are added to the speaker. The repo copy is 540p; the 720p render is ignored.
+- Episode 013, *Canada Options*: a fictional CIA working group plans for Canada until a case officer explains the cold and the Canadian Rangers.
+
 ## [0.10.0] - 2026-11-09
 
 ### Added
@@ -131,7 +141,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
   Repo copy is re-encoded to 540p to stay under the push size limit; render locally for 720p.
 - Versioning: `VERSION`, this changelog, semver git tags.
 
-[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.10.0...HEAD
+[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.11.0...HEAD
+[0.11.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.9.1...v0.10.0
 [0.9.1]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.8.0...v0.9.0

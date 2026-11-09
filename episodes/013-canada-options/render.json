@@ -1,0 +1,16 @@
+{
+  "output": "canada_options.mp4",
+  "renderer_version": "0.10.0",
+  "renderer_commit": "f1b0454-dirty",
+  "rendered_at": "2026-11-09T09:11:56+00:00",
+  "duration_s": 323.29,
+  "lines": 57,
+  "mask": null,
+  "cast": {
+    "CHAIR": "deputy",
+    "KYLE": "analyst",
+    "OGC": null,
+    "VIC": "caseofficer"
+  },
+  "resolution": "1280x720@30"
+}
