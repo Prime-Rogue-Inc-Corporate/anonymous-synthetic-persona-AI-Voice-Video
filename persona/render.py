@@ -370,7 +370,13 @@ class Renderer:
         if cfg["set"].get("barn"):
             self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
         if cfg["set"].get("assembly"):
-            self.chamber_bg = assembly_backdrop(cfg["set"]["assembly"])
+            asm = cfg["set"]["assembly"]
+            self.chamber_bg = assembly_backdrop(asm)
+            self.swap_t = self.phrase_time(asm.get("terrazzo_at"))
+            if self.swap_t is not None:                       # the marble wall turns out to be terrazzo
+                self.swap_bg = assembly_backdrop({**asm, "terrazzo": True})
+            self.esc_stop = self.phrase_time(asm.get("escalator_stops"))
+            self.prompt_on = self.phrase_time(asm.get("teleprompter_on"))
         ch = cfg["set"].get("chyron")
         self.clock = None
         if ch and ch.get("clock"):
@@ -382,6 +388,63 @@ class Renderer:
         lt = cfg["light"]["line"]
         self.light_t = next((starts[i] for i, l in enumerate(lines) if lt and l.startswith(lt)), None)
         self.sign_t = starts[len(lines) - cfg["signoff_lines"]] if cfg["signoff_lines"] else float("inf")
+
+    def phrase_time(self, phrase):
+        """When a phrase is spoken: its line's start plus its share of the line (by characters)."""
+        if not phrase:
+            return None
+        for i, l in enumerate(self.lines):
+            txt = strip_cues(l)
+            k = txt.find(phrase)
+            if k >= 0:
+                return self.starts[i] + self.durs[i] * k / max(1, len(txt))
+        raise SystemExit(f"phrase not found in script: {phrase!r}")
+
+    def draw_escalator(self, im, t):
+        """A side-wall escalator whose steps climb until it stops dead."""
+        asm = self.cfg["set"].get("assembly")
+        if not asm or not asm.get("escalator"):
+            return
+        d = ImageDraw.Draw(im)
+        x0, y0, x1, y1 = 6, 470, 236, 140                   # bottom-left to top-right
+        d.polygon([(x0, y0), (x0 + 70, y0), (x1 + 70, y1), (x1, y1)], fill=(70, 72, 78))
+        tt = t if self.esc_stop is None else min(t, self.esc_stop)
+        phase = (tt * 0.6) % 1
+        for k in range(12):
+            f = (k + phase) / 12
+            sx, sy = x0 + (x1 - x0) * f, y0 + (y1 - y0) * f
+            d.line([(sx + 4, sy), (sx + 66, sy)], fill=(120, 124, 132), width=3)
+        for off in (0, 70):                                   # handrails
+            d.line([(x0 + off, y0 - 34), (x1 + off, y1 - 34)], fill=(24, 24, 26), width=7)
+        if self.esc_stop is not None and t >= self.esc_stop:
+            sx, sy = (x0 + x1) / 2 + 35, (y0 + y1) / 2         # stopped right in the middle
+            if int(t * 2) % 2 == 0 or t - self.esc_stop > 6:
+                d.rectangle([sx - 54, sy - 62, sx + 54, sy - 36], fill=(150, 30, 30))
+                d.text((sx - 46, sy - 58), "STOPPED", font=self.card_font, fill=(250, 230, 230))
+
+    def draw_teleprompters(self, im, t):
+        """Two glass teleprompter panes on poles: dead, then (on cue) flicker back to life."""
+        asm = self.cfg["set"].get("assembly")
+        if not asm or not asm.get("teleprompters"):
+            return
+        layer = Image.new("RGBA", (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(layer)
+        on = self.prompt_on is not None and t >= self.prompt_on
+        if on and t - self.prompt_on < 0.8:
+            on = int((t - self.prompt_on) * 12) % 2 == 0     # flicker
+        for xf in asm.get("teleprompters_x", [0.3, 0.7]):
+            cx = xf * W
+            d.line([(cx, 330), (cx, 520)], fill=(30, 30, 34, 255), width=6)
+            pane = [(cx - 70, 230), (cx + 70, 230), (cx + 60, 340), (cx - 60, 340)]
+            d.polygon(pane, fill=(150, 190, 210, 70) if on else (20, 24, 28, 150), outline=(200, 210, 220, 160))
+            if on:
+                scroll = (t * 14) % 16
+                for r in range(6):
+                    y = 246 + r * 16 - scroll
+                    if 236 < y < 330:
+                        d.line([(cx - 48, y), (cx + 20 + 18 * ((r * 7) % 3), y)], fill=(225, 240, 250, 150), width=4)
+            else:
+                d.text((cx - 50, 276), "NO SIGNAL", font=self.card_font, fill=(150, 60, 60, 200))
+        im.paste(layer, (0, 0), layer)
 
     def wrap(self, text):
         out, cur = [], ""
@@ -608,6 +671,9 @@ class Renderer:
         tr, tg, tb = cfg["light"]["tint"]
         if hasattr(self, "chamber_bg"):
             hall = self.chamber_bg
+            if getattr(self, "swap_t", None) is not None and t >= self.swap_t:
+                m = min(1.0, (t - self.swap_t) / 0.8)
+                hall = hall * (1 - m) + self.swap_bg * m
             img = hall * (0.86 + 0.14 * sky[..., None])
             if glow > 0:
                 img = img + glow * np.stack([tr * self.beam, tg * self.beam, tb * self.beam], -1)
@@ -637,6 +703,7 @@ class Renderer:
                 halo = halo.filter(ImageFilter.GaussianBlur(60))
                 im.paste(halo, (0, 0), halo)
             self.draw_placard(im)
+            self.draw_escalator(im, t)
             for k, (sp, m, xf) in enumerate(self.figures):
                 c = cfg["cast"].get(sp, {}) if sp else {}
                 pres = self.presence(sp, t)
@@ -673,6 +740,7 @@ class Renderer:
                     dd.line([(xf * W - hw, dy), (xf * W + hw, dy)], fill=(130, 98, 66), width=4)
                     dd.rectangle([xf * W - hw + 14, dy + 16, xf * W + hw - 14, dy + 124], outline=(96, 70, 48), width=2)
             self.draw_table(im, active)
+            self.draw_teleprompters(im, t)
             self.draw_lectern(im)
             self.draw_desk(im)
             self.draw_dog(im, fi, t)
@@ -763,13 +831,20 @@ def assembly_backdrop(conf):
     for x in range(0, W, 64):                        # wood slats on the side walls
         d.line([(x, 0), (x, 470)], fill=(70, 56, 44), width=2)
     cx = int(conf.get("x", 0.5) * W); half = int(conf.get("width", 0.36) * W / 2)
-    d.rectangle([cx - half, 0, cx + half, 470], fill=(44, 82, 64))          # green marble wall
-    for _ in range(70):                                                       # marble veining
-        x0 = cx - half + int(rng.integers(0, 2 * half)); y0 = int(rng.integers(0, 470))
-        pts = [(x0, y0)]
-        for _k in range(5):
-            x0 += int(rng.integers(-26, 26)); y0 += int(rng.integers(6, 30)); pts.append((x0, y0))
-        d.line(pts, fill=(int(rng.integers(70, 110)), int(rng.integers(118, 150)), int(rng.integers(96, 120))), width=1)
+    if conf.get("terrazzo"):                                                   # chips set in cement
+        d.rectangle([cx - half, 0, cx + half, 470], fill=(176, 168, 150))
+        for _ in range(900):
+            x0 = cx - half + int(rng.integers(0, 2 * half)); y0 = int(rng.integers(0, 470)); r = int(rng.integers(2, 7))
+            c = [(120, 110, 96), (210, 204, 190), (96, 120, 104), (150, 96, 80), (70, 66, 60)][int(rng.integers(0, 5))]
+            d.ellipse([x0 - r, y0 - r * 0.7, x0 + r, y0 + r * 0.7], fill=c)
+    else:
+        d.rectangle([cx - half, 0, cx + half, 470], fill=(44, 82, 64))      # green marble wall
+        for _ in range(70):                                                   # marble veining
+            x0 = cx - half + int(rng.integers(0, 2 * half)); y0 = int(rng.integers(0, 470))
+            pts = [(x0, y0)]
+            for _k in range(5):
+                x0 += int(rng.integers(-26, 26)); y0 += int(rng.integers(6, 30)); pts.append((x0, y0))
+            d.line(pts, fill=(int(rng.integers(70, 110)), int(rng.integers(118, 150)), int(rng.integers(96, 120))), width=1)
     d.rectangle([cx - half, 0, cx + half, 470], outline=(160, 136, 70), width=6)
     pw, ph = int(half * 0.62), 150                                            # blank gold-framed panel
     d.rectangle([cx - pw, 40, cx + pw, 40 + ph], fill=(36, 66, 52), outline=(190, 160, 84), width=5)
@@ -964,6 +1039,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("episode", help="episode folder containing script.txt and episode.json")
     ap.add_argument("--preview", action="store_true", help="write a few PNG frames to build/ and stop")
+    ap.add_argument("--at", help="with --preview: comma-separated moments, seconds or quoted phrases "
+                                 "from the script (+N to offset), e.g. --at '30,It just went on+1'")
     ap.add_argument("--jobs", type=int, default=os.cpu_count() or 2)
     a = ap.parse_args()
 
@@ -984,6 +1061,13 @@ def main():
     if a.preview:
         r = Renderer(*state)
         moments = [1.2, starts[min(3, len(starts) - 1)] + 0.5, (r.light_t or total / 2) + 0.8, total - 2]
+        if a.at:
+            moments = []
+            for tok in a.at.split(","):
+                tok, _, off = tok.partition("+")
+                try: m = float(tok)
+                except ValueError: m = r.phrase_time(tok.strip())
+                moments.append(m + float(off or 0))
         for m in moments:
             Image.fromarray(r.frame(int(m * FPS))).save(os.path.join(build, f"preview_{m:07.1f}.png"))
         print("previews in", build)

@@ -10,6 +10,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
 
+### Added
+- Mask: `orator`, a gilded statue bust with a laurel wreath and a hinged jaw (an invented figure, not a likeness).
+- Assembly-set props, each timed to a phrase in the script: `"escalator": true` with `"escalator_stops": "<phrase>"` (steps climb until the phrase, then freeze under a blinking STOPPED sign); `"teleprompters": true` with `"teleprompter_on": "<phrase>"` (two dead glass panes reading NO SIGNAL flicker back to life); `"terrazzo_at": "<phrase>"` (the green-marble wall crossfades to terrazzo).
+- `Renderer.phrase_time()`: when a phrase is spoken (its line's start plus its character share of the line). Unknown phrases fail loudly.
+- `--preview --at`: preview chosen moments, as seconds or script phrases with an optional `+offset` (e.g. `--at "It just went on+2"`).
+
+### Changed
+- Episode 010 re-rendered: the moth walks on to introduce and close; the orator takes the podium for the speech. The words are unchanged (same byte-for-byte check).
+
 ## [0.9.0] - 2026-11-08
 
 ### Added
