@@ -1,0 +1,16 @@
+{
+  "output": "cold_lake.mp4",
+  "renderer_version": "0.13.0",
+  "renderer_commit": "780184b-dirty",
+  "rendered_at": "2026-11-09T10:22:20+00:00",
+  "duration_s": 139.03,
+  "lines": 38,
+  "mask": null,
+  "cast": {
+    "TRIPP": "pundit",
+    "TYSON": "zoomertyson",
+    "MACKENZIE": "zoomermac",
+    "DALE": null
+  },
+  "resolution": "1280x720@30"
+}

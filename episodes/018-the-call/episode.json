@@ -1,0 +1,142 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "the call",
+  "cast": {
+    "TRIPP": {
+      "mask": "pundit",
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 166,
+        "pitch": 64,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.35:20:0.12,highpass=f=110,lowpass=f=6500,volume=1.6"
+      },
+      "color": [
+        150,
+        200,
+        130
+      ],
+      "name": "Tripp Halloran, on the road (fictional)",
+      "x": 0.27,
+      "scale": 0.72,
+      "top": 170
+    },
+    "VIC": {
+      "name": "Vic, on a video call from Cambridge Bay (fictional)",
+      "mask": "vicparka",
+      "x": 0.74,
+      "scale": 0.66,
+      "top": 150,
+      "color": [
+        240,
+        200,
+        120
+      ],
+      "voice": {
+        "voice": "en-us+m1",
+        "speed": 172,
+        "pitch": 24,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.1,aecho=0.6:0.3:20:0.1,highpass=f=80,lowpass=f=6500,volume=1.6"
+      },
+      "screen": true,
+      "screen_label": "VIC · CAMBRIDGE BAY · SAT"
+    },
+    "BOTH": {
+      "name": "Tripp and Vic, at the same time",
+      "mask": null,
+      "duet": [
+        "TRIPP",
+        "VIC"
+      ],
+      "color": [
+        240,
+        220,
+        180
+      ]
+    },
+    "TYSON": {
+      "name": "Tyson, down the firing line (fictional)",
+      "mask": null,
+      "color": [
+        200,
+        220,
+        150
+      ],
+      "voice": {
+        "voice": "en-us+m3",
+        "speed": 176,
+        "pitch": 56,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.6:0.3:20:0.1,highpass=f=100,lowpass=f=6500,volume=1.6"
+      }
+    },
+    "MARY": {
+      "name": "Mary, on Vic's end (fictional)",
+      "mask": null,
+      "x": 0.5,
+      "scale": 0.62,
+      "top": 204,
+      "color": [
+        240,
+        140,
+        140
+      ],
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 150,
+        "pitch": 44,
+        "filter": "asetrate=22050*0.96,aresample=44100,atempo=1.03,aecho=0.6:0.3:20:0.1,highpass=f=120,lowpass=f=6500,volume=1.6"
+      }
+    },
+    "DALE": {
+      "name": "Dale, producer (off camera)",
+      "mask": null,
+      "color": [
+        190,
+        190,
+        190
+      ],
+      "voice": {
+        "voice": "en-us+m6",
+        "speed": 150,
+        "pitch": 18,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.3:20:0.1,highpass=f=90,lowpass=f=5000,volume=1.4"
+      }
+    }
+  },
+  "set": {
+    "prairie": {
+      "on": true
+    },
+    "chyron": {
+      "title": "THE TRIPP HALLORAN SHOW",
+      "sub": "COLD LAKE, ALBERTA  ·  INCOMING CALL"
+    }
+  },
+  "pronounce": {
+    "FAFO.": "F. A. F. O."
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.4,
+    "after_greeting": 0.5,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "You ate all the shrimp.": 0.8,
+      "Shooting range. Alberta.": 0.6,
+      "Holding tea.": 0.7,
+      "Everybody has an uncle, Tripp.": 1.4,
+      "Oh.": 1.0,
+      "FAFO.": 0.7,
+      "Fuck.": 0.9
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "credits": [
+    "An original sketch. Tripp, Vic, Dale, Tyson and Mary are fictional.",
+    "FAFO: fool around and find out.",
+    "Previously: 016 Range Day, 017 Cold Lake"
+  ],
+  "output": "the_call.mp4"
+}

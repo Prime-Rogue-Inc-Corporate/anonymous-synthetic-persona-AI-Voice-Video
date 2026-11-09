@@ -806,3 +806,42 @@ def premier(d, amp, t):
         d.line([(cx + s * 27 - 18, 174), (cx + s * 27 + 18, 172)], fill=(150, 120, 80, 255), width=4)
     d.polygon([(cx - 4, 200), (cx + 4, 200), (cx + 9, 232), (cx - 9, 232)], fill=(224, 192, 172, 255))
     _mouth(d, cx, 256 + jaw * 0.5, amp, w=17, lip=(190, 70, 90, 255))
+
+
+@mask("zoomertyson", tie=False)
+def zoomertyson(d, amp, t):
+    """Nineteen: a mullet, ear protection pushed down around the neck, a camo jacket, a faint moustache attempt."""
+    cx = CX
+    d.polygon([(cx - 200, 520), (cx - 180, 340), (cx - 90, 290), (cx + 90, 290), (cx + 180, 340), (cx + 200, 520)], fill=(96, 104, 70, 255))
+    rng = [(cx - 150, 400), (cx - 60, 460), (cx + 40, 380), (cx + 120, 470), (cx - 110, 500), (cx + 150, 410)]
+    for x, y in rng:
+        d.ellipse([x - 30, y - 16, x + 30, y + 16], fill=(70, 76, 50, 255))
+    d.arc([cx - 80, 270, cx + 80, 330], 0, 180, fill=(40, 40, 44, 255), width=10)               # earmuffs around the neck
+    for s in (-1, 1):
+        d.ellipse([cx + s * 78 - 22, 280, cx + s * 78 + 22, 320], fill=(230, 120, 30, 255))
+    skin, hair, jaw = (240, 210, 186, 255), (170, 120, 70, 255), 6 * amp
+    d.polygon([(cx - 56, 200), (cx - 70, 300), (cx + 70, 300), (cx + 56, 200)], fill=hair)       # mullet, business in front
+    d.ellipse([cx - 56, 120, cx + 56, 286 + jaw], fill=skin)
+    d.chord([cx - 62, 104, cx + 62, 190], 180, 360, fill=hair)
+    _eyes(d, cx, 190, gap=26, socket=(224, 196, 172, 255))
+    d.polygon([(cx - 4, 200), (cx + 4, 200), (cx + 9, 230), (cx - 9, 230)], fill=(224, 194, 170, 255))
+    d.line([(cx - 16, 242), (cx + 16, 242)], fill=(200, 160, 120, 255), width=2)                 # the moustache attempt
+    _mouth(d, cx, 256 + jaw * 0.5, amp, w=14)
+
+
+@mask("zoomermac", tie=False)
+def zoomermac(d, amp, t):
+    """Twenty: amber shooting glasses, a long braid over one shoulder, a toque, a puffer vest over a hoodie."""
+    cx = CX
+    d.polygon([(cx - 200, 520), (cx - 180, 340), (cx - 90, 290), (cx + 90, 290), (cx + 180, 340), (cx + 200, 520)], fill=(110, 110, 120, 255))
+    d.polygon([(cx - 160, 520), (cx - 140, 350), (cx - 60, 300), (cx - 30, 520)], fill=(40, 60, 90, 255))   # puffer vest
+    d.polygon([(cx + 160, 520), (cx + 140, 350), (cx + 60, 300), (cx + 30, 520)], fill=(40, 60, 90, 255))
+    skin, hair, jaw = (226, 190, 160, 255), (60, 40, 30, 255), 6 * amp
+    d.ellipse([cx - 58, 118, cx + 58, 288 + jaw], fill=skin)
+    for k in range(6):                                                                         # braid
+        d.ellipse([cx + 40 + k * 4, 230 + k * 30, cx + 70 + k * 4, 262 + k * 30], fill=hair)
+    d.chord([cx - 64, 92, cx + 64, 196], 180, 360, fill=(190, 40, 50, 255))                     # toque
+    d.rectangle([cx - 64, 142, cx + 64, 160], fill=(220, 220, 220, 255))
+    d.rounded_rectangle([cx - 56, 176, cx + 56, 208], radius=12, fill=(240, 180, 60, 170), outline=(60, 60, 60, 255), width=3)  # amber glasses
+    d.polygon([(cx - 4, 206), (cx + 4, 206), (cx + 9, 234), (cx - 9, 234)], fill=(210, 176, 148, 255))
+    _mouth(d, cx, 256 + jaw * 0.5, amp, w=15, lip=(170, 90, 90, 255))

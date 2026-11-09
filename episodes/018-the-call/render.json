@@ -1,0 +1,18 @@
+{
+  "output": "the_call.mp4",
+  "renderer_version": "0.13.0",
+  "renderer_commit": "780184b-dirty",
+  "rendered_at": "2026-11-09T10:23:09+00:00",
+  "duration_s": 75.21,
+  "lines": 26,
+  "mask": null,
+  "cast": {
+    "TRIPP": "pundit",
+    "VIC": "vicparka",
+    "BOTH": null,
+    "TYSON": null,
+    "MARY": null,
+    "DALE": null
+  },
+  "resolution": "1280x720@30"
+}

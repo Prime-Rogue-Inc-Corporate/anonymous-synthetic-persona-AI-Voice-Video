@@ -24,6 +24,8 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 014 | [Thursday](episodes/014-thursday) | Vic flies to Cambridge Bay in costume to meet the Rangers' "secret cell" · arctic set, aurora, breath | ~4:04 |
 | 015 | [Truck Stop](episodes/015-truck-stop) | Tripp leaves the barn to meet Alberta truckers; a fictional premier listens from the next booth · diner set | ~3:40 |
 | 016 | [Range Day](episodes/016-range-day) | Vic at the Rangers' range: "MARSOC, on loan", a frozen trigger finger, borrowed mitts · arctic twilight, plates, shot/ding/laugh cues | ~2:50 |
+| 017 | [Cold Lake](episodes/017-cold-lake) | Tripp at a gun club near an air force base; two young Albertans explain who radicalized them · prairie range, jet cue | ~2:19 |
+| 018 | [The Call](episodes/018-the-call) | Vic calls Tripp; two shooting ranges, one realization · video call, duet lines | ~1:15 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
@@ -59,6 +61,7 @@ The persona's head changes per episode and moves with the voice.
 | `rangersgt`, `rangerjonah`, `rangerdoug` | red Ranger hoodies; toque and round glasses / flat-brim cap / ginger beard and striped toque | mouths open with the voice |
 | `trucker`, `truckerdarcy` | mesh cap and big beard in plaid / ponytail through a cap, sunglasses up, work jacket | mouths open with the voice |
 | `premier` | big blonde blowout, pastel blazer and brooch, eyes that drift side to side | mouth opens with the voice |
+| `zoomertyson`, `zoomermac` | mullet, ear protection round the neck, camo / amber shooting glasses, braid, toque, puffer vest | mouths open with the voice |
 
 Add one by writing a function in `persona/masks.py` decorated with `@mask("name")`. It gets the frame's voice loudness (`amp`, 0–1) and time (`t`), and draws on a 520×520 canvas with the suit's collar at y=300.
 
@@ -217,6 +220,8 @@ A projector screen whose slide changes when each phrase is spoken. `"MAP"` draws
 ### The North and the road
 
 `"set": {"arctic": {"breath": true}}` is an Arctic night with moving aurora, distant hamlet lights, a research station, a snowmobile and a sled; with `breath`, whoever is speaking puffs visible breath. `"set": {"diner": {}}` is a highway truck stop at night: panelling, a window onto idling semis, a neon EAT sign, a counter and a pie case. Pair it with `"desk"` for the booth table. On the arctic set, `"twilight": true` swaps night for a November noon (no stars), `"aurora": false` turns the lights off, and `"range": {"plates": [...]}` adds steel plates that swing on each `[ding]`; `[shot]` adds a muzzle flash at the shooter. `[laugh]` is a few people cracking up.
+
+`"set": {"prairie": {"on": true}}` is a rifle range on the prairie in November, seen from under the firing-line shelter; `[jet]` sends a fighter across the sky with a roar. A cast entry with `"duet": ["A", "B"]` (and `"mask": null`) speaks its lines in both voices at once and moves both mouths: `BOTH: Oh.`
 
 ### Verbatim episodes
 

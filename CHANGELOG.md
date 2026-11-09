@@ -10,6 +10,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
 
+### Added
+- Duets: a cast entry with `"duet": ["A", "B"]` speaks its lines in both voices at once; both figures' mouths move and neither is dimmed.
+- Prairie range set: `"set": {"prairie": {"on": true}}`.
+- Sound cue `[jet]`: a fighter passing low, drawn as a jet and contrail across the top of the frame.
+- Masks: `zoomertyson`, `zoomermac`.
+- Episode 017, *Cold Lake*: Tripp at a gun club near an air force base.
+- Episode 018, *The Call*: Vic calls Tripp from the Rangers' range. Both: "Oh. FAFO. Fuck."
+
 ## [0.13.0] - 2026-11-09
 
 ### Changed

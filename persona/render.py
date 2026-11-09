@@ -34,7 +34,7 @@ DEFAULTS = {
     "cast": {},
     "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
             "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None,
-            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None},
+            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None},
     "layout": {},
     "credits": [],
     "end_title": "EXPECT US.",
@@ -60,10 +60,10 @@ def merge(a, b):
 
 # ---------------------------------------------------------------- script
 SPEAKER = re.compile(r"^([A-Z][A-Z0-9 .'-]{0,24}):\s+(.*)$")
-CUE = re.compile(r"\[(gavel|bark|cackle|hear|cheer|slam|shot|ding|laugh)\]\s*", re.I)
+CUE = re.compile(r"\[(gavel|bark|cackle|hear|cheer|slam|shot|ding|laugh|jet)\]\s*", re.I)
 CUE_LEAD = 0.55          # seconds of room left before a gavelled line (kept for compatibility)
-CUE_LEN = {"gavel": 0.55, "bark": 0.75, "cackle": 1.45, "hear": 1.6, "cheer": 2.4, "slam": 0.7, "shot": 0.9, "ding": 0.6, "laugh": 1.7}   # room each sound effect takes on the timeline
-CUE_OWNER = {"gavel": None, "bark": "_dog", "cackle": "speaker", "hear": None, "cheer": None, "slam": None, "shot": None, "ding": None, "laugh": None}   # whose mouth moves with it
+CUE_LEN = {"gavel": 0.55, "bark": 0.75, "cackle": 1.45, "hear": 1.6, "cheer": 2.4, "slam": 0.7, "shot": 0.9, "ding": 0.6, "laugh": 1.7, "jet": 2.6}   # room each sound effect takes on the timeline
+CUE_OWNER = {"gavel": None, "bark": "_dog", "cackle": "speaker", "hear": None, "cheer": None, "slam": None, "shot": None, "ding": None, "laugh": None, "jet": None}   # whose mouth moves with it
 
 
 def strip_cues(text):
@@ -139,6 +139,26 @@ def synth(ep_dir, cfg, lines, speakers=None):
     speakers = speakers or [None] * len(lines)
     clips = []
     for i, line in enumerate(lines):
+        duet = (cfg["cast"].get(speakers[i]) or {}).get("duet") if speakers[i] else None
+        if duet:                                                   # two cast members saying the same line at once
+            parts = []
+            for j, who in enumerate(duet):
+                v, pron = voice_for(cfg, who)
+                spoken = strip_cues(line).replace('"', "")
+                for k, rep_ in pron.items():
+                    spoken = spoken.replace(k, rep_)
+                raw, part = f"{work}/raw_{i:03d}_{j}.wav", f"{work}/v_{i:03d}_{j}.wav"
+                subprocess.run(["espeak-ng", "-v", v["voice"], "-s", str(v["speed"]), "-p", str(v["pitch"]), "-w", raw, spoken], check=True)
+                subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", raw, "-af", v["filter"], "-ar", str(SR), "-ac", "1", part], check=True)
+                with wave.open(part) as w:
+                    parts.append(np.frombuffer(w.readframes(w.getnframes()), np.int16).astype(np.float32) / 32768)
+            n = max(len(x) for x in parts)
+            mix = sum(np.pad(x, (0, n - len(x))) for x in parts) * 0.75
+            clips.append(mix.astype(np.float32))
+            with wave.open(f"{work}/v_{i:03d}.wav", "w") as w:
+                w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR)
+                w.writeframes((np.clip(mix, -1, 1) * 32767).astype(np.int16).tobytes())
+            continue
         v, pron = voice_for(cfg, speakers[i])
         spoken = strip_cues(line).replace('"', "")
         for k, rep in pron.items():
@@ -267,6 +287,18 @@ def hear_hear():
     return out / (np.abs(out).max() + 1e-6) * 0.5
 
 
+def jet_pass():
+    """A fighter passing low overhead: filtered roar swelling and falling, with a Doppler-ish drop in the whine."""
+    rng = np.random.default_rng(71)
+    n = int((CUE_LEN["jet"] - 0.05) * SR); tt = np.arange(n) / SR
+    roar = gaussian_filter(rng.standard_normal(n), 2.5)
+    f = 1800 - 900 * (tt / tt[-1])
+    whine = np.sin(2 * np.pi * np.cumsum(f) / SR) * 0.15
+    env = np.exp(-((tt - 1.0) / 0.55) ** 2)
+    out = ((roar * 1.2 + whine) * env).astype(np.float32)
+    return out / np.abs(out).max() * 0.55
+
+
 def gunshot():
     """A rifle shot outdoors: a sharp crack, a low thump, and a long flat echo off open ground."""
     rng = np.random.default_rng(51)
@@ -338,7 +370,8 @@ def cheer():
 
 SFX = {"gavel": lambda: gavel_knock(), "bark": lambda: bark(), "cackle": lambda: cackle(), "hear": lambda: hear_hear(),
        "cheer": lambda: cheer(), "slam": lambda: door_slam(),
-       "shot": lambda: gunshot(), "ding": lambda: steel_ding(), "laugh": lambda: group_laugh()}
+       "shot": lambda: gunshot(), "ding": lambda: steel_ding(), "laugh": lambda: group_laugh(),
+       "jet": lambda: jet_pass()}
 
 
 def mix_audio(path, clips, starts, total, speakers=None, lines=None, block_s=60):
@@ -463,12 +496,15 @@ class Renderer:
         evs = cue_events(lines, starts, durs)
         self.shots = [(t, speakers[i]) for t, c, i in evs if c == "shot"]
         self.dings = [t for t, c, _ in evs if c == "ding"]
+        self.jets = [t for t, c, _ in evs if c == "jet"]
         sl = cfg["set"].get("slides")
         self.slides = [(self.phrase_time(p), txt) for p, txt in sl["cues"]] if sl else []
         if cfg["set"].get("chamber"):
             self.chamber_bg = chamber_backdrop(cfg["set"]["chamber"])
         if cfg["set"].get("barn"):
             self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
+        if cfg["set"].get("prairie"):
+            self.chamber_bg = prairie_backdrop(cfg["set"]["prairie"])
         if cfg["set"].get("diner"):
             self.chamber_bg = diner_backdrop(cfg["set"]["diner"])
         if cfg["set"].get("arctic"):
@@ -550,6 +586,19 @@ class Renderer:
                 s = c.get("scale", self.fig_scale); top = c.get("top", self.fig_top)
                 fx, fy = xf * W + 150 * s, top + 360 * s
                 d.polygon([(fx, fy - 14), (fx + 46, fy), (fx, fy + 14), (fx + 12, fy)], fill=(255, 230, 150))
+
+    def draw_jets(self, im, t):
+        """A fighter jet streaking across the top of the sky on each [jet]."""
+        if not self.jets:
+            return
+        d = ImageDraw.Draw(im)
+        for jt in self.jets:
+            p = (t - jt) / 2.4
+            if 0 <= p <= 1:
+                x, y = -120 + p * (W + 240), 70 + 20 * p
+                d.line([(x - 260, y + 6), (x - 20, y + 1)], fill=(230, 232, 236), width=2)      # contrail
+                d.polygon([(x, y), (x - 46, y - 4), (x - 60, y - 16), (x - 54, y), (x - 60, y + 8), (x - 46, y + 4)], fill=(80, 86, 96))
+                d.polygon([(x - 30, y), (x - 40, y - 14), (x - 34, y)], fill=(70, 76, 86))
 
     def draw_breath(self, im, fi, t):
         """Puffs of breath from whoever is speaking (cold sets)."""
@@ -872,7 +921,11 @@ class Renderer:
 
     def amp(self, speaker, fi):
         env = self.envs.get(speaker)
-        return 0.0 if env is None else float(env[min(fi, len(env) - 1)])
+        a = 0.0 if env is None else float(env[min(fi, len(env) - 1)])
+        for sp, c in self.cfg["cast"].items():                     # duets move both mouths
+            if speaker in (c.get("duet") or []) and sp in self.envs:
+                e2 = self.envs[sp]; a = max(a, float(e2[min(fi, len(e2) - 1)]))
+        return a
 
     def centered(self, layer_draw, text, font, y, fill):
         layer_draw.text(((W - font.getlength(text)) / 2, y), text, font=font, fill=fill)
@@ -936,7 +989,7 @@ class Renderer:
                 s = c.get("scale", base_scale) * (1 + 0.015 * math.sin(t * 0.4 + k * 1.7))
                 head = self.suits[m].copy()
                 MASKS[m](ImageDraw.Draw(head), self.amp(sp, fi), t + k * 0.9)
-                if duo and sp != active:                       # dim whoever isn't speaking
+                if duo and sp != active and sp not in ((cfg["cast"].get(active) or {}).get("duet") or []):   # dim whoever isn't speaking
                     r_, g_, b_, a_ = head.split()
                     dimmed = Image.merge("RGB", (r_, g_, b_)).point(lambda v: int(v * 0.62))
                     head = Image.merge("RGBA", (*dimmed.split(), a_))
@@ -967,6 +1020,7 @@ class Renderer:
             self.draw_teleprompters(im, t)
             self.draw_commons_table(im)
             self.draw_range(im, t)
+            self.draw_jets(im, t)
             self.draw_breath(im, fi, t)
             if hasattr(self, "crowd"):
                 hype = max([max(0.0, 1 - abs(t - c - 1.0) / 1.6) for c in self.cheers] + [0.0])
@@ -1115,6 +1169,34 @@ def commons_backdrop(conf):
             pts = [(far, ytop_far), (near, ytop_near), (near, ytop_near + 40), (far, ytop_far + 10)]
             d.polygon(pts, fill=(48 + k * 4, 104 - k * 6, 70 - k * 4))
             d.line(pts[:2], fill=(90, 140, 100), width=2)
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def prairie_backdrop(conf):
+    """Static rifle range on the prairie in November: a pale cold sky, a snow-dusted field, a dirt berm with paper
+    targets on frames, distance markers, and the edge of the firing-line shelter roof framing the top."""
+    conf = conf if isinstance(conf, dict) else {}
+    rng = np.random.default_rng(19)
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    for y in range(H):
+        k = y / H
+        d.line([(0, y), (W, y)], fill=(int(150 + 40 * k), int(170 + 30 * k), int(196 + 20 * k)))
+    d.polygon([(0, 380), (W, 370), (W, H), (0, H)], fill=(196, 190, 170))                 # field
+    for _ in range(500):
+        x, y = int(rng.integers(0, W)), int(rng.integers(380, H))
+        d.line([(x, y), (x + int(rng.integers(-3, 4)), y - int(rng.integers(3, 9)))], fill=(150, 136, 100))
+    d.polygon([(380, 372), (460, 330), (W - 120, 326), (W - 40, 368)], fill=(120, 96, 70))    # berm
+    for k, x in enumerate(range(520, W - 160, 110)):                                       # target frames
+        d.rectangle([x - 2, 330, x + 2, 366], fill=(110, 80, 50))
+        d.rectangle([x + 38, 330, x + 42, 366], fill=(110, 80, 50))
+        d.rectangle([x, 318, x + 40, 352], fill=(236, 232, 220))
+        for r in (14, 9, 4):
+            d.ellipse([x + 20 - r, 335 - r, x + 20 + r, 335 + r], outline=(30, 30, 30), width=2)
+    for x, label in ((300, "100"), (700, "200"), (1080, "300")):                           # distance markers
+        d.rectangle([x, 372, x + 40, 392], fill=(240, 200, 40)); d.text((x + 6, 376), label, fill=(30, 30, 30))
+    d.rectangle([0, 0, W, 40], fill=(90, 84, 76))                                          # shelter roof edge
+    for x in (60, W - 60):
+        d.rectangle([x - 10, 0, x + 10, H], fill=(110, 100, 88))
     return np.asarray(im).astype(np.float32) / 255
 
 
