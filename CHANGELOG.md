@@ -10,6 +10,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
 
+### Added
+- Community hall set: `"set": {"hall": {...}}`.
+- Masks: `minister`, `general`, `admiral`, `sofcom`, `rangerjosie`.
+- Episode 019, *The Hall* (11:15): the Minister, the Chief of the Defence Staff, the Navy and Special Forces commanders meet Mary, Josie and Jonah in Cambridge Bay. All characters fictional; facts on the end card.
+
 ## [0.14.0] - 2026-11-09
 
 ### Added

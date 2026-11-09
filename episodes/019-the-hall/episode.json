@@ -1,0 +1,279 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "the hall",
+  "cast": {
+    "MINISTER": {
+      "name": "The Hon. Gerald Pomeroy, Minister of National Defence (fictional)",
+      "mask": "minister",
+      "x": 0.08,
+      "scale": 0.46,
+      "top": 232,
+      "color": [
+        200,
+        200,
+        240
+      ],
+      "voice": {
+        "voice": "en-us+m4",
+        "speed": 166,
+        "pitch": 38,
+        "filter": "asetrate=22050*0.92,aresample=44100,atempo=1.05,aecho=0.8:0.5:40:0.2,highpass=f=90,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "GENERAL": {
+      "name": "General Raymond Tessier, Chief of the Defence Staff (fictional)",
+      "mask": "general",
+      "x": 0.205,
+      "scale": 0.46,
+      "top": 232,
+      "color": [
+        170,
+        200,
+        150
+      ],
+      "voice": {
+        "voice": "en-us+m6",
+        "speed": 148,
+        "pitch": 24,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.5:40:0.2,highpass=f=80,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "ADMIRAL": {
+      "name": "Vice-Admiral Fiona Burke, Commander of the Navy (fictional)",
+      "mask": "admiral",
+      "x": 0.33,
+      "scale": 0.46,
+      "top": 232,
+      "color": [
+        150,
+        180,
+        240
+      ],
+      "voice": {
+        "voice": "en-gb+f3",
+        "speed": 158,
+        "pitch": 44,
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.04,aecho=0.8:0.5:40:0.2,highpass=f=120,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "SOF": {
+      "name": "Commander, Special Operations Forces (name withheld; fictional)",
+      "mask": "sofcom",
+      "x": 0.455,
+      "scale": 0.46,
+      "top": 232,
+      "color": [
+        160,
+        160,
+        160
+      ],
+      "voice": {
+        "voice": "en-us+m1",
+        "speed": 140,
+        "pitch": 8,
+        "filter": "asetrate=22050*0.78,aresample=44100,atempo=1.18,aecho=0.8:0.5:40:0.2,highpass=f=70,lowpass=f=4500,volume=1.8"
+      }
+    },
+    "MARY": {
+      "name": "Mary, sergeant, Ranger patrol (fictional)",
+      "mask": "rangersgt",
+      "x": 0.635,
+      "scale": 0.46,
+      "top": 232,
+      "color": [
+        240,
+        140,
+        140
+      ],
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 150,
+        "pitch": 44,
+        "filter": "asetrate=22050*0.96,aresample=44100,atempo=1.03,aecho=0.6:0.3:20:0.1,highpass=f=120,lowpass=f=6500,volume=1.6"
+      }
+    },
+    "JOSIE": {
+      "name": "Josie, Ranger, eldest in the patrol (fictional)",
+      "mask": "rangerjosie",
+      "x": 0.765,
+      "scale": 0.46,
+      "top": 232,
+      "color": [
+        240,
+        170,
+        150
+      ],
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 136,
+        "pitch": 36,
+        "filter": "asetrate=22050*0.93,aresample=44100,atempo=1.02,aecho=0.8:0.5:40:0.2,highpass=f=110,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "JONAH": {
+      "name": "Jonah, Ranger (fictional)",
+      "mask": "rangerjonah",
+      "x": 0.895,
+      "scale": 0.46,
+      "top": 232,
+      "color": [
+        200,
+        170,
+        240
+      ],
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 150,
+        "pitch": 48,
+        "filter": "asetrate=22050*0.96,aresample=44100,atempo=1.03,aecho=0.6:0.3:20:0.1,highpass=f=100,lowpass=f=6500,volume=1.6"
+      }
+    },
+    "VIC": {
+      "name": "Vic, with the tea (fictional)",
+      "mask": "vicparka",
+      "x": 0.56,
+      "scale": 0.4,
+      "top": 300,
+      "color": [
+        240,
+        200,
+        120
+      ],
+      "voice": {
+        "voice": "en-us+m1",
+        "speed": 172,
+        "pitch": 24,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.1,aecho=0.6:0.3:20:0.1,highpass=f=80,lowpass=f=6500,volume=1.6"
+      },
+      "enter": "right",
+      "linger": 60
+    }
+  },
+  "set": {
+    "hall": {
+      "board": [
+        "SAR ROSTER - THURSDAY",
+        "Mary  Jonah  Doug  Josie",
+        "Vic (tea)",
+        "Gas: ask Doug"
+      ]
+    },
+    "table": true,
+    "slides": {
+      "x": 0.585,
+      "y": 40,
+      "w": 330,
+      "h": 170,
+      "banner": "PROTECTED B  ·  ARCTIC SECURITY",
+      "first": "AGENDA\n1. The American situation\n2. Capability\n3. Questions",
+      "cues": [
+        [
+          "The American situation.",
+          "ITEM 1\nThe American situation\n(see: Vic)"
+        ],
+        [
+          "Canada has four submarines.",
+          "SUBMARINES\nOwned: 4\nAvailable: [see admiral]"
+        ],
+        [
+          "Twelve new submarines.",
+          "NEW SUBMARINES\nUp to 12\nFirst four: 2034"
+        ],
+        [
+          "The Air Force side.",
+          "AIR\nNew long-range radar\nNew aircraft · hangars"
+        ],
+        [
+          "It's in the billions.",
+          "ARCTIC SOVEREIGNTY\nPACKAGE\n$ BILLIONS"
+        ],
+        [
+          "Does the boat start.",
+          "DOES THE BOAT START"
+        ],
+        [
+          "The equipment usage rate.",
+          "EQUIPMENT USAGE RATE\nIndex to inflation\n(recommended. again.)"
+        ],
+        [
+          "The Distant Early Warning Line.",
+          "DEW LINE, 1950s\n42 sites in Canada\nCleanup: ~$0.5B"
+        ],
+        [
+          "Let's summarize.",
+          "ACTION ITEMS\nRate · roof · radios · gas\nAsk first · clean up after"
+        ],
+        [
+          "And listen on Thursdays.",
+          "ACTION ITEMS\nRate · roof · radios · gas\nListen on Thursdays"
+        ]
+      ]
+    },
+    "chyron": {
+      "title": "IQALUKTUUTTIAQ (CAMBRIDGE BAY), NUNAVUT",
+      "sub": "THE COMMUNITY HALL  ·  THURSDAY  ·  LIVE ON THE RADIO"
+    }
+  },
+  "layout": {
+    "top": 232
+  },
+  "pronounce": {
+    "Pomeroy": "Pomm-roy",
+    "Tessier": "Tess-yay",
+    "Josie": "Joe-see",
+    "Vic.": "Vick."
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.42,
+    "after_greeting": 0.5,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "She says she liked the other one.": 1.0,
+      "The first time.": 0.9,
+      "He comes on Thursdays now.": 0.8,
+      "We are aware of the word.": 1.0,
+      "One.": 1.0,
+      "Please don't say helicopters.": 0.9,
+      "They'll be the one driving it.": 1.0,
+      "It's less than eight.": 0.7,
+      "Then I am here.": 1.0,
+      "I'll come back to that.": 0.9,
+      "then you have a press release.": 1.2,
+      "That was the defence.": 1.2,
+      "The system brought pizza.": 1.2,
+      "It's too small for a press release.": 1.2,
+      "We'll put the dump in the plan.": 1.0,
+      "Whether to shoot them.": 1.0,
+      "Longer than your government.": 1.0,
+      "Who's cleaning up after?": 1.4,
+      "It's the only question.": 1.2,
+      "Real mitts. Not American ones.": 1.0,
+      "I'm a Thursday.": 1.0,
+      "That's what a country is.": 1.4,
+      "That's how the boat works.": 1.0,
+      "The other one can come too.": 1.0
+    }
+  },
+  "light": {
+    "line": "Tell somebody where you're going.",
+    "color": [
+      255,
+      220,
+      170
+    ],
+    "ramp": 2.5,
+    "tint": [
+      0.3,
+      0.24,
+      0.14
+    ]
+  },
+  "credits": [
+    "An original sketch. Every character here is fictional; no real officials or Rangers are depicted.",
+    "Facts: one of four Victoria-class subs operational; 12 new subs chosen July 2026 (first four 2034); DEW Line: 42 Canadian sites,",
+    "~$580M cleanup with Inuit employment (DND); Ranger equipment-usage rate (NDDN recs). Previously: 014, 016, 018"
+  ],
+  "output": "the_hall.mp4"
+}
