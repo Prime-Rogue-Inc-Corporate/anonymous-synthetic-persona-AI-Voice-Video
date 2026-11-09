@@ -195,7 +195,9 @@
       "and then it's thrown away.": 0.9,
       "He grades every single one.": 1.0,
       "That is the most Canadian security breach I have ever heard of.": 1.0,
-      "I'm asking for a friend.": 1.2
+      "I'm asking for a friend.": 1.2,
+      "In Calgary.": 0.7,
+      "Ah. Him.": 0.6
     }
   },
   "light": {
