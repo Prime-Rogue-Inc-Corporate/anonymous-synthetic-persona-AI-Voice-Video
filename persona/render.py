@@ -34,7 +34,7 @@ DEFAULTS = {
     "cast": {},
     "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
             "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None,
-            "assembly": None, "commons": None},
+            "assembly": None, "commons": None, "rally": None},
     "layout": {},
     "credits": [],
     "end_title": "EXPECT US.",
@@ -60,10 +60,10 @@ def merge(a, b):
 
 # ---------------------------------------------------------------- script
 SPEAKER = re.compile(r"^([A-Z][A-Z0-9 .'-]{0,24}):\s+(.*)$")
-CUE = re.compile(r"\[(gavel|bark|cackle|hear)\]\s*", re.I)
+CUE = re.compile(r"\[(gavel|bark|cackle|hear|cheer|slam)\]\s*", re.I)
 CUE_LEAD = 0.55          # seconds of room left before a gavelled line (kept for compatibility)
-CUE_LEN = {"gavel": 0.55, "bark": 0.75, "cackle": 1.45, "hear": 1.6}   # room each sound effect takes on the timeline
-CUE_OWNER = {"gavel": None, "bark": "_dog", "cackle": "speaker", "hear": None}   # whose mouth moves with it
+CUE_LEN = {"gavel": 0.55, "bark": 0.75, "cackle": 1.45, "hear": 1.6, "cheer": 2.4, "slam": 0.7}   # room each sound effect takes on the timeline
+CUE_OWNER = {"gavel": None, "bark": "_dog", "cackle": "speaker", "hear": None, "cheer": None, "slam": None}   # whose mouth moves with it
 
 
 def strip_cues(text):
@@ -267,7 +267,39 @@ def hear_hear():
     return out / (np.abs(out).max() + 1e-6) * 0.5
 
 
-SFX = {"gavel": lambda: gavel_knock(), "bark": lambda: bark(), "cackle": lambda: cackle(), "hear": lambda: hear_hear()}
+def door_slam():
+    """A door flung open into a wall: a deep thump, a wooden crack, a short rattle."""
+    rng = np.random.default_rng(41)
+    n = int((CUE_LEN["slam"] - 0.05) * SR); tt = np.arange(n) / SR
+    thump = np.sin(2 * np.pi * 70 * tt) * np.exp(-tt * 18)
+    crack = gaussian_filter(rng.standard_normal(n), 0.8) * np.exp(-tt * 60) * 0.8
+    rattle = gaussian_filter(rng.standard_normal(n), 1.5) * (np.sin(2 * np.pi * 22 * tt) > 0.6) * np.exp(-(tt - 0.12).clip(0) * 12) * 0.25
+    out = (thump + crack + rattle).astype(np.float32)
+    return out / np.abs(out).max() * 0.6
+
+
+def cheer():
+    """An arena crowd: applause (thousands of tiny claps as shaped noise), a roar underneath, a few whoops."""
+    rng = np.random.default_rng(31)
+    n = int((CUE_LEN["cheer"] - 0.1) * SR); out = np.zeros(n, np.float32)
+    claps = np.zeros(n, np.float32)
+    idx = rng.integers(0, n - 400, 9000)
+    for i in idx:                                                      # individual claps: short noise bursts
+        claps[i:i + 220] += rng.standard_normal(220).astype(np.float32) * np.exp(-np.arange(220) / 40)
+    claps = claps - gaussian_filter(claps, 6)                          # keep it crisp
+    roar = gaussian_filter(rng.standard_normal(n).astype(np.float32), 8)
+    out = claps * 0.5 + roar * 2.5
+    for k in range(5):                                                 # whoops: rising sine glides
+        a = int(rng.uniform(0.1, 1.4) * SR); m = int(0.35 * SR); tt = np.arange(m) / SR
+        f = rng.uniform(600, 900) + 700 * tt / 0.35
+        out[a:a + m] += np.sin(2 * np.pi * np.cumsum(f) / SR).astype(np.float32) * np.hanning(m).astype(np.float32) * 0.25
+    env = np.minimum(1, np.minimum(np.arange(n) / (0.25 * SR), (n - np.arange(n)) / (0.7 * SR))).astype(np.float32)
+    out *= env
+    return out / (np.abs(out).max() + 1e-6) * 0.42
+
+
+SFX = {"gavel": lambda: gavel_knock(), "bark": lambda: bark(), "cackle": lambda: cackle(), "hear": lambda: hear_hear(),
+       "cheer": lambda: cheer(), "slam": lambda: door_slam()}
 
 
 def mix_audio(path, clips, starts, total, speakers=None, lines=None, block_s=60):
@@ -388,10 +420,16 @@ class Renderer:
         if cfg["set"].get("corridor"):
             self.corridor = Corridor(cfg["set"]["corridor"])
         self.gavels = [t for t, c, _ in cue_events(lines, starts, durs) if c == "gavel"]
+        self.cheers = [t for t, c, _ in cue_events(lines, starts, durs) if c == "cheer"]
+        sl = cfg["set"].get("slides")
+        self.slides = [(self.phrase_time(p), txt) for p, txt in sl["cues"]] if sl else []
         if cfg["set"].get("chamber"):
             self.chamber_bg = chamber_backdrop(cfg["set"]["chamber"])
         if cfg["set"].get("barn"):
             self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
+        if cfg["set"].get("rally"):
+            self.chamber_bg = rally_backdrop(cfg["set"]["rally"])
+            self.crowd = Crowd(cfg["set"]["rally"])
         if cfg["set"].get("commons"):
             self.chamber_bg = commons_backdrop(cfg["set"]["commons"])
         if cfg["set"].get("assembly"):
@@ -424,6 +462,37 @@ class Renderer:
             if k >= 0:
                 return self.starts[i] + self.durs[i] * k / max(1, len(txt))
         raise SystemExit(f"phrase not found in script: {phrase!r}")
+
+    def draw_slides(self, im, t):
+        """A projector screen behind the table; its slide changes on phrases. A slide is lines of text joined
+        by \\n; the special slide "MAP" draws a crude map of Canada with the north shaded and an arrow."""
+        sl = self.cfg["set"].get("slides")
+        if not sl:
+            return
+        cur = sl.get("first", "")
+        for at, txt in self.slides:
+            if at is not None and t >= at:
+                cur = txt
+        d = ImageDraw.Draw(im)
+        cx, y0, w, h = sl.get("x", 0.5) * W, sl.get("y", 30), sl.get("w", 420), sl.get("h", 200)
+        x0 = cx - w / 2
+        d.rectangle([x0 - 6, y0 - 6, x0 + w + 6, y0 + h + 6], fill=(40, 40, 44))
+        d.rectangle([x0, y0, x0 + w, y0 + h], fill=(236, 238, 242))
+        d.rectangle([x0, y0, x0 + w, y0 + 22], fill=(30, 60, 130))
+        d.text((x0 + 8, y0 + 4), sl.get("banner", "UNCLASSIFIED//FOUO"), font=self.card_font, fill=(240, 240, 240))
+        if cur == "MAP":
+            pts = [(0.05, 0.75), (0.2, 0.72), (0.3, 0.8), (0.45, 0.78), (0.55, 0.86), (0.7, 0.8), (0.85, 0.86), (0.95, 0.7),
+                   (0.9, 0.5), (0.8, 0.45), (0.75, 0.25), (0.6, 0.18), (0.45, 0.3), (0.35, 0.15), (0.2, 0.2), (0.1, 0.35)]
+            P = [(x0 + 10 + px * (w - 20), y0 + 26 + py * (h - 30)) for px, py in pts]
+            d.polygon(P, fill=(200, 210, 200), outline=(80, 90, 80))
+            d.polygon([(x0 + 10 + px * (w - 20), y0 + 26 + min(py, 0.62) * (h - 30)) for px, py in pts], fill=(170, 200, 230))
+            d.line([(x0 + 10, y0 + 26 + 0.62 * (h - 30)), (x0 + w - 10, y0 + 26 + 0.62 * (h - 30))], fill=(200, 40, 40), width=2)
+            d.text((x0 + w * 0.36, y0 + 26 + 0.4 * (h - 30)), "HERE BE RANGERS", font=self.card_font, fill=(150, 30, 30))
+            d.text((x0 + w * 0.42, y0 + 26 + 0.68 * (h - 30)), "TORONTO (LUNCH)", font=self.card_font, fill=(40, 40, 60))
+        else:
+            for k, line in enumerate(cur.split("\n")):
+                f = self.chy_big if k == 0 else self.card_font
+                d.text((x0 + 16, y0 + 34 + (0 if k == 0 else 12 + k * 22)), line, font=f, fill=(30, 30, 50) if k == 0 else (60, 60, 80))
 
     def draw_escalator(self, im, t):
         """A side-wall escalator whose steps climb until it stops dead."""
@@ -749,6 +818,7 @@ class Renderer:
                 halo = halo.filter(ImageFilter.GaussianBlur(60))
                 im.paste(halo, (0, 0), halo)
             self.draw_placard(im)
+            self.draw_slides(im, t)
             self.draw_escalator(im, t)
             for k, (sp, m, xf) in enumerate(self.figures):
                 c = cfg["cast"].get(sp, {}) if sp else {}
@@ -788,6 +858,9 @@ class Renderer:
             self.draw_table(im, active)
             self.draw_teleprompters(im, t)
             self.draw_commons_table(im)
+            if hasattr(self, "crowd"):
+                hype = max([max(0.0, 1 - abs(t - c - 1.0) / 1.6) for c in self.cheers] + [0.0])
+                self.crowd.draw(im, t, hype)
             self.draw_lectern(im)
             self.draw_desk(im)
             self.draw_dog(im, fi, t)
@@ -933,6 +1006,89 @@ def commons_backdrop(conf):
             d.polygon(pts, fill=(48 + k * 4, 104 - k * 6, 70 - k * 4))
             d.line(pts[:2], fill=(90, 140, 100), width=2)
     return np.asarray(im).astype(np.float32) / 255
+
+
+def rally_backdrop(conf):
+    """Static arena rally: dark hall, truss with stage lights, a big red-and-white banner with a maple leaf and
+    a slogan, flags along the back of the stage."""
+    conf = conf if isinstance(conf, dict) else {}
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    for y in range(H):
+        k = y / H
+        d.line([(0, y), (W, y)], fill=(int(18 + 20 * k), int(18 + 14 * k), int(26 + 12 * k)))
+    d.rectangle([0, 30, W, 44], fill=(60, 62, 70))                             # lighting truss
+    for x in range(20, W, 40):
+        d.line([(x, 30), (x + 20, 44)], fill=(90, 92, 100), width=2)
+    for x in range(80, W, 160):                                                 # stage lights + beams
+        d.rectangle([x - 12, 44, x + 12, 62], fill=(30, 30, 34))
+        beam = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        ImageDraw.Draw(beam).polygon([(x - 8, 62), (x + 8, 62), (x + 120, 470), (x - 120, 470)], fill=(255, 240, 210, 18))
+        im.paste(beam, (0, 0), beam)
+    bw = int(conf.get("banner_w", 0.62) * W); bx = (W - bw) // 2                # banner
+    d.rectangle([bx, 64, bx + bw, 184], fill=(200, 30, 40))
+    d.rectangle([bx + bw // 2 - 70, 64, bx + bw // 2 + 70, 184], fill=(244, 242, 236))
+    leaf = [(0, -60), (9, -38), (19, -45), (15, -16), (35, -31), (32, -22), (52, -25), (46, -11), (57, -3),
+            (33, 13), (38, 25), (11, 20), (5, 38), (-5, 38), (-11, 20), (-38, 25), (-33, 13), (-57, -3), (-46, -11),
+            (-52, -25), (-32, -22), (-35, -31), (-15, -16), (-19, -45), (-9, -38)]
+    d.polygon([(bx + bw // 2 + x * 1.0, 128 + y * 1.0) for x, y in leaf], fill=(200, 30, 40))
+    f = ImageFont.truetype(f"{FONT_DIR}/DejaVuSans-Bold.ttf", 30)
+    for k, word in enumerate(conf.get("banner", ["STRONGER", "TOGETHER"])):
+        tx = bx + (bw // 4 if k == 0 else 3 * bw // 4) - f.getlength(word) / 2
+        d.text((tx, 106), word, font=f, fill=(244, 242, 236))
+    for x in range(40, W, 110):                                                 # flags along the stage back
+        if bx - 30 < x < bx + bw + 30:
+            continue
+        d.line([(x, 120), (x, 330)], fill=(150, 150, 156), width=3)
+        d.rectangle([x, 120, x + 60, 156], fill=(244, 242, 236))
+        d.rectangle([x, 120, x + 15, 156], fill=(200, 30, 40)); d.rectangle([x + 45, 120, x + 60, 156], fill=(200, 30, 40))
+    d.rectangle([0, 420, W, H], fill=(30, 26, 30))                              # stage front
+    d.line([(0, 420), (W, 420)], fill=(90, 80, 70), width=4)
+    return np.asarray(im).astype(np.float32) / 255
+
+
+class Crowd:
+    """Foreground crowd silhouettes along the bottom of the frame: heads, raised flags and hockey sticks.
+    They sway a little all the time and jump, wave and raise everything when hype is high (just after a [cheer])."""
+
+    def __init__(self, conf):
+        rng = np.random.default_rng(13)
+        self.people = []
+        for row, (y, sc) in enumerate(((560, 0.8), (606, 1.0), (656, 1.2))):
+            x = -20 + rng.uniform(0, 30)
+            while x < W + 40:
+                kind = rng.choice(["none", "flag", "stick", "none", "sign"])
+                self.people.append((x, y, sc, kind, rng.uniform(0, 6.28), row))
+                x += rng.uniform(46, 70) * sc
+        self.people.sort(key=lambda p: p[5])
+
+    def draw(self, im, t, hype):
+        d = ImageDraw.Draw(im)
+        for x, y, sc, kind, ph, row in self.people:
+            jump = hype * 14 * sc * max(0, math.sin(t * 9 + ph))
+            sway = 3 * math.sin(t * 1.3 + ph)
+            hx, hy = x + sway, y - 70 * sc - jump
+            shade = 46 - row * 10
+            col = (shade + 6, shade, shade + 4)
+            up = 0.25 + 0.75 * hype
+            if kind != "none":                                         # raised arm with a flag / stick / sign
+                ax, ay = hx + 26 * sc, hy - (40 + 60 * up) * sc
+                d.line([(hx + 14 * sc, hy + 30 * sc), (ax, ay)], fill=col, width=int(9 * sc))
+                if kind == "flag":
+                    wav = 6 * math.sin(t * 6 + ph)
+                    d.line([(ax, ay), (ax, ay - 60 * sc)], fill=(120, 120, 126), width=3)
+                    d.polygon([(ax, ay - 60 * sc), (ax + 50 * sc, ay - 56 * sc + wav), (ax + 50 * sc, ay - 30 * sc + wav), (ax, ay - 34 * sc)],
+                              fill=(244, 242, 236))
+                    d.polygon([(ax, ay - 60 * sc), (ax + 12 * sc, ay - 59 * sc), (ax + 12 * sc, ay - 33 * sc), (ax, ay - 34 * sc)], fill=(200, 30, 40))
+                    d.polygon([(ax + 38 * sc, ay - 57 * sc + wav), (ax + 50 * sc, ay - 56 * sc + wav), (ax + 50 * sc, ay - 30 * sc + wav),
+                               (ax + 38 * sc, ay - 31 * sc + wav)], fill=(200, 30, 40))
+                elif kind == "stick":
+                    d.line([(ax, ay + 10 * sc), (ax + 8 * sc, ay - 90 * sc)], fill=(170, 130, 80), width=int(6 * sc))
+                    d.line([(ax + 8 * sc, ay - 90 * sc), (ax + 30 * sc, ay - 96 * sc)], fill=(170, 130, 80), width=int(8 * sc))
+                else:
+                    d.rectangle([ax - 26 * sc, ay - 50 * sc, ax + 26 * sc, ay - 10 * sc], fill=(200, 30, 40))
+                    d.rectangle([ax - 20 * sc, ay - 44 * sc, ax + 20 * sc, ay - 16 * sc], outline=(244, 242, 236), width=2)
+            d.ellipse([hx - 24 * sc, hy, hx + 24 * sc, hy + 52 * sc], fill=col)          # head
+            d.rounded_rectangle([hx - 44 * sc, hy + 44 * sc, hx + 44 * sc, hy + 160 * sc], radius=int(24 * sc), fill=col)   # shoulders
 
 
 def barn_backdrop(conf):

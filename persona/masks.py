@@ -552,3 +552,95 @@ def shadow(d, amp, t):
         a = math.pi * (0.15 + 0.7 * k / 8)
         px, py = cx - 46 * math.cos(a), 300 + 26 * math.sin(a)
         d.ellipse([px - 5, py - 5, px + 5, py + 5], fill=(240, 236, 226, 255))
+
+
+@mask("maple", tie=False)
+def maple(d, amp, t):
+    """A red maple-leaf mask over a hockey sweater (no crest, no numbers): an invented rally figure, not a
+    likeness. The leaf's lower lobes part with the voice."""
+    cx = CX
+    red, dark, white = (200, 30, 40, 255), (140, 18, 26, 255), (240, 240, 236, 255)
+    # sweater over the suit: red body, white shoulder yoke stripe, lace-up collar
+    d.polygon([(cx - 190, 520), (cx - 172, 356), (cx - 70, 300), (cx + 70, 300), (cx + 172, 356), (cx + 190, 520)], fill=red)
+    d.polygon([(cx - 176, 390), (cx - 150, 350), (cx - 70, 318), (cx + 70, 318), (cx + 150, 350), (cx + 176, 390),
+               (cx + 168, 410), (cx + 140, 372), (cx + 70, 342), (cx - 70, 342), (cx - 140, 372), (cx - 168, 410)], fill=white)
+    d.rectangle([cx - 180, 470, cx + 180, 490], fill=white)
+    d.polygon([(cx - 30, 300), (cx + 30, 300), (cx, 352)], fill=dark)
+    for k in range(3):
+        y = 312 + k * 12; d.line([(cx - 12 + k * 3, y), (cx + 12 - k * 3, y + 6)], fill=white, width=2)
+    # the leaf: 11-point maple silhouette, drawn as a polygon around (cx, 200)
+    open_ = 10 * amp
+    pts = [(0, -110), (16, -70), (34, -82), (28, -30), (64, -56), (58, -40), (96, -46), (84, -20), (104, -6),
+           (60, 24), (70, 46), (20, 36 + open_), (10, 70 + open_), (-10, 70 + open_), (-20, 36 + open_), (-70, 46),
+           (-60, 24), (-104, -6), (-84, -20), (-96, -46), (-58, -40), (-64, -56), (-28, -30), (-34, -82), (-16, -70)]
+    sway = 1.5 * math.sin(t * 1.4)
+    d.polygon([(cx + x * 1.15, 196 + y * 1.15 + sway) for x, y in pts], fill=red, outline=dark)
+    d.rectangle([cx - 5, 196 + 70 * 1.15 + open_, cx + 5, 196 + 70 * 1.15 + 24 + open_], fill=dark)   # stem
+    for s in (-1, 1):                                                          # eye holes
+        d.ellipse([cx + s * 30 - 14, 176, cx + s * 30 + 14, 194], fill=(20, 10, 12, 255))
+    if amp > 0.08:                                                             # mouth slot
+        d.rectangle([cx - 20, 232, cx + 20, 238 + 12 * amp], fill=(40, 8, 12, 255))
+    else:
+        d.line([(cx - 20, 234), (cx + 20, 234)], fill=dark, width=4)
+
+
+@mask("deputy", tie=False)
+def deputy(d, amp, t):
+    """Agency deputy chief: tight low bun, rimless glasses, blazer, a lanyard with a badge turned backwards."""
+    cx = CX
+    skin, hair = (226, 196, 170, 255), (70, 52, 40, 255)
+    jaw = 6 * amp
+    d.ellipse([cx - 64, 96, cx + 64, 200], fill=hair)
+    d.ellipse([cx + 30, 200, cx + 82, 250], fill=hair)                          # bun
+    d.ellipse([cx - 58, 112, cx + 58, 290 + jaw], fill=skin)
+    d.chord([cx - 62, 100, cx + 62, 190], 180, 360, fill=hair)
+    for s in (-1, 1):
+        d.line([(cx + s * 44, 172), (cx + s * 14, 168)], fill=(80, 60, 50, 255), width=4)
+    _eyes(d, cx, 192, gap=27, socket=(206, 176, 152, 255))
+    for s in (-1, 1):
+        d.rounded_rectangle([cx + s * 27 - 19, 180, cx + s * 27 + 19, 204], radius=6, outline=(190, 190, 196, 255), width=2)
+    d.polygon([(cx - 4, 200), (cx + 4, 200), (cx + 9, 236), (cx - 9, 236)], fill=(206, 176, 152, 255))
+    _mouth(d, cx, 260 + jaw * 0.5, amp, w=16, lip=(150, 80, 80, 255))
+    d.line([(cx - 34, 300), (cx, 410), (cx + 34, 300)], fill=(30, 60, 140, 255), width=5)   # lanyard
+    d.rectangle([cx - 20, 408, cx + 20, 456], fill=(236, 236, 236, 255), outline=(120, 120, 120, 255))
+
+
+@mask("analyst", tie=False)
+def analyst(d, amp, t):
+    """Junior analyst: overgrown side-swept hair, earnest eyebrows, a quarter-zip pullover."""
+    cx = CX
+    skin, hair = (238, 214, 194, 255), (180, 140, 90, 255)
+    jaw = 6 * amp
+    d.polygon([(cx - 70, 340), (cx - 40, 300), (cx + 40, 300), (cx + 70, 340), (cx + 150, 520), (cx - 150, 520)], fill=(70, 80, 96, 255))  # quarter-zip
+    d.line([(cx, 300), (cx, 380)], fill=(190, 190, 196, 255), width=3)
+    d.ellipse([cx - 60, 110, cx + 60, 288 + jaw], fill=skin)
+    d.polygon([(cx - 64, 160), (cx - 60, 110), (cx - 10, 92), (cx + 50, 100), (cx + 72, 140), (cx + 10, 130), (cx - 40, 150)], fill=hair)
+    for s in (-1, 1):                                                         # earnest, slightly worried brows
+        d.line([(cx + s * 44, 170 + 4), (cx + s * 12, 164)], fill=(140, 100, 60, 255), width=5)
+    _eyes(d, cx, 192, gap=27, socket=(218, 194, 174, 255))
+    d.polygon([(cx - 4, 200), (cx + 4, 200), (cx + 9, 236), (cx - 9, 236)], fill=(218, 194, 174, 255))
+    _mouth(d, cx, 260 + jaw * 0.5, amp, w=15)
+
+
+@mask("caseofficer", tie=True)
+def caseofficer(d, amp, t):
+    """Old-school case officer: tinted aviators, a heavy moustache, a five-o'clock shadow, tie yanked loose,
+    a cigarette parked behind one ear."""
+    cx = CX
+    skin, hair = (214, 180, 150, 255), (40, 36, 34, 255)
+    jaw = 8 * amp
+    d.ellipse([cx - 66, 104, cx + 66, 296 + jaw], fill=skin)
+    d.chord([cx - 70, 92, cx + 70, 200], 180, 360, fill=hair)                    # thick dark hair
+    d.chord([cx - 56, 220, cx + 56, 300 + jaw], 0, 180, fill=(170, 146, 124, 255))   # stubble
+    for s in (-1, 1):                                                         # aviators
+        d.polygon([(cx + s * 8, 180), (cx + s * 58, 176), (cx + s * 54, 212), (cx + s * 30, 220), (cx + s * 12, 206)],
+                  fill=(80, 60, 30, 220), outline=(200, 170, 80, 255))
+    d.line([(cx - 8, 182), (cx + 8, 182)], fill=(200, 170, 80, 255), width=3)
+    d.polygon([(cx - 5, 206), (cx + 5, 206), (cx + 12, 240), (cx - 12, 240)], fill=(196, 160, 130, 255))
+    d.polygon([(cx - 40, 248), (cx + 40, 248), (cx + 34, 262), (cx - 34, 262)], fill=hair)  # moustache
+    my = 270 + jaw * 0.4
+    if amp > 0.08:
+        d.ellipse([cx - 18, my - 4, cx + 18, my + 4 + 12 * amp], fill=(60, 24, 24, 255))
+    d.line([(cx + 62, 150), (cx + 92, 140)], fill=(240, 236, 226, 255), width=6)   # cigarette behind the ear
+    d.line([(cx + 88, 141), (cx + 92, 140)], fill=(200, 120, 60, 255), width=6)
+    d.polygon([(cx - 20, 330), (cx + 4, 330), (cx + 20, 430), (cx + 2, 452), (cx - 14, 432)], fill=(120, 30, 34, 255))  # loose tie, askew
