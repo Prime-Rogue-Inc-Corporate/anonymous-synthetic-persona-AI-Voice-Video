@@ -10,6 +10,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
 
+### Added
+- Boardroom set: `"set": {"boardroom": {"on": true}}`.
+- Masks: `mandarin`, `deputyclerk`, `atipcoord`, `comms`, `pcoanalyst`.
+- Episode 020, *Privy Council*: Ottawa's response to the hall meeting. All characters fictional.
+
 ## [0.15.0] - 2026-11-09
 
 ### Added
