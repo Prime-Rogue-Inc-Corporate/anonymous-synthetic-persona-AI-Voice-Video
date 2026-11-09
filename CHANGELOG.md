@@ -10,6 +10,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
 
+### Changed
+- Episode 014, *Thursday*: the Rangers now make it clear they would also shoot. The lost ones get rescued; "the ones who show up shooting at the town, that's a different Thursday."
+
 ## [0.12.0] - 2026-11-09
 
 ### Added
