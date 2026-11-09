@@ -66,9 +66,18 @@ CUE_LEN = {"gavel": 0.55, "bark": 0.75, "cackle": 1.45, "hear": 1.6, "cheer": 2.
 CUE_OWNER = {"gavel": None, "bark": "_dog", "cackle": "speaker", "hear": None, "cheer": None, "slam": None, "shot": None, "ding": None, "laugh": None, "jet": None}   # whose mouth moves with it
 
 
+TRANS = re.compile(r"\s*\{=\s*(.*?)\s*\}\s*$")
+
+
 def strip_cues(text):
-    """Remove inline sound cues like [gavel] from a line (for voice and captions)."""
-    return CUE.sub("", text).strip()
+    """Remove inline sound cues like [gavel] and any trailing {= translation} from a line (for voice and captions)."""
+    return TRANS.sub("", CUE.sub("", text)).strip()
+
+
+def translation(text):
+    """The subtitle translation of a line written as `Bonjour. {= Hello.}`, or None."""
+    m = TRANS.search(CUE.sub("", text))
+    return m.group(1) if m else None
 
 
 def has_cue(text, name="gavel"):
@@ -720,6 +729,20 @@ class Renderer:
                 d.text((cx - 50, 276), "NO SIGNAL", font=self.card_font, fill=(150, 60, 60, 200))
         im.paste(layer, (0, 0), layer)
 
+    def wrap_font(self, text, font, width=None):
+        """Greedy word wrap for any font."""
+        width = width or W - 160
+        rows, cur = [], ""
+        for word in text.split():
+            trial = (cur + " " + word).strip()
+            if font.getlength(trial) > width and cur:
+                rows.append(cur); cur = word
+            else:
+                cur = trial
+        if cur:
+            rows.append(cur)
+        return rows
+
     def wrap(self, text):
         out, cur = [], ""
         for w_ in text.split():
@@ -1036,9 +1059,11 @@ class Renderer:
             ci = self.caption(t)
             if ci is not None:
                 rows = self.wrap(strip_cues(self.lines[ci]))
+                tr = translation(self.lines[ci])
+                trows = self.wrap_font(tr, self.small) if tr else []
                 sp = self.speakers[ci]
                 name = cfg["cast"][sp].get("name", sp) if duo and sp else None
-                yb = H - 40 - len(rows) * 40
+                yb = H - 40 - len(rows) * 40 - len(trows) * 28 - (8 if trows else 0)
                 band = Image.new("RGBA", (W, H), (0, 0, 0, 0))
                 ImageDraw.Draw(band).rectangle([0, yb - (46 if name else 18), W, H], fill=(0, 0, 0, 150))
                 im.paste(band, (0, 0), band)
@@ -1049,6 +1074,9 @@ class Renderer:
                     d.text(((W - self.label.getlength(label)) / 2, yb - 34), label, font=self.label, fill=col)
                 for k, row in enumerate(rows):
                     d.text(((W - self.mono.getlength(row)) / 2, yb + k * 40), row, font=self.mono, fill=(238, 238, 238))
+                ty = yb + len(rows) * 40 + 8
+                for k, row in enumerate(trows):                          # subtitle translation, smaller and dimmer
+                    d.text(((W - self.small.getlength(row)) / 2, ty + k * 28), row, font=self.small, fill=(250, 214, 120))
             if t > self.total - 4.2:
                 a = int(255 * min(1, (t - (self.total - 4.2)) / 0.5) * min(1, (self.total - t) / 0.6))
                 layer = Image.new("RGBA", (W, H), (0, 0, 0, 0)); ld = ImageDraw.Draw(layer)

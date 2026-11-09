@@ -13,6 +13,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 ### Added
 - Episode 021, *The Addresses*: a plain-language explainer, in universe, of a real complaint to the Information Commissioner about Shared Services Canada withholding its IP address allocations under ATIA 16(2)(c). Fictional characters; the complaint is real and under investigation.
 
+### Added
+- Subtitled lines: a trailing `{= translation}` is shown as a smaller gold subtitle under the caption and never spoken.
+- Episode 022, *En français*: Official Languages makes the Privy Council hold the 021 meeting again in French.
+
 ## [0.16.0] - 2026-11-09
 
 ### Added

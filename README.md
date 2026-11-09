@@ -29,6 +29,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 019 | [The Hall](episodes/019-the-hall) | The defence brass fly to Cambridge Bay on a Thursday and get a briefing from three Rangers · hall set, slides | ~11:15 |
 | 020 | [Privy Council](episodes/020-privy-council) | Meanwhile at the Privy Council Office: seven cheap commitments made on community radio, four hundred access requests, and a rich oral culture · boardroom set | ~4:53 |
 | 021 | [The Addresses](episodes/021-the-addresses) | Nathan gives the Clerk a plain-language briefing on a real access complaint about Shared Services Canada's IP address ranges, plus fantasy hockey · slides | ~8:38 |
+| 022 | [En français](episodes/022-en-francais) | Official Languages walks in: the meeting must be held again in French. Half perfect French, half joual · English subtitles | ~3:16 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
@@ -227,7 +228,7 @@ A projector screen whose slide changes when each phrase is spoken. `"MAP"` draws
 
 `"set": {"arctic": {"breath": true}}` is an Arctic night with moving aurora, distant hamlet lights, a research station, a snowmobile and a sled; with `breath`, whoever is speaking puffs visible breath. `"set": {"diner": {}}` is a highway truck stop at night: panelling, a window onto idling semis, a neon EAT sign, a counter and a pie case. Pair it with `"desk"` for the booth table. On the arctic set, `"twilight": true` swaps night for a November noon (no stars), `"aurora": false` turns the lights off, and `"range": {"plates": [...]}` adds steel plates that swing on each `[ding]`; `[shot]` adds a muzzle flash at the shooter. `[laugh]` is a few people cracking up.
 
-`"set": {"prairie": {"on": true}}` is a rifle range on the prairie in November, seen from under the firing-line shelter; `[jet]` sends a fighter across the sky with a roar. `"set": {"boardroom": {"on": true}}` is an Ottawa boardroom at dusk with a snowy view of the Hill. `"set": {"hall": {"board": ["line", ...]}}` is a northern community hall: block walls, a bingo board, a whiteboard roster, a dark window and a roof stain. A cast entry with `"duet": ["A", "B"]` (and `"mask": null`) speaks its lines in both voices at once and moves both mouths: `BOTH: Oh.`
+`"set": {"prairie": {"on": true}}` is a rifle range on the prairie in November, seen from under the firing-line shelter; `[jet]` sends a fighter across the sky with a roar. `"set": {"boardroom": {"on": true}}` is an Ottawa boardroom at dusk with a snowy view of the Hill. `"set": {"hall": {"board": ["line", ...]}}` is a northern community hall: block walls, a bingo board, a whiteboard roster, a dark window and a roof stain. End any line with `{= translation}` to speak the line as written and show the translation as a smaller gold subtitle under the caption: `NATHAN: Chu là. {= I'm in.}`. French voices are `fr-fr`, `fr-be` and `fr-ch` with the usual `+m1`…`+f5` variants. A cast entry with `"duet": ["A", "B"]` (and `"mask": null`) speaks its lines in both voices at once and moves both mouths: `BOTH: Oh.`
 
 ### Verbatim episodes
 
