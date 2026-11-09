@@ -1,0 +1,16 @@
+{
+  "output": "range_day.mp4",
+  "renderer_version": "0.12.1",
+  "renderer_commit": "f353d72-dirty",
+  "rendered_at": "2026-11-09T10:16:34+00:00",
+  "duration_s": 169.67,
+  "lines": 59,
+  "mask": null,
+  "cast": {
+    "VIC": "vicparka",
+    "MARY": "rangersgt",
+    "JONAH": "rangerjonah",
+    "DOUG": "rangerdoug"
+  },
+  "resolution": "1280x720@30"
+}

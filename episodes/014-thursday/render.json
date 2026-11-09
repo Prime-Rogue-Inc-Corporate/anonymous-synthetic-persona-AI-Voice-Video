@@ -1,10 +1,10 @@
 {
   "output": "thursday.mp4",
   "renderer_version": "0.12.1",
-  "renderer_commit": "2cab3f6",
-  "rendered_at": "2026-11-09T10:06:53+00:00",
-  "duration_s": 243.1,
-  "lines": 59,
+  "renderer_commit": "f353d72",
+  "rendered_at": "2026-11-09T10:17:07+00:00",
+  "duration_s": 243.74,
+  "lines": 60,
   "mask": null,
   "cast": {
     "VIC": "vicparka",

@@ -13,6 +13,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 ### Changed
 - Episode 014, *Thursday*: the Rangers now make it clear shooting is on the table. Everybody gets rescued first; then they stay put while the elders decide whether to shoot ("They take their time").
 
+### Added
+- Sound cues `[shot]` (rifle crack with a flat outdoor echo), `[ding]` (steel plate at distance) and `[laugh]` (a few people cracking up).
+- Arctic set options: `"twilight"`, `"aurora": false`, and `"range"` (steel plates that swing on each `[ding]`; a muzzle flash on each `[shot]`).
+- Episode 016, *Range Day*: Vic shoots with the Rangers and can't feel his finger.
+
 ## [0.12.0] - 2026-11-09
 
 ### Added
