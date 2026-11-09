@@ -11,7 +11,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - More test episodes: another historical speech or two.
 
 ### Changed
-- Episode 014, *Thursday*: the Rangers now make it clear they would also shoot. The lost ones get rescued; "the ones who show up shooting at the town, that's a different Thursday."
+- Episode 014, *Thursday*: the Rangers now make it clear shooting is on the table. Everybody gets rescued first; then they stay put while the elders decide whether to shoot ("They take their time").
 
 ## [0.12.0] - 2026-11-09
 
