@@ -1,0 +1,17 @@
+{
+  "output": "two_oh_seven.mp4",
+  "renderer_version": "0.18.0",
+  "renderer_commit": "46ef739",
+  "rendered_at": "2026-11-10T01:08:00+00:00",
+  "duration_s": 314.37,
+  "lines": 90,
+  "mask": null,
+  "cast": {
+    "CLERK": "mandarin_back",
+    "OFFICIAL": "official_back",
+    "TRIPP": "pundit",
+    "DALE": null,
+    "DALTON": "pubsafety"
+  },
+  "resolution": "1280x720@30"
+}

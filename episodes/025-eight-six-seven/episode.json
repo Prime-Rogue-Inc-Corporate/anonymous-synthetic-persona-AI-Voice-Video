@@ -1,0 +1,154 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "eight six seven",
+  "cast": {
+    "MARY": {
+      "name": "Mary, sergeant, Ranger patrol (fictional)",
+      "mask": "rangersgt",
+      "x": 0.14,
+      "scale": 0.56,
+      "top": 214,
+      "color": [
+        240,
+        140,
+        140
+      ],
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 150,
+        "pitch": 44,
+        "filter": "asetrate=22050*0.96,aresample=44100,atempo=1.03,aecho=0.6:0.3:20:0.1,highpass=f=120,lowpass=f=6500,volume=1.6"
+      }
+    },
+    "JOSIE": {
+      "name": "Josie, Ranger, eldest in the patrol (fictional)",
+      "mask": "rangerjosie",
+      "x": 0.33,
+      "scale": 0.56,
+      "top": 214,
+      "color": [
+        240,
+        170,
+        150
+      ],
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 136,
+        "pitch": 36,
+        "filter": "asetrate=22050*0.93,aresample=44100,atempo=1.02,aecho=0.8:0.5:40:0.2,highpass=f=110,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "JONAH": {
+      "name": "Jonah, Ranger (fictional)",
+      "mask": "rangerjonah",
+      "x": 0.52,
+      "scale": 0.56,
+      "top": 214,
+      "color": [
+        200,
+        170,
+        240
+      ],
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 150,
+        "pitch": 48,
+        "filter": "asetrate=22050*0.96,aresample=44100,atempo=1.03,aecho=0.6:0.3:20:0.1,highpass=f=100,lowpass=f=6500,volume=1.6"
+      }
+    },
+    "VIC": {
+      "name": "Vic, retired, Thursdays only (fictional)",
+      "mask": "vicparka",
+      "x": 0.7,
+      "scale": 0.5,
+      "top": 236,
+      "color": [
+        240,
+        200,
+        120
+      ],
+      "voice": {
+        "voice": "en-us+m1",
+        "speed": 172,
+        "pitch": 24,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.1,aecho=0.6:0.3:20:0.1,highpass=f=80,lowpass=f=6500,volume=1.6"
+      }
+    },
+    "OFFICIAL": {
+      "name": "A senior official, on the line from Ottawa (fictional)",
+      "mask": "official_back",
+      "x": 0.86,
+      "walk": true,
+      "cadence": 2.0,
+      "color": [
+        190,
+        190,
+        190
+      ],
+      "voice": {
+        "voice": "en-us+m6",
+        "speed": 146,
+        "pitch": 14,
+        "filter": "asetrate=22050*0.82,aresample=44100,atempo=1.12,aecho=0.8:0.4:25:0.15,highpass=f=70,lowpass=f=6000,volume=1.6"
+      },
+      "scale": 1.0,
+      "top": 120,
+      "screen": true,
+      "screen_label": "OTTAWA · 613 · (BACK OF HEAD)"
+    }
+  },
+  "set": {
+    "hall": {
+      "board": [
+        "SAR ROSTER - THURSDAY",
+        "Mary  Jonah  Doug  Josie",
+        "Vic (tea)",
+        "ROOF: bucket (for now)"
+      ]
+    },
+    "table": true,
+    "chyron": {
+      "title": "IQALUKTUUTTIAQ (CAMBRIDGE BAY), NUNAVUT",
+      "sub": "THE HALL  ·  OUTGOING  ·  867 → 613  ·  LIVE ON THE RADIO"
+    }
+  },
+  "layout": {
+    "top": 214
+  },
+  "pronounce": {
+    "Inuinnaqtun": "In-oo-in-nak-tun",
+    "Josie": "Joe-see"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.38,
+    "after_greeting": 0.4,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "That's intentional.": 0.7,
+      "He's shy.": 0.9,
+      "It's snowing now.": 0.8,
+      "Then we'll use the bucket a bit longer.": 1.0,
+      "But it looks very confident.": 1.0,
+      "I said that's why it works.": 1.0,
+      "Shorter.": 0.6,
+      "Much shorter.": 0.9,
+      "She's never fallen asleep during anything.": 1.0,
+      "Longer than your government.": 0.9,
+      "She'll like the char.": 1.0,
+      "And don't go alone.": 1.2,
+      "That's why you keep getting lost.": 1.2,
+      "We'll put you on the radio.": 1.0
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "credits": [
+    "An original sketch. Mary, Josie, Jonah, Vic and the official are fictional.",
+    "Area code 867: Yukon, Northwest Territories, Nunavut. 613: Ottawa.",
+    "Previously: 014 Thursday, 019 The Hall, 023 The Corridor, 024 Two Oh Seven"
+  ],
+  "output": "eight_six_seven.mp4"
+}
