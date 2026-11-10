@@ -18,11 +18,11 @@ OFFICIAL: Under their real names?
 CLERK: Under their real names. It's very Canadian.
 OFFICIAL: And he's alone out there? In Calgary?
 CLERK: He has a dog.
-DOREEN: Sir. Quick one. Official Languages. They want the third version of the meeting. In Inuinnaqtun.
+PAULINE: Sir. Crown-Indigenous Relations. Quick one. Cambridge Bay wants a version of your meeting in Inuinnaqtun.
 CLERK: Then find an interpreter.
-DOREEN: The only one available in Cambridge Bay is Mary. She's busy. She's teaching Special Forces to tie down a sled.
+PAULINE: The only one available is Mary. She's busy. She's teaching Special Forces to tie down a sled.
 CLERK: Put it in the queue.
-DOREEN: Which queue?
+PAULINE: Which queue?
 CLERK: The long one.
 LOUISE: Sir. Treasury Board. The Rangers' equipment rate.
 CLERK: I approved it on Friday.
@@ -59,11 +59,11 @@ OFFICIAL: That's good news.
 NATHAN: The recruiting website runs on a Shared Services server. It went down this morning.
 CLERK: Of course it did.
 NATHAN: The error page is only in English.
-DOREEN: I'll tell Sophie.
-CLERK: Don't tell Sophie.
-SOPHIE: Bonjour. Hi. J'ai vu la page d'erreur. {= Hello. Hi. I saw the error page.}
-CLERK: Who told her?
-SOPHIE: C'était à la radio. {= It was on the radio.}
+NATHAN: Official Languages will hear about it.
+CLERK: Don't tell Official Languages.
+MARCANDRE: Bonjour. Hi. Patrimoine canadien. J'ai vu la page d'erreur. {= Hello. Hi. Canadian Heritage. I saw the error page.}
+CLERK: Who told him?
+MARCANDRE: C'était à la radio. {= It was on the radio.}
 CLERK: Everything is on the radio.
 TREVOR: Sir. Signals side. Quick word on the man from Calgary.
 OFFICIAL: Go ahead, Trevor.
@@ -74,7 +74,9 @@ TREVOR: And the dog's name is Wilco.
 CLERK: How do you know that?
 TREVOR: The dog has a bigger online footprint than half of Cabinet, sir.
 OFFICIAL: Is the dog a national security matter?
-TREVOR: Only if he learns to code.
+TREVOR: We can neither confirm nor deny at present.
+CLERK: Off the record?
+TREVOR: We have no fucking clue, sir.
 CLERK: Did you see the game Saturday?
 TREVOR: Four to two. In Toronto.
 CLERK: Newhook, two goals. Kreider with the winner. I said it in French this morning, and it still sounded wrong.
@@ -89,14 +91,14 @@ OFFICIAL: Don't ask how they know.
 CLERK: Is that a national security matter?
 TREVOR: Only on the Slovak side.
 OFFICIAL: Minnesota on Tuesday.
-CLERK: And Ottawa on the sixth. Don't tell Sophie.
+CLERK: And Ottawa on the sixth.
 OFFICIAL: So. Let me see if I have it. The Americans are listening to community radio. Alberta is going on an American podcast. The Rangers want a roof, and the roof needs a template that doesn't exist. The kids want rifles. The recruiting site is down, in one official language. A retired spy is mailing us helicopter parts. And Official Languages wants a third language.
 CLERK: And the man from Calgary.
 OFFICIAL: And the man from Calgary. And the dog.
 CLERK: And Wilco.
 CLERK: The only thing anyone in this country agrees on this week is the Habs.
 OFFICIAL: That's not nothing.
-DOREEN: We are Anonymous.
+PAULINE: We are Anonymous.
 MARGARET: We are Legion.
 DESMOND: We do not forgive.
 NATHAN: We do not forget.

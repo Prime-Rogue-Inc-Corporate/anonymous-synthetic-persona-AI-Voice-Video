@@ -1113,3 +1113,40 @@ def tbsanalyst(d, amp, t):
         d.ellipse([cx + s * 28 - 5, 187, cx + s * 28 + 5, 197], fill=(30, 24, 20, 255))
     d.polygon([(cx - 4, 202), (cx + 4, 202), (cx + 9, 232), (cx - 9, 232)], fill=(196, 156, 126, 255))
     _mouth(d, cx, 256 + jaw * 0.5, amp, w=15, lip=(170, 80, 90, 255))
+
+
+@mask("cirnac", tie=False)
+def cirnac(d, amp, t):
+    """A director from another department: shoulder-length dark hair, rectangular glasses, a cardigan, a lanyard."""
+    cx = CX
+    d.polygon([(cx - 200, 520), (cx - 180, 340), (cx - 90, 290), (cx + 90, 290), (cx + 180, 340), (cx + 200, 520)], fill=(120, 60, 70, 255))
+    skin, hair, jaw = (200, 156, 124, 255), (36, 28, 26, 255), 6 * amp
+    d.polygon([(cx - 70, 150), (cx - 60, 100), (cx, 88), (cx + 60, 100), (cx + 70, 150), (cx + 72, 300), (cx - 72, 300)], fill=hair)
+    d.ellipse([cx - 56, 116, cx + 56, 288 + jaw], fill=skin)
+    d.chord([cx - 62, 102, cx + 62, 176], 180, 360, fill=hair)
+    for s in (-1, 1):
+        d.rectangle([cx + s * 27 - 18, 182, cx + s * 27 + 18, 204], outline=(40, 40, 44, 255), width=3)
+        d.ellipse([cx + s * 27 - 5, 188, cx + s * 27 + 5, 198], fill=(30, 22, 18, 255))
+    d.polygon([(cx - 4, 204), (cx + 4, 204), (cx + 9, 234), (cx - 9, 234)], fill=(184, 140, 110, 255))
+    _mouth(d, cx, 258 + jaw * 0.5, amp, w=15, lip=(150, 80, 80, 255))
+    d.line([(cx - 34, 300), (cx, 410), (cx + 34, 300)], fill=(30, 110, 90, 255), width=4)
+    d.rectangle([cx - 18, 408, cx + 18, 446], fill=(236, 236, 236, 255))
+
+
+@mask("heritage", tie=False)
+def heritage(d, amp, t):
+    """A policy officer from another department: a trimmed beard, round tortoiseshell glasses, a wool scarf."""
+    cx = CX
+    d.polygon([(cx - 200, 520), (cx - 180, 340), (cx - 90, 290), (cx + 90, 290), (cx + 180, 340), (cx + 200, 520)], fill=(60, 60, 70, 255))
+    skin, hair, jaw = (232, 200, 176, 255), (70, 46, 30, 255), 6 * amp
+    d.ellipse([cx - 56, 116, cx + 56, 288 + jaw], fill=skin)
+    d.chord([cx - 62, 100, cx + 62, 180], 180, 360, fill=hair)
+    d.polygon([(cx - 56, 232), (cx + 56, 232), (cx + 46, 292 + jaw), (cx - 46, 292 + jaw)], fill=hair)
+    for s in (-1, 1):
+        d.ellipse([cx + s * 26 - 17, 180, cx + s * 26 + 17, 208], outline=(120, 70, 30, 255), width=4)
+        d.ellipse([cx + s * 26 - 5, 189, cx + s * 26 + 5, 199], fill=(30, 22, 18, 255))
+    d.polygon([(cx - 4, 204), (cx + 4, 204), (cx + 9, 230), (cx - 9, 230)], fill=(214, 180, 156, 255))
+    if amp > 0.08:
+        d.ellipse([cx - 14, 250, cx + 14, 254 + 12 * amp], fill=(60, 26, 26, 255))
+    d.polygon([(cx - 80, 300), (cx + 80, 300), (cx + 70, 340), (cx - 70, 340)], fill=(170, 40, 50, 255))   # scarf
+    d.polygon([(cx + 20, 330), (cx + 50, 330), (cx + 44, 430), (cx + 16, 426)], fill=(170, 40, 50, 255))

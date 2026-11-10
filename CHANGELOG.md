@@ -21,7 +21,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Sound cue `[ring]` (a North American phone ring).
 - Masks: `mandarin_back`, `official_back` (back views for following characters from behind), `cseliaison`.
 - Corridor: a negative `speed` moves the hall toward the camera, for following characters from behind.
-- Mask: `tbsanalyst`.
+- Masks: `tbsanalyst`, `cirnac`, `heritage`.
 - Episode 023, *The Corridor*: a walk-and-talk followed from behind, ending on calls from Maine and the North.
 
 ## [0.16.0] - 2026-11-09

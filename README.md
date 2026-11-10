@@ -30,7 +30,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 020 | [Privy Council](episodes/020-privy-council) | Meanwhile at the Privy Council Office: seven cheap commitments made on community radio, four hundred access requests, and a rich oral culture · boardroom set | ~4:53 |
 | 021 | [The Addresses](episodes/021-the-addresses) | Nathan gives the Clerk a plain-language briefing on a real access complaint about Shared Services Canada's IP address ranges, plus fantasy hockey · slides | ~8:38 |
 | 022 | [En français](episodes/022-en-francais) | Official Languages walks in: the meeting must be held again in French. Half perfect French, half joual, then the Habs · English subtitles | ~5:46 |
-| 023 | [The Corridor](episodes/023-the-corridor) | The Clerk and an unnamed senior official, followed from behind; seven people catch them with bigger problems; two phones ring · corridor (reversed), back-view masks, ring cue | ~7:03 |
+| 023 | [The Corridor](episodes/023-the-corridor) | The Clerk and an unnamed senior official, followed from behind; seven people catch them with bigger problems; two phones ring · corridor (reversed), back-view masks, ring cue | ~7:09 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
@@ -73,6 +73,7 @@ The persona's head changes per episode and moves with the voice.
 | `mandarin_back`, `official_back` | followed from behind: silver hair and ears / grey crew cut under a fedora, coat collar up | the head nods with the voice |
 | `cseliaison` | hoodie under a blazer, one earbud, short beard, badge reel | mouth opens with the voice |
 | `tbsanalyst` | high ponytail, cat-eye glasses, a binder | mouth opens with the voice |
+| `cirnac`, `heritage` | dark hair, rectangular glasses, cardigan, lanyard / trimmed beard, tortoiseshell glasses, scarf | mouths open with the voice |
 
 Add one by writing a function in `persona/masks.py` decorated with `@mask("name")`. It gets the frame's voice loudness (`amp`, 0–1) and time (`t`), and draws on a 520×520 canvas with the suit's collar at y=300.
 

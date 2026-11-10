@@ -1,22 +1,22 @@
 {
   "output": "the_corridor.mp4",
   "renderer_version": "0.18.0",
-  "renderer_commit": "20854bc-dirty",
-  "rendered_at": "2026-11-10T00:03:42+00:00",
-  "duration_s": 423.18,
-  "lines": 110,
+  "renderer_commit": "bce1dde-dirty",
+  "rendered_at": "2026-11-10T00:17:55+00:00",
+  "duration_s": 429.47,
+  "lines": 112,
   "mask": null,
   "cast": {
     "CLERK": "mandarin_back",
     "OFFICIAL": "official_back",
-    "DOREEN": "atipcoord",
     "MARGARET": "deputyclerk",
     "DESMOND": "comms",
     "NATHAN": "pcoanalyst",
     "TREVOR": "cseliaison",
     "BOTH": null,
     "LOUISE": "tbsanalyst",
-    "SOPHIE": "deputy"
+    "PAULINE": "cirnac",
+    "MARCANDRE": "heritage"
   },
   "resolution": "1280x720@30"
 }

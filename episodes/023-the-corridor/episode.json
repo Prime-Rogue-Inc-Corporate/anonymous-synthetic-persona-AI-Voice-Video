@@ -42,28 +42,6 @@
       "scale": 1.0,
       "top": 128
     },
-    "DOREEN": {
-      "name": "Doreen, access to information (fictional)",
-      "mask": "atipcoord",
-      "x": 0.12,
-      "scale": 0.82,
-      "top": 180,
-      "color": [
-        240,
-        180,
-        200
-      ],
-      "voice": {
-        "voice": "en-us+f4",
-        "speed": 170,
-        "pitch": 56,
-        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.5:40:0.2,highpass=f=130,lowpass=f=6000,volume=1.6"
-      },
-      "walk": true,
-      "cadence": 2.3,
-      "enter": "left",
-      "linger": 1.5
-    },
     "MARGARET": {
       "name": "Margaret, Deputy Secretary to the Cabinet (fictional)",
       "mask": "deputyclerk",
@@ -187,27 +165,49 @@
         "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.4:25:0.15,highpass=f=130,lowpass=f=6000,volume=1.6"
       }
     },
-    "SOPHIE": {
+    "PAULINE": {
       "walk": true,
       "cadence": 2.3,
       "scale": 0.82,
       "top": 180,
       "linger": 1.5,
-      "name": "Sophie Lacasse, Official Languages compliance (fictional)",
-      "mask": "deputy",
+      "name": "Pauline, Crown-Indigenous Relations (fictional)",
+      "mask": "cirnac",
+      "x": 0.12,
+      "enter": "left",
       "color": [
+        230,
         170,
-        220,
-        250
+        180
       ],
       "voice": {
-        "voice": "fr-fr+f4",
-        "speed": 150,
-        "pitch": 50,
-        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.5:40:0.2,highpass=f=130,lowpass=f=6000,volume=1.6"
-      },
+        "voice": "en-us+f4",
+        "speed": 168,
+        "pitch": 46,
+        "filter": "asetrate=22050*0.96,aresample=44100,atempo=1.03,aecho=0.8:0.4:25:0.15,highpass=f=120,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "MARCANDRE": {
+      "walk": true,
+      "cadence": 2.3,
+      "scale": 0.82,
+      "top": 180,
+      "linger": 1.5,
+      "name": "Marc-André, Canadian Heritage (fictional)",
+      "mask": "heritage",
       "x": 0.12,
-      "enter": "left"
+      "enter": "left",
+      "color": [
+        240,
+        200,
+        170
+      ],
+      "voice": {
+        "voice": "fr-fr+m3",
+        "speed": 160,
+        "pitch": 40,
+        "filter": "asetrate=22050*0.93,aresample=44100,atempo=1.05,aecho=0.8:0.4:25:0.15,highpass=f=90,lowpass=f=6000,volume=1.6"
+      }
     }
   },
   "layout": {
@@ -252,7 +252,6 @@
       "The long one.": 0.7,
       "They didn't believe me.": 0.7,
       "Of course.": 0.6,
-      "Don't tell Sophie.": 0.6,
       "It's a whole culture.": 0.6,
       "it still sounded wrong.": 0.6,
       "Don't ask how they know.": 0.6,
@@ -265,8 +264,9 @@
       "We'll need the napkin in both official languages.": 1.0,
       "We don't have any helicopters either.": 1.0,
       "Everything is on the radio.": 0.8,
-      "Only if he learns to code.": 1.0,
-      "And Wilco.": 1.0
+      "And Wilco.": 1.0,
+      "We have no fucking clue, sir.": 1.1,
+      "Don't tell Official Languages.": 0.6
     }
   },
   "light": {
