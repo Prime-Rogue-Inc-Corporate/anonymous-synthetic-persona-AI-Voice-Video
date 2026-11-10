@@ -34,7 +34,7 @@ DEFAULTS = {
     "cast": {},
     "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
             "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None,
-            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None, "cabinet": None, "zoom": None, "longtable": None},
+            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None, "cabinet": None, "zoom": None, "longtable": None, "forest": None},
     "layout": {},
     "credits": [],
     "end_title": "EXPECT US.",
@@ -529,6 +529,8 @@ class Renderer:
             self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
         if cfg["set"].get("boardroom"):
             self.chamber_bg = boardroom_backdrop(cfg["set"]["boardroom"])
+        if cfg["set"].get("forest"):
+            self.chamber_bg = forest_backdrop(cfg["set"]["forest"])
         if cfg["set"].get("longtable"):
             self.chamber_bg = longtable_backdrop(cfg["set"]["longtable"])
         if cfg["set"].get("zoom"):
@@ -803,6 +805,8 @@ class Renderer:
                     cur.append(b)
             if cur: groups.append(cur)
             out[sp] = [(self.starts[g[0]] - 0.9, self.starts[g[-1]] + self.durs[g[-1]] + 1.1) for g in groups]
+            if c.get("tail"):                                         # listeners stay a little after they speak
+                out[sp] = [(a, b + float(c["tail"])) for a, b in out[sp]]
             if c.get("since") is not None and out[sp]:               # already on screen from this time (e.g. 0)
                 a, b = out[sp][0]; out[sp][0] = (min(a, float(c["since"])), b)
             if c.get("until"):                                       # stay on screen until a later phrase lands
@@ -1289,6 +1293,47 @@ def boardroom_backdrop(conf):
     d.rectangle([fx + 2, 90, fx + 82, 130], fill=(240, 240, 236))
     d.rectangle([fx + 2, 90, fx + 22, 130], fill=(200, 30, 40)); d.rectangle([fx + 62, 90, fx + 82, 130], fill=(200, 30, 40))
     d.rectangle([0, 420, W, H], fill=(40, 30, 26))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def forest_backdrop(conf):
+    """Static November forest position in eastern Latvia: low grey sky, spruce and birch, wet snow, a trench line
+    with sandbags, a camouflage net over a parked armoured vehicle, a signpost pointing east."""
+    conf = conf if isinstance(conf, dict) else {}
+    rng = np.random.default_rng(31)
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    for y in range(0, 360):
+        g = int(150 - y * 0.12); d.line([(0, y), (W, y)], fill=(g, g + 4, g + 10))
+    for layer, (col, base, hmax, n) in enumerate((((70, 82, 76), 330, 200, 34), ((44, 56, 48), 380, 260, 26), ((28, 38, 32), 430, 320, 16))):
+        for _ in range(n):
+            x = int(rng.integers(-40, W + 40)); h = int(rng.integers(hmax // 2, hmax))
+            d.polygon([(x, base - h), (x - h // 5, base), (x + h // 5, base)], fill=col)
+    for _ in range(10):                                                         # birches
+        x = int(rng.integers(0, W)); h = int(rng.integers(200, 340))
+        d.rectangle([x, 430 - h, x + 10, 430], fill=(226, 226, 220))
+        for k in range(6):
+            yy = 430 - h + k * h // 6 + 10; d.rectangle([x, yy, x + 6, yy + 4], fill=(40, 40, 40))
+    d.rectangle([0, 420, W, H], fill=(200, 200, 196))
+    for _ in range(500):
+        x, y = int(rng.integers(0, W)), int(rng.integers(420, H))
+        d.point((x, y), fill=(150, 140, 120))
+    vx = int(W * 0.66)                                                          # LAV under a net
+    d.rounded_rectangle([vx, 330, vx + 260, 410], radius=14, fill=(70, 78, 60))
+    for k in range(4):
+        d.ellipse([vx + 14 + k * 62, 392, vx + 58 + k * 62, 436], fill=(30, 30, 30))
+    d.rectangle([vx + 90, 300, vx + 170, 334], fill=(64, 72, 54)); d.line([(vx + 170, 314), (vx + 260, 306)], fill=(40, 46, 34), width=6)
+    d.polygon([(vx - 30, 300), (vx + 300, 290), (vx + 320, 400), (vx - 50, 410)], fill=(78, 90, 60))
+    for _ in range(80):
+        x, y = int(rng.integers(vx - 40, vx + 310)), int(rng.integers(292, 404))
+        d.ellipse([x - 6, y - 4, x + 6, y + 4], fill=(56, 66, 44))
+    for x in range(0, W, 46):                                                   # sandbags along the trench lip
+        d.rounded_rectangle([x, 470, x + 44, 492], radius=8, fill=(150, 138, 104), outline=(110, 100, 74))
+    d.rectangle([0, 492, W, H], fill=(70, 60, 48))
+    sx = int(W * 0.08)                                                          # the signpost
+    d.rectangle([sx, 300, sx + 8, 470], fill=(90, 70, 50))
+    d.polygon([(sx - 10, 310), (sx + 120, 310), (sx + 140, 326), (sx + 120, 342), (sx - 10, 342)], fill=(230, 220, 190))
+    f = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 16)
+    d.text((sx, 317), conf.get("sign", "AUSTRUMI  →"), font=f, fill=(40, 30, 20))
     return np.asarray(im).astype(np.float32) / 255
 
 

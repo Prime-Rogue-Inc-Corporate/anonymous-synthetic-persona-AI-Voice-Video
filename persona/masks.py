@@ -1599,3 +1599,79 @@ def ruinterp(d, amp, t):
     d.ellipse([cx + 52, 196, cx + 64, 212], fill=(30, 30, 30, 255)); d.line([(cx + 58, 212), (cx + 70, 300)], fill=(200, 200, 200, 255), width=2)
     d.polygon([(cx - 5, 204), (cx + 5, 204), (cx + 9, 230), (cx - 9, 230)], fill=(218, 186, 168, 255))
     _mouth(d, cx, 258 + jaw * 0.5, amp, w=12)
+
+
+# ---- soldiers in the field: one factory, many faces --------------------------------------------------------------
+from PIL import ImageFont as _IF
+_SLIDE_FONT = None
+
+
+def _slide_font():
+    global _SLIDE_FONT
+    if _SLIDE_FONT is None:
+        try:
+            _SLIDE_FONT = _IF.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf", 26)
+        except OSError:
+            _SLIDE_FONT = _IF.load_default()
+    return _SLIDE_FONT
+
+
+_FLAGS = {"ca": [(214, 40, 40), (250, 250, 250), (214, 40, 40)],
+          "lv": [(158, 48, 57), (250, 250, 250), (158, 48, 57)],
+          "sk": [(250, 250, 250), (11, 78, 162), (238, 28, 37)]}
+
+
+def _soldier(name, skin, rank, flag="ca", moustache=False, beard=False, glasses=False, hair=None, doc=""):
+    @mask(name, tie=None)
+    def f(d, amp, t):
+        cx = CX; jaw = 6 * amp
+        rng = np.random.default_rng(sum(map(ord, name)))
+        d.polygon([(cx - 200, 520), (cx - 180, 340), (cx - 90, 296), (cx + 90, 296), (cx + 180, 340), (cx + 200, 520)], fill=(92, 100, 74, 255))
+        for _ in range(40):                                                     # disruptive pattern, roughly
+            x, y = rng.integers(cx - 190, cx + 190), rng.integers(320, 510)
+            c = [(60, 70, 50), (120, 112, 84), (40, 44, 36)][int(rng.integers(0, 3))]
+            d.ellipse([x - 14, y - 8, x + 14, y + 8], fill=c + (255,))
+        d.rounded_rectangle([cx - 34, 360, cx + 34, 430], radius=6, fill=(70, 76, 56, 255), outline=(30, 30, 26, 255), width=2)
+        d.text((cx, 395), rank, font=_slide_font(), fill=(20, 20, 18, 255), anchor="mm")
+        for k, c in enumerate(_FLAGS[flag]):                                    # shoulder flag
+            if flag == "sk":
+                d.rectangle([cx - 170, 350 + k * 9, cx - 120, 359 + k * 9], fill=c + (255,))
+                if k == 2:                                                      # the arms: red shield, white double cross
+                    d.rounded_rectangle([cx - 162, 349, cx - 146, 371], radius=4, fill=(238, 28, 37, 255), outline=(250, 250, 250, 255))
+                    d.line([(cx - 154, 352), (cx - 154, 368)], fill=(250, 250, 250, 255), width=2)
+                    d.line([(cx - 159, 356), (cx - 149, 356)], fill=(250, 250, 250, 255), width=2)
+                    d.line([(cx - 160, 361), (cx - 148, 361)], fill=(250, 250, 250, 255), width=2)
+            else:
+                w = (12, 26, 12)[k]
+                d.rectangle([cx - 170 + sum((12, 26, 12)[:k]), 350, cx - 170 + sum((12, 26, 12)[:k + 1]), 377], fill=c + (255,))
+        d.ellipse([cx - 56, 126, cx + 56, 292 + jaw], fill=skin)
+        if hair:
+            d.rectangle([cx - 58, 160, cx - 44, 230], fill=hair); d.rectangle([cx + 44, 160, cx + 58, 230], fill=hair)
+        if beard:
+            d.chord([cx - 56, 214 + jaw, cx + 56, 300 + jaw], 0, 180, fill=(70, 50, 36, 255))
+        d.chord([cx - 82, 86, cx + 82, 236], 180, 360, fill=(84, 92, 66, 255))   # helmet
+        d.rectangle([cx - 82, 156, cx + 82, 168], fill=(70, 78, 56, 255))
+        d.line([(cx - 60, 166), (cx - 40, 286)], fill=(30, 30, 26, 255), width=3); d.line([(cx + 60, 166), (cx + 40, 286)], fill=(30, 30, 26, 255), width=3)
+        sock = tuple(max(0, v - 22) for v in skin[:3]) + (255,)
+        _eyes(d, cx, 204, gap=25, socket=sock)
+        if glasses:
+            for s in (-1, 1):
+                d.rectangle([cx + s * 25 - 16, 194, cx + s * 25 + 16, 214], outline=(30, 30, 30, 255), width=3)
+        d.polygon([(cx - 5, 212), (cx + 5, 212), (cx + 9, 238), (cx - 9, 238)], fill=sock)
+        if moustache:
+            d.chord([cx - 30, 240, cx + 30, 266], 180, 360, fill=(80, 60, 44, 255))
+        _mouth(d, cx, 262 + jaw * 0.5, amp, w=13)
+    f.__doc__ = doc
+    return f
+
+
+_soldier("pte", (240, 206, 182, 255), "PTE", doc="A private: young, cold, has a cousin who's a welder.")
+_soldier("sgt", (222, 182, 156, 255), "SGT", hair=(60, 40, 30, 255), doc="A section sergeant: dark hair under the helmet, no patience.")
+_soldier("wo", (232, 190, 166, 255), "WO", moustache=True, doc="A warrant officer from Cape Breton: the moustache is regulation and also load-bearing.")
+_soldier("lt", (236, 200, 176, 255), "LT", glasses=True, doc="A lieutenant with a political science degree and glasses.")
+_soldier("capt", (150, 104, 76, 255), "CAPT", doc="A captain: calm, quick, unimpressed by podcasts.")
+_soldier("maj", (226, 186, 160, 255), "MAJ", beard=True, doc="A major with a beard he's allowed to have.")
+_soldier("lcol", (238, 204, 184, 255), "LCOL", hair=(200, 160, 90, 255), doc="A lieutenant-colonel commanding the battle group.")
+_soldier("col", (222, 184, 160, 255), "COL", moustache=True, glasses=True, doc="The brigade commander: fourteen nations, one question.")
+_soldier("slovakcpl", (236, 200, 178, 255), "DES", flag="sk", doc="A Slovak desiatnik (corporal), cold, drinking coffee.")
+_soldier("latviansgt", (242, 214, 196, 255), "SRŽ", flag="lv", hair=(210, 180, 120, 255), doc="A Latvian seržants: blonde, entirely unconfused.")

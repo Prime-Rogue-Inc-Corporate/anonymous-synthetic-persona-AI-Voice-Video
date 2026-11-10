@@ -1,0 +1,23 @@
+{
+  "output": "the_chain.mp4",
+  "renderer_version": "0.18.0",
+  "renderer_commit": "df7f488-dirty",
+  "rendered_at": "2026-11-10T08:37:18+00:00",
+  "duration_s": 377.83,
+  "lines": 98,
+  "mask": null,
+  "cast": {
+    "SLOVAK": "slovakcpl",
+    "PTE": "pte",
+    "LATVIAN": "latviansgt",
+    "SGT": "sgt",
+    "WO": "wo",
+    "LT": "lt",
+    "CAPT": "capt",
+    "MAJ": "maj",
+    "LCOL": "lcol",
+    "COL": "col",
+    "CDS": null
+  },
+  "resolution": "1280x720@30"
+}

@@ -44,6 +44,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Set `longtable`: a state hall in one-point perspective, a very long table, receding chairs and chandeliers, and a static back of a head in the foreground (`vy`, `head_y`, `head_scale`).
 - Masks: `rugeneral`, `ruadmiral`, `ruanalyst`, `ruinterp`. Russian voices via espeak-ng `ru`.
 - Episode 030, *Длинный стол*: meanwhile, in Moscow.
+- Set `forest`: a November defensive position with spruce, birch, sandbags, a netted vehicle and a signpost east.
+- Masks: field soldiers from one factory (`pte` … `col`, `slovakcpl`, `latviansgt`).
+- Cast `tail`: a listener stays on screen a few seconds after their line.
+- Episode 031, *The Chain*: Latvia. Slovak and Latvian via espeak-ng `sk` and `lv`.
 
 ## [0.16.0] - 2026-11-09
 

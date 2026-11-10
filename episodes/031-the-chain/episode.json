@@ -1,0 +1,296 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "the chain",
+  "cast": {
+    "SLOVAK": {
+      "mask": "slovakcpl",
+      "name": "Desiatnik Marek Hudák, Slovak Army (fictional)",
+      "x": 0.1,
+      "scale": 0.5,
+      "top": 186,
+      "color": [
+        200,
+        210,
+        250
+      ],
+      "voice": {
+        "voice": "sk",
+        "speed": 150,
+        "pitch": 40,
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.053,highpass=f=90,lowpass=f=6500,volume=1.5"
+      },
+      "enter": "left",
+      "linger": 12,
+      "tail": 3.0
+    },
+    "PTE": {
+      "mask": "pte",
+      "name": "Pte. Brody Kowalchuk (fictional)",
+      "x": 0.32,
+      "scale": 0.5,
+      "top": 186,
+      "color": [
+        220,
+        230,
+        200
+      ],
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 172,
+        "pitch": 58,
+        "filter": "asetrate=22050*1.0,aresample=44100,atempo=1.0,highpass=f=90,lowpass=f=6500,volume=1.5"
+      },
+      "enter": "left",
+      "linger": 12,
+      "tail": 3.0
+    },
+    "LATVIAN": {
+      "mask": "latviansgt",
+      "name": "Seržante Ilze Kalniņa, Latvian Land Forces (fictional)",
+      "x": 0.9,
+      "scale": 0.5,
+      "top": 186,
+      "color": [
+        250,
+        200,
+        200
+      ],
+      "voice": {
+        "voice": "lv+f2",
+        "speed": 150,
+        "pitch": 50,
+        "filter": "highpass=f=90,lowpass=f=7000,volume=1.5"
+      },
+      "enter": "right",
+      "linger": 12,
+      "tail": 3.0
+    },
+    "SGT": {
+      "mask": "sgt",
+      "name": "Sgt. Renée Fortin (fictional)",
+      "x": 0.68,
+      "scale": 0.5,
+      "top": 186,
+      "color": [
+        240,
+        200,
+        170
+      ],
+      "voice": {
+        "voice": "en-us+f2",
+        "speed": 165,
+        "pitch": 46,
+        "filter": "asetrate=22050*1.0,aresample=44100,atempo=1.0,highpass=f=90,lowpass=f=6500,volume=1.5"
+      },
+      "enter": "right",
+      "linger": 12,
+      "tail": 3.0
+    },
+    "WO": {
+      "mask": "wo",
+      "name": "WO Gord MacIsaac (fictional)",
+      "x": 0.32,
+      "scale": 0.5,
+      "top": 186,
+      "color": [
+        230,
+        210,
+        170
+      ],
+      "voice": {
+        "voice": "en-gb+m3",
+        "speed": 150,
+        "pitch": 30,
+        "filter": "asetrate=22050*0.9,aresample=44100,atempo=1.111,highpass=f=90,lowpass=f=6500,volume=1.5"
+      },
+      "enter": "left",
+      "linger": 12,
+      "tail": 3.0
+    },
+    "LT": {
+      "mask": "lt",
+      "name": "Lt. Aidan Whitford (fictional)",
+      "x": 0.68,
+      "scale": 0.5,
+      "top": 186,
+      "color": [
+        200,
+        220,
+        250
+      ],
+      "voice": {
+        "voice": "en-us+m4",
+        "speed": 178,
+        "pitch": 54,
+        "filter": "asetrate=22050*1.0,aresample=44100,atempo=1.0,highpass=f=90,lowpass=f=6500,volume=1.5"
+      },
+      "enter": "right",
+      "linger": 12,
+      "tail": 3.0
+    },
+    "CAPT": {
+      "mask": "capt",
+      "name": "Capt. Simone Okoye (fictional)",
+      "x": 0.32,
+      "scale": 0.5,
+      "top": 186,
+      "color": [
+        250,
+        210,
+        230
+      ],
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 160,
+        "pitch": 44,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.031,highpass=f=90,lowpass=f=6500,volume=1.5"
+      },
+      "enter": "left",
+      "linger": 12,
+      "tail": 3.0
+    },
+    "MAJ": {
+      "mask": "maj",
+      "name": "Maj. Pierre-Luc Gagnon (fictional)",
+      "x": 0.68,
+      "scale": 0.5,
+      "top": 186,
+      "color": [
+        200,
+        240,
+        210
+      ],
+      "voice": {
+        "voice": "en-us+m6",
+        "speed": 150,
+        "pitch": 32,
+        "filter": "asetrate=22050*0.92,aresample=44100,atempo=1.087,highpass=f=90,lowpass=f=6500,volume=1.5"
+      },
+      "enter": "right",
+      "linger": 12,
+      "tail": 3.0
+    },
+    "LCOL": {
+      "mask": "lcol",
+      "name": "LCol. Dana Kostiuk, battle group commander (fictional)",
+      "x": 0.32,
+      "scale": 0.5,
+      "top": 186,
+      "color": [
+        240,
+        230,
+        180
+      ],
+      "voice": {
+        "voice": "en-us+f3",
+        "speed": 155,
+        "pitch": 40,
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.053,highpass=f=90,lowpass=f=6500,volume=1.5"
+      },
+      "enter": "left",
+      "linger": 12,
+      "tail": 3.0
+    },
+    "COL": {
+      "mask": "col",
+      "name": "Col. Malcolm Reid, brigade commander (fictional)",
+      "x": 0.68,
+      "scale": 0.5,
+      "top": 186,
+      "color": [
+        230,
+        200,
+        180
+      ],
+      "voice": {
+        "voice": "en-gb+m7",
+        "speed": 146,
+        "pitch": 26,
+        "filter": "asetrate=22050*0.88,aresample=44100,atempo=1.136,highpass=f=90,lowpass=f=6500,volume=1.5"
+      },
+      "enter": "right",
+      "linger": 12,
+      "tail": 3.0
+    },
+    "CDS": {
+      "mask": null,
+      "voice": {
+        "voice": "en-us+m6",
+        "speed": 148,
+        "pitch": 24,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.5:40:0.2,highpass=f=80,lowpass=f=6000,volume=1.6"
+      },
+      "color": [
+        170,
+        200,
+        150
+      ],
+      "name": "General Raymond Tessier, Chief of the Defence Staff, on the phone from Ottawa (fictional)"
+    }
+  },
+  "set": {
+    "forest": {
+      "sign": "AUSTRUMI  →"
+    },
+    "chyron": {
+      "title": "EASTERN LATVIA  ·  NATO MULTINATIONAL BRIGADE LATVIA (CANADA-LED)",
+      "sub": "DEFENSIVE POSITION  ·  NOVEMBER  ·  ONE QUESTION, GOING UP"
+    }
+  },
+  "layout": {
+    "top": 186,
+    "scale": 0.5
+  },
+  "pronounce": {
+    "Kowalchuk": "Kowal-chuck",
+    "MacIsaac": "Mack-Isick",
+    "Rusyn": "Roo-sin",
+    "Biscuit": "Biscuit"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.38,
+    "after_greeting": 0.4,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "That's what I'm asking.": 0.8,
+      "Ja si dám kávu.": 1.0,
+      "Thank you.": 0.8,
+      "Your cousin is a welder.": 0.7,
+      "The map is in the tent.": 0.9,
+      "She's never heard about anything.": 1.0,
+      "Nothing's complicated in a trench.": 1.0,
+      "In Latvia.": 0.9,
+      "Those are my favourite.": 0.9,
+      "Downstairs.": 1.1,
+      "and, frankly, below my dignity.": 0.8,
+      "It's been gaining rank on the way up.": 1.0,
+      "The other thirteen think it's very funny.": 1.1,
+      "The Latvians are correct. I'm calling Ottawa.": 1.2,
+      "It is three in the morning in Ottawa.": 0.8,
+      "Cold Lake.": 0.8,
+      "That's why I'm saying it twice.": 1.0,
+      "It was on the radio.": 1.4,
+      "It's a trench.": 0.8,
+      "Everything sounds true near a bar.": 1.1,
+      "From the Arctic.": 1.3,
+      "They did the genealogy.": 0.7,
+      "Napkin to follow.": 1.2,
+      "Russians, Major. Napkin to follow.": 1.2,
+      "There's a napkin.": 1.2,
+      "The napkin is bilingual.": 1.2,
+      "So. It's not complicated.": 1.2,
+      "And tell them to stop watching the dog.": 1.2
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "credits": [
+    "An original sketch. Every soldier here is fictional, and so is the Chief of the Defence Staff.",
+    "Fact: Canada has led NATO's multinational presence in Latvia since 2017, now a 14-nation brigade, extended through 2029.",
+    "Previously: 017 Cold Lake, 019 The Hall, 023 The Corridor, 026 Cabinet, 030 The Long Table"
+  ],
+  "output": "the_chain.mp4"
+}
