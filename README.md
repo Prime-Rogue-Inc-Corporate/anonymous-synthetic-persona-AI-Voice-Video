@@ -31,6 +31,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 021 | [The Addresses](episodes/021-the-addresses) | Nathan gives the Clerk a plain-language briefing on a real access complaint about Shared Services Canada's IP address ranges, plus fantasy hockey · slides | ~8:38 |
 | 022 | [En français](episodes/022-en-francais) | Official Languages walks in: the meeting must be held again in French. Half perfect French, half joual, then the Habs · English subtitles | ~5:46 |
 | 023 | [The Corridor](episodes/023-the-corridor) | The Clerk and an unnamed senior official, followed from behind; eleven people catch them with bigger problems, nobody knows where they are going, two phones ring · corridor (reversed), back-view masks, ring cue | ~10:28 |
+| 024 | [Two Oh Seven](episodes/024-two-oh-seven) | Tripp calls the Clerk from Maine about Biscuit, the premier, and the guy from Calgary; Dalton fixes it with a napkin · corridor (reversed), on-screen caller | ~5:14 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 

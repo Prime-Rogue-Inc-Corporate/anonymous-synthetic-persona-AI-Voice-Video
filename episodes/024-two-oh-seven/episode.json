@@ -1,0 +1,164 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "two oh seven",
+  "cast": {
+    "CLERK": {
+      "name": "The Clerk of the Privy Council (fictional; followed from behind)",
+      "mask": "mandarin_back",
+      "x": 0.36,
+      "scale": 0.95,
+      "top": 140,
+      "color": [
+        230,
+        210,
+        160
+      ],
+      "voice": {
+        "voice": "en-gb+m3",
+        "speed": 140,
+        "pitch": 24,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.5:40:0.2,highpass=f=80,lowpass=f=6000,volume=1.6"
+      },
+      "walk": true,
+      "cadence": 1.9
+    },
+    "OFFICIAL": {
+      "name": "A senior official (name withheld; fictional)",
+      "mask": "official_back",
+      "x": 0.56,
+      "walk": true,
+      "cadence": 2.0,
+      "color": [
+        190,
+        190,
+        190
+      ],
+      "voice": {
+        "voice": "en-us+m6",
+        "speed": 146,
+        "pitch": 14,
+        "filter": "asetrate=22050*0.82,aresample=44100,atempo=1.12,aecho=0.8:0.4:25:0.15,highpass=f=70,lowpass=f=6000,volume=1.6"
+      },
+      "scale": 1.0,
+      "top": 128,
+      "linger": 2
+    },
+    "TRIPP": {
+      "name": "Tripp Halloran, calling from the barn (fictional)",
+      "mask": "pundit",
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 166,
+        "pitch": 64,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.35:20:0.12,highpass=f=110,lowpass=f=6500,volume=1.6"
+      },
+      "color": [
+        150,
+        200,
+        130
+      ],
+      "x": 0.76,
+      "top": 150,
+      "screen": true,
+      "screen_label": "TRIPP · 207 · MAINE"
+    },
+    "DALE": {
+      "name": "Dale, producer (off camera)",
+      "mask": null,
+      "color": [
+        190,
+        190,
+        190
+      ],
+      "voice": {
+        "voice": "en-us+m6",
+        "speed": 150,
+        "pitch": 18,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.3:20:0.1,highpass=f=90,lowpass=f=5000,volume=1.4"
+      }
+    },
+    "DALTON": {
+      "walk": true,
+      "cadence": 2.3,
+      "scale": 0.82,
+      "top": 180,
+      "linger": 3,
+      "name": "Dalton, Public Safety (fictional)",
+      "mask": "pubsafety",
+      "x": 0.12,
+      "enter": "left",
+      "color": [
+        180,
+        200,
+        230
+      ],
+      "voice": {
+        "voice": "en-us+m7",
+        "speed": 164,
+        "pitch": 28,
+        "filter": "asetrate=22050*0.9,aresample=44100,atempo=1.05,aecho=0.8:0.4:25:0.15,highpass=f=80,lowpass=f=6000,volume=1.6"
+      }
+    }
+  },
+  "layout": {
+    "scale": 1.0,
+    "top": 128
+  },
+  "set": {
+    "corridor": {
+      "speed": -0.9,
+      "plaques": [
+        "80 WELLINGTON",
+        "CABINET OPERATIONS",
+        "ROOM 340-S",
+        "SECURITY & INTELLIGENCE",
+        "STAIRS B",
+        "PRESS (DO NOT)",
+        "ROOM 344",
+        "EXIT →"
+      ]
+    },
+    "chyron": {
+      "title": "PRIVY COUNCIL OFFICE  ·  OTTAWA",
+      "sub": "INCOMING  ·  207  ·  MAINE"
+    }
+  },
+  "pronounce": {
+    "Coutts": "Coots",
+    "Halloran": "Hal-o-ran"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.3,
+    "after_greeting": 0.4,
+    "after_intro": 0.5,
+    "signoff": 0.5,
+    "after": {
+      "You might know me from such things as the barn.": 0.6,
+      "That's the system.": 0.7,
+      "The moose is holding it.": 0.9,
+      "It's about my dog.": 0.8,
+      "Some taken.": 0.7,
+      "She has a podcast.": 0.8,
+      "They write none of it down.": 0.8,
+      "Since Cold Lake.": 0.8,
+      "That's diplomatic.": 0.8,
+      "Napkins and Thursdays.": 0.9,
+      "That's also the system.": 0.8,
+      "nobody in this building has the faintest idea.": 1.0,
+      "So that's a maybe.": 0.6,
+      "Especially the people who hate them.": 1.0,
+      "I miss her too.": 1.0,
+      "They want to know if we have a template for a roof.": 1.2
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "credits": [
+    "An original sketch. Tripp, Dale, Biscuit, the Clerk, the official and Dalton are fictional.",
+    "To be continued: 867.",
+    "Previously: 009 The Barn, 015 Truck Stop, 017 Cold Lake, 023 The Corridor"
+  ],
+  "output": "two_oh_seven.mp4"
+}

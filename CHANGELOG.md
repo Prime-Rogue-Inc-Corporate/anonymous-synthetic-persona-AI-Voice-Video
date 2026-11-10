@@ -23,6 +23,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Corridor: a negative `speed` moves the hall toward the camera, for following characters from behind.
 - Masks: `tbsanalyst`, `cirnac`, `heritage`, `diplomat`, `finance`, `nrcan`, `pubsafety`.
 - Episode 023, *The Corridor*: a walk-and-talk followed from behind, ending on calls from Maine and the North.
+- Episode 024, *Two Oh Seven*: the first call. Tripp, from Maine, on a monitor in the corridor.
 
 ## [0.16.0] - 2026-11-09
 
