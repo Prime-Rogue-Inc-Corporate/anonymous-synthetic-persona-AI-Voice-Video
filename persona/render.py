@@ -34,7 +34,7 @@ DEFAULTS = {
     "cast": {},
     "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
             "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None,
-            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None},
+            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None, "cabinet": None},
     "layout": {},
     "credits": [],
     "end_title": "EXPECT US.",
@@ -524,6 +524,8 @@ class Renderer:
             self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
         if cfg["set"].get("boardroom"):
             self.chamber_bg = boardroom_backdrop(cfg["set"]["boardroom"])
+        if cfg["set"].get("cabinet"):
+            self.chamber_bg = cabinet_backdrop(cfg["set"]["cabinet"])
         if cfg["set"].get("hall"):
             self.chamber_bg = hall_backdrop(cfg["set"]["hall"])
         if cfg["set"].get("prairie"):
@@ -1246,6 +1248,45 @@ def boardroom_backdrop(conf):
     d.rectangle([fx + 2, 90, fx + 82, 130], fill=(240, 240, 236))
     d.rectangle([fx + 2, 90, fx + 22, 130], fill=(200, 30, 40)); d.rectangle([fx + 62, 90, fx + 82, 130], fill=(200, 30, 40))
     d.rectangle([0, 420, W, H], fill=(40, 30, 26))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def cabinet_backdrop(conf):
+    """Static Cabinet Room: green silk walls over oak wainscot, two tall curtained windows on snow, an original
+    northern landscape in a gilt frame, and the big red leather chair at the middle of the table, empty."""
+    conf = conf if isinstance(conf, dict) else {}
+    rng = np.random.default_rng(26)
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    for x in range(0, W, 6):
+        d.line([(x, 0), (x, 300)], fill=(46 + (x // 6) % 3 * 3, 78, 62))
+    d.rectangle([0, 300, W, 430], fill=(96, 66, 40))
+    for x in range(0, W, 120):
+        d.rectangle([x + 10, 312, x + 110, 420], outline=(70, 46, 28), width=4)
+    for wx in (60, W - 300):                                                    # windows, snow
+        d.rectangle([wx, 40, wx + 240, 290], fill=(70, 86, 120))
+        for _ in range(90):
+            x, y = int(rng.integers(wx, wx + 240)), int(rng.integers(40, 290))
+            d.ellipse([x - 1, y - 1, x + 1, y + 1], fill=(235, 235, 240))
+        d.rectangle([wx, 40, wx + 240, 290], outline=(220, 214, 196), width=8)
+        d.line([(wx + 120, 40), (wx + 120, 290)], fill=(220, 214, 196), width=5)
+        for s in (-1, 1):
+            cx = wx + 120 + s * 140
+            d.polygon([(cx - 26, 20), (cx + 26, 20), (cx + 34, 300), (cx - 34, 300)], fill=(120, 30, 36))
+    px0, px1 = int(W * 0.36), int(W * 0.64)                                    # an original landscape
+    d.rectangle([px0, 46, px1, 196], fill=(190, 150, 70))
+    d.rectangle([px0 + 10, 56, px1 - 10, 186], fill=(230, 160, 90))
+    d.polygon([(px0 + 10, 186), (px0 + 90, 100), (px0 + 170, 150), (px0 + 260, 80), (px1 - 10, 140), (px1 - 10, 186)], fill=(40, 60, 90))
+    d.rectangle([px0 + 10, 160, px1 - 10, 186], fill=(70, 110, 140))
+    tx = int(W * 0.5) + 40                                                      # one wind-bent pine
+    d.line([(tx, 186), (tx + 6, 80)], fill=(30, 30, 30), width=5)
+    for k in range(5):
+        d.line([(tx + 3, 100 + k * 16), (tx + 40 - k * 4, 94 + k * 16)], fill=(30, 50, 34), width=6)
+    cx = W // 2                                                                 # the chair, empty
+    d.rounded_rectangle([cx - 70, 200, cx + 70, 440], radius=30, fill=(130, 24, 30), outline=(80, 14, 18), width=6)
+    for k in range(4):
+        for j in range(3):
+            d.ellipse([cx - 48 + j * 48 - 4, 236 + k * 44 - 4, cx - 48 + j * 48 + 4, 236 + k * 44 + 4], fill=(90, 14, 20))
+    d.rectangle([0, 430, W, H], fill=(40, 30, 26))
     return np.asarray(im).astype(np.float32) / 255
 
 

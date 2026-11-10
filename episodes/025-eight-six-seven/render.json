@@ -1,0 +1,17 @@
+{
+  "output": "eight_six_seven.mp4",
+  "renderer_version": "0.18.0",
+  "renderer_commit": "46ef739",
+  "rendered_at": "2026-11-10T01:08:53+00:00",
+  "duration_s": 284.09,
+  "lines": 76,
+  "mask": null,
+  "cast": {
+    "MARY": "rangersgt",
+    "JOSIE": "rangerjosie",
+    "JONAH": "rangerjonah",
+    "VIC": "vicparka",
+    "OFFICIAL": "official_back"
+  },
+  "resolution": "1280x720@30"
+}

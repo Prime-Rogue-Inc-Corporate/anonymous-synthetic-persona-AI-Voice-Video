@@ -24,6 +24,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Masks: `tbsanalyst`, `cirnac`, `heritage`, `diplomat`, `finance`, `nrcan`, `pubsafety`.
 - Episode 023, *The Corridor*: a walk-and-talk followed from behind, ending on calls from Maine and the North.
 - Episode 024, *Two Oh Seven*: the first call. Tripp, from Maine, on a monitor in the corridor.
+- Episode 025, *Eight Six Seven*: the second call. Cambridge Bay, live on the community radio.
+- Set `cabinet`: green silk, two snowy windows, an original northern landscape, and an empty red chair.
+- Masks: `dpm`, `finmin`, `psmin`, `cirnacmin`.
+- Episode 026, *Cabinet*: the Cabinet meets without the Prime Minister and answers item one on a napkin.
 
 ## [0.16.0] - 2026-11-09
 

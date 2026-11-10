@@ -1,0 +1,21 @@
+{
+  "output": "cabinet.mp4",
+  "renderer_version": "0.18.0",
+  "renderer_commit": "c9eecd4-dirty",
+  "rendered_at": "2026-11-10T01:18:08+00:00",
+  "duration_s": 463.92,
+  "lines": 123,
+  "mask": null,
+  "cast": {
+    "FINMIN": "finmin",
+    "POMEROY": "minister",
+    "DPM": "dpm",
+    "CLERK": "mandarin",
+    "ROSE": "cirnacmin",
+    "PSMIN": "psmin",
+    "JONAH": null,
+    "MARY": null,
+    "JOSIE": null
+  },
+  "resolution": "1280x720@30"
+}

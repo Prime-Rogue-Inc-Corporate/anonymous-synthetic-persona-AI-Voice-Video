@@ -1219,3 +1219,75 @@ def pubsafety(d, amp, t):
     d.ellipse([cx + 56, 196, cx + 66, 210], fill=(30, 30, 34, 255))
     for k in range(8):
         d.arc([cx + 58, 210 + k * 12, cx + 70, 224 + k * 12], 270, 90, fill=(30, 30, 34, 255), width=2)
+
+
+@mask("dpm", tie=False)
+def dpm(d, amp, t):
+    """A deputy prime minister in the chair: a silver bob, reading glasses on a chain, a pearl brooch."""
+    cx = CX
+    skin, hair, jaw = (238, 208, 190, 255), (196, 196, 202, 255), 6 * amp
+    d.chord([cx - 74, 104, cx + 74, 320], 180, 360, fill=hair)
+    d.rectangle([cx - 74, 210, cx - 52, 300], fill=hair); d.rectangle([cx + 52, 210, cx + 74, 300], fill=hair)
+    d.ellipse([cx - 58, 118, cx + 58, 290 + jaw], fill=skin)
+    d.chord([cx - 62, 110, cx + 62, 190], 180, 360, fill=hair)
+    _eyes(d, cx, 196, gap=27, socket=(222, 190, 172, 255))
+    for s in (-1, 1):
+        d.ellipse([cx + s * 27 - 18, 184, cx + s * 27 + 18, 208], outline=(120, 90, 60, 255), width=3)
+    d.line([(cx - 45, 200), (cx - 66, 300)], fill=(200, 170, 90, 255), width=2)
+    d.line([(cx + 45, 200), (cx + 66, 300)], fill=(200, 170, 90, 255), width=2)
+    d.polygon([(cx - 5, 206), (cx + 5, 206), (cx + 9, 234), (cx - 9, 234)], fill=(222, 190, 172, 255))
+    _mouth(d, cx, 260 + jaw * 0.5, amp, w=15, lip=(170, 70, 80, 255))
+    d.ellipse([cx - 82, 350, cx - 64, 368], fill=(244, 240, 230, 255), outline=(200, 190, 170, 255))
+
+
+@mask("finmin", tie=True)
+def finmin(d, amp, t):
+    """A finance minister: bald on top, a dark fringe, rimless glasses, a pocket calculator in the breast pocket."""
+    cx = CX
+    skin, jaw = (226, 188, 160, 255), 6 * amp
+    d.ellipse([cx - 62, 112, cx + 62, 292 + jaw], fill=skin)
+    for s in (-1, 1):
+        d.chord([cx + s * 60 - 14, 160, cx + s * 60 + 14, 240], 90 - s * 90, 270 - s * 90, fill=(60, 46, 40, 255))
+    _eyes(d, cx, 192, gap=28, socket=(210, 172, 146, 255))
+    for s in (-1, 1):
+        d.rounded_rectangle([cx + s * 28 - 17, 182, cx + s * 28 + 17, 204], radius=6, outline=(200, 200, 210, 255), width=2)
+    d.polygon([(cx - 6, 202), (cx + 6, 202), (cx + 11, 236), (cx - 11, 236)], fill=(210, 172, 146, 255))
+    _mouth(d, cx, 262 + jaw * 0.5, amp, w=14)
+    d.rectangle([cx + 58, 346, cx + 82, 378], fill=(40, 40, 44, 255))
+    d.rectangle([cx + 61, 349, cx + 79, 357], fill=(150, 190, 140, 255))
+
+
+@mask("psmin", tie=True)
+def psmin(d, amp, t):
+    """A public safety minister: young, slicked-back hair, very white teeth, permanently about to do a press scrum."""
+    cx = CX
+    skin, jaw = (218, 176, 142, 255), 6 * amp
+    d.ellipse([cx - 58, 116, cx + 58, 290 + jaw], fill=skin)
+    d.chord([cx - 62, 98, cx + 62, 180], 180, 360, fill=(30, 24, 22, 255))
+    for k in range(4):
+        d.arc([cx - 50 + k * 22, 104, cx - 10 + k * 22, 150], 200, 330, fill=(70, 60, 56, 255), width=2)
+    _eyes(d, cx, 192, gap=26, socket=(200, 160, 128, 255))
+    d.polygon([(cx - 5, 202), (cx + 5, 202), (cx + 10, 232), (cx - 10, 232)], fill=(200, 160, 128, 255))
+    my = 258 + jaw * 0.5
+    d.chord([cx - 24, my - 8, cx + 24, my + 10 + 10 * amp], 0, 180, fill=(250, 250, 250, 255))
+    d.arc([cx - 24, my - 8, cx + 24, my + 10 + 10 * amp], 0, 180, fill=(150, 80, 80, 255), width=3)
+
+
+@mask("cirnacmin", tie=False)
+def cirnacmin(d, amp, t):
+    """A Crown-Indigenous Relations minister: long dark braid, beaded earrings, a ribbon-skirt-trimmed blazer."""
+    cx = CX
+    skin, hair, jaw = (200, 152, 116, 255), (26, 22, 22, 255), 6 * amp
+    d.chord([cx - 66, 102, cx + 66, 260], 180, 360, fill=hair)
+    for k in range(6):
+        d.ellipse([cx + 54, 200 + k * 26, cx + 78, 228 + k * 26], fill=hair)
+    d.ellipse([cx - 58, 118, cx + 58, 290 + jaw], fill=skin)
+    d.chord([cx - 62, 108, cx + 62, 186], 180, 360, fill=hair)
+    for s in (-1, 1):
+        for k, c in enumerate([(200, 40, 50), (240, 200, 60), (40, 120, 180)]):
+            d.ellipse([cx + s * 62 - 5, 232 + k * 10, cx + s * 62 + 5, 242 + k * 10], fill=c + (255,))
+    _eyes(d, cx, 194, gap=26, socket=(182, 136, 102, 255))
+    d.polygon([(cx - 5, 204), (cx + 5, 204), (cx + 9, 232), (cx - 9, 232)], fill=(182, 136, 102, 255))
+    _mouth(d, cx, 260 + jaw * 0.5, amp, w=14)
+    for k, c in enumerate([(200, 40, 50), (240, 200, 60), (40, 120, 180), (240, 240, 240)]):
+        d.rectangle([cx - 110, 360 + k * 6, cx + 110, 364 + k * 6], fill=c + (255,))
