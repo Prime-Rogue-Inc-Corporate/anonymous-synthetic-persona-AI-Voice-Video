@@ -17,7 +17,7 @@
         "voice": "sk",
         "speed": 150,
         "pitch": 40,
-        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.053,highpass=f=90,lowpass=f=6500,volume=1.5"
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.053,highpass=f=90,lowpass=f=6500,volume=0.65"
       },
       "enter": "left",
       "linger": 12,
@@ -38,7 +38,7 @@
         "voice": "en-us+m2",
         "speed": 172,
         "pitch": 58,
-        "filter": "asetrate=22050*1.0,aresample=44100,atempo=1.0,highpass=f=90,lowpass=f=6500,volume=1.5"
+        "filter": "asetrate=22050*1.0,aresample=44100,atempo=1.0,highpass=f=90,lowpass=f=6500,volume=0.65"
       },
       "enter": "left",
       "linger": 12,
@@ -59,7 +59,7 @@
         "voice": "lv+f2",
         "speed": 150,
         "pitch": 50,
-        "filter": "highpass=f=90,lowpass=f=7000,volume=1.5"
+        "filter": "highpass=f=90,lowpass=f=7000,volume=0.65"
       },
       "enter": "right",
       "linger": 12,
@@ -80,7 +80,7 @@
         "voice": "en-us+f2",
         "speed": 165,
         "pitch": 46,
-        "filter": "asetrate=22050*1.0,aresample=44100,atempo=1.0,highpass=f=90,lowpass=f=6500,volume=1.5"
+        "filter": "asetrate=22050*1.0,aresample=44100,atempo=1.0,highpass=f=90,lowpass=f=6500,volume=0.65"
       },
       "enter": "right",
       "linger": 12,
@@ -101,7 +101,7 @@
         "voice": "en-gb+m3",
         "speed": 150,
         "pitch": 30,
-        "filter": "asetrate=22050*0.9,aresample=44100,atempo=1.111,highpass=f=90,lowpass=f=6500,volume=1.5"
+        "filter": "asetrate=22050*0.9,aresample=44100,atempo=1.111,highpass=f=90,lowpass=f=6500,volume=0.65"
       },
       "enter": "left",
       "linger": 12,
@@ -122,7 +122,7 @@
         "voice": "en-us+m4",
         "speed": 178,
         "pitch": 54,
-        "filter": "asetrate=22050*1.0,aresample=44100,atempo=1.0,highpass=f=90,lowpass=f=6500,volume=1.5"
+        "filter": "asetrate=22050*1.0,aresample=44100,atempo=1.0,highpass=f=90,lowpass=f=6500,volume=0.65"
       },
       "enter": "right",
       "linger": 12,
@@ -143,7 +143,7 @@
         "voice": "en-us+f4",
         "speed": 160,
         "pitch": 44,
-        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.031,highpass=f=90,lowpass=f=6500,volume=1.5"
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.031,highpass=f=90,lowpass=f=6500,volume=0.65"
       },
       "enter": "left",
       "linger": 12,
@@ -164,7 +164,7 @@
         "voice": "en-us+m6",
         "speed": 150,
         "pitch": 32,
-        "filter": "asetrate=22050*0.92,aresample=44100,atempo=1.087,highpass=f=90,lowpass=f=6500,volume=1.5"
+        "filter": "asetrate=22050*0.92,aresample=44100,atempo=1.087,highpass=f=90,lowpass=f=6500,volume=0.65"
       },
       "enter": "right",
       "linger": 12,
@@ -185,7 +185,7 @@
         "voice": "en-us+f3",
         "speed": 155,
         "pitch": 40,
-        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.053,highpass=f=90,lowpass=f=6500,volume=1.5"
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.053,highpass=f=90,lowpass=f=6500,volume=0.65"
       },
       "enter": "left",
       "linger": 12,
@@ -206,7 +206,7 @@
         "voice": "en-gb+m7",
         "speed": 146,
         "pitch": 26,
-        "filter": "asetrate=22050*0.88,aresample=44100,atempo=1.136,highpass=f=90,lowpass=f=6500,volume=1.5"
+        "filter": "asetrate=22050*0.88,aresample=44100,atempo=1.136,highpass=f=90,lowpass=f=6500,volume=0.65"
       },
       "enter": "right",
       "linger": 12,

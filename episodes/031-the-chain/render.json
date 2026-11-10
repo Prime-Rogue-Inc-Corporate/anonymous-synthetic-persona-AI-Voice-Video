@@ -1,8 +1,8 @@
 {
   "output": "the_chain.mp4",
   "renderer_version": "0.18.0",
-  "renderer_commit": "df7f488-dirty",
-  "rendered_at": "2026-11-10T08:37:18+00:00",
+  "renderer_commit": "33beff6",
+  "rendered_at": "2026-11-10T08:47:56+00:00",
   "duration_s": 377.83,
   "lines": 98,
   "mask": null,

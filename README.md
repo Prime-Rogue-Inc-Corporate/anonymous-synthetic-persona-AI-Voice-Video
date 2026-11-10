@@ -38,7 +38,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 028 | [Mitts](episodes/028-mitts) | Vic walks home and counts his career out loud, Paris included; a raven, a fox, a muskox and three neighbours are not impressed · arctic pan, animal masks (540p in-tree) | ~10:55 |
 | 029 | [Pendant ce temps](episodes/029-pendant-ce-temps) | Meanwhile in Quebec City: day 20 of the PQ transition, as seen by four fictional public servants; in French with subtitles · cabinet set in blue with the fleurdelisé | ~5:54 |
 | 030 | [Длинный стол / The Long Table](episodes/030-dlinnyi-stol) | Meanwhile in Moscow: four fictional briefers at the far end of a very long table report on Canada to the back of a head that never moves or speaks; in Russian with subtitles · longtable set | ~5:40 |
-| 031 | [The Chain](episodes/031-the-chain) | A trench in eastern Latvia: "Americans or Russians?" climbs from private to colonel to the CDS, and comes back down on a napkin; Slovak and Latvian partners in their own languages · forest set, field-soldier masks | ~6:54 |
+| 031 | [The Chain](episodes/031-the-chain) | A trench in eastern Latvia: "Americans or Russians?" climbs from private to colonel to the CDS, and comes back down on a napkin; Slovak and Latvian partners in their own languages · forest set, field-soldier masks | ~6:18 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
