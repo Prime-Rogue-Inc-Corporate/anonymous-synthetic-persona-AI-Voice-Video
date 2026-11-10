@@ -628,13 +628,16 @@ class Renderer:
         if not self.jets:
             return
         d = ImageDraw.Draw(im)
+        n = int(self.cfg["set"].get("jetcount", 1))                       # a formation: lead and wingmen, stepped
         for jt in self.jets:
-            p = (t - jt) / 2.4
+          for j in range(n):
+            p = (t - jt - 0.18 * j) / float(self.cfg["set"].get("jetdur", 2.4))
             if 0 <= p <= 1:
-                x, y = -120 + p * (W + 240), 70 + 20 * p
-                d.line([(x - 260, y + 6), (x - 20, y + 1)], fill=(230, 232, 236), width=2)      # contrail
-                d.polygon([(x, y), (x - 46, y - 4), (x - 60, y - 16), (x - 54, y), (x - 60, y + 8), (x - 46, y + 4)], fill=(80, 86, 96))
-                d.polygon([(x - 30, y), (x - 40, y - 14), (x - 34, y)], fill=(70, 76, 86))
+                k = float(self.cfg["set"].get("jetsize", 1.0)); y0 = float(self.cfg["set"].get("jety", 70))
+                x, y = -120 * k + p * (W + 240 * k) - 90 * k * j, y0 + 20 * p + 30 * k * j * (1 if j % 2 else -0.4)
+                d.line([(x - 260 * k, y + 6 * k), (x - 20 * k, y + 1)], fill=(230, 232, 236), width=max(2, int(2 * k)))      # contrail
+                d.polygon([(x, y), (x - 46 * k, y - 4 * k), (x - 60 * k, y - 16 * k), (x - 54 * k, y), (x - 60 * k, y + 8 * k), (x - 46 * k, y + 4 * k)], fill=(52, 58, 68))
+                d.polygon([(x - 30 * k, y), (x - 40 * k, y - 14 * k), (x - 34 * k, y)], fill=(44, 50, 60))
 
     def draw_breath(self, im, fi, t):
         """Puffs of breath from whoever is speaking (cold sets)."""

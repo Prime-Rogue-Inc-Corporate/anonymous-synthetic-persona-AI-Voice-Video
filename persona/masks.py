@@ -1644,6 +1644,11 @@ def _soldier(name, skin, rank, flag="ca", moustache=False, beard=False, glasses=
             else:
                 w = (12, 26, 12)[k]
                 d.rectangle([cx - 170 + sum((12, 26, 12)[:k]), 350, cx - 170 + sum((12, 26, 12)[:k + 1]), 377], fill=c + (255,))
+                if flag == "ca" and k == 1:                                     # the maple leaf
+                    lx, ly = cx - 145, 362
+                    leaf = [(0, -11), (3, -6), (7, -8), (5, -2), (10, -3), (8, 1), (11, 4), (4, 4), (5, 8), (1, 6),
+                            (1, 11), (-1, 11), (-1, 6), (-5, 8), (-4, 4), (-11, 4), (-8, 1), (-10, -3), (-5, -2), (-7, -8), (-3, -6)]
+                    d.polygon([(lx + a, ly + b) for a, b in leaf], fill=(214, 40, 40, 255))
         d.ellipse([cx - 56, 126, cx + 56, 292 + jaw], fill=skin)
         if hair:
             d.rectangle([cx - 58, 160, cx - 44, 230], fill=hair); d.rectangle([cx + 44, 160, cx + 58, 230], fill=hair)

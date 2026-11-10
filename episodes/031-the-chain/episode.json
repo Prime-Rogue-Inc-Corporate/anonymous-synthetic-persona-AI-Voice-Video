@@ -235,7 +235,11 @@
     "chyron": {
       "title": "EASTERN LATVIA  ·  NATO MULTINATIONAL BRIGADE LATVIA (CANADA-LED)",
       "sub": "DEFENSIVE POSITION  ·  NOVEMBER  ·  ONE QUESTION, GOING UP"
-    }
+    },
+    "jetcount": 4,
+    "jetdur": 3.6,
+    "jetsize": 1.8,
+    "jety": 150
   },
   "layout": {
     "top": 186,
@@ -281,7 +285,11 @@
       "There's a napkin.": 1.2,
       "The napkin is bilingual.": 1.2,
       "So. It's not complicated.": 1.2,
-      "And tell them to stop watching the dog.": 1.2
+      "And tell them to stop watching the dog.": 1.2,
+      "Rozlial som kávu.": 0.9,
+      "Otrdienās viņi vienmēr lido.": 1.2,
+      "Right.": 0.6,
+      "Everybody's, sir.": 0.8
     }
   },
   "light": {
@@ -289,7 +297,7 @@
   },
   "credits": [
     "An original sketch. Every soldier here is fictional, and so is the Chief of the Defence Staff.",
-    "Fact: Canada has led NATO's multinational presence in Latvia since 2017, now a 14-nation brigade, extended through 2029.",
+    "Fact: Canada has led NATO's multinational presence in Latvia since 2017, now a 14-nation brigade, extended through 2029. NATO fighters police Baltic airspace on rotation.",
     "Previously: 017 Cold Lake, 019 The Hall, 023 The Corridor, 026 Cabinet, 030 The Long Table"
   ],
   "output": "the_chain.mp4"

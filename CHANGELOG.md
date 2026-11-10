@@ -48,6 +48,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Masks: field soldiers from one factory (`pte` … `col`, `slovakcpl`, `latviansgt`).
 - Cast `tail`: a listener stays on screen a few seconds after their line.
 - Episode 031, *The Chain*: Latvia. Slovak and Latvian via espeak-ng `sk` and `lv`.
+- Canadian shoulder flags get the maple leaf; the Slovak flag gets its arms.
+- Jets: `jetcount` (formation), `jetdur`, `jetsize`, `jety`. Episode 031 gets a four-ship flyover and the brouhaha that follows.
 
 ## [0.16.0] - 2026-11-09
 
