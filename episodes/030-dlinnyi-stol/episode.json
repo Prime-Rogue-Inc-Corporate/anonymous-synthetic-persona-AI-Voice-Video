@@ -68,10 +68,10 @@
         170
       ],
       "voice": {
-        "voice": "ru+f3",
-        "speed": 160,
-        "pitch": 58,
-        "filter": "asetrate=22050*0.98,aresample=44100,atempo=1.02,aecho=0.8:0.5:60:0.12,highpass=f=90,lowpass=f=5200,volume=1.4"
+        "voice": "ru+f2",
+        "speed": 142,
+        "pitch": 52,
+        "filter": "aecho=0.8:0.5:60:0.12,highpass=f=90,lowpass=f=7000,volume=1.5"
       }
     },
     "JOSIE": {
