@@ -34,6 +34,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Set `zoom`: video-call tiles (`sigint`, `geoint`, `feed` with overhead imagery).
 - Masks: `nsasenior`, `nsajunior`, `ngaanalyst`, `ngachief`; animals `raven`, `arcticfox`, `muskox`; villagers `villagekid`, `elderisaac`, `nellie`. Masks registered with `tie=None` get no suit.
 - Cast `until`: a walk-on stays on screen until a later phrase.
+- Cast `since`: a cast member is on screen from this time (e.g. `0`) even before their first line; in 024 the official now leaves at "It's the North" and returns.
 - Arctic `pan`: the land slides past while someone walks.
 - Episode 027, *The Pass*: the American agencies watch the snowmobile.
 - Episode 028, *Mitts*: Vic's walk home, a monologue. 540p in-tree; full quality git-ignored.

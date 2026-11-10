@@ -41,7 +41,9 @@
       },
       "scale": 1.0,
       "top": 128,
-      "linger": 2
+      "linger": 2,
+      "enter": "left",
+      "since": 0
     },
     "TRIPP": {
       "name": "Tripp Halloran, calling from the barn (fictional)",

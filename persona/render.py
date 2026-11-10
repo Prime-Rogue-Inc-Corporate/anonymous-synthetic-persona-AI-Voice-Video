@@ -801,6 +801,8 @@ class Renderer:
                     cur.append(b)
             if cur: groups.append(cur)
             out[sp] = [(self.starts[g[0]] - 0.9, self.starts[g[-1]] + self.durs[g[-1]] + 1.1) for g in groups]
+            if c.get("since") is not None and out[sp]:               # already on screen from this time (e.g. 0)
+                a, b = out[sp][0]; out[sp][0] = (min(a, float(c["since"])), b)
             if c.get("until"):                                       # stay on screen until a later phrase lands
                 for ph in ([c["until"]] if isinstance(c["until"], str) else c["until"]):
                     tu = self.phrase_time(ph)
