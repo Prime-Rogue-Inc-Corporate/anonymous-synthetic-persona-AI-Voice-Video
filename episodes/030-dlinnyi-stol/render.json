@@ -1,0 +1,18 @@
+{
+  "output": "dlinnyi_stol.mp4",
+  "renderer_version": "0.18.0",
+  "renderer_commit": "e732741-dirty",
+  "rendered_at": "2026-11-10T08:08:21+00:00",
+  "duration_s": 359.5,
+  "lines": 95,
+  "mask": null,
+  "cast": {
+    "INTERP": "ruinterp",
+    "GENERAL": "rugeneral",
+    "ADMIRAL": "ruadmiral",
+    "ANALYST": "ruanalyst",
+    "JOSIE": null,
+    "MACKENZIE": null
+  },
+  "resolution": "1280x720@30"
+}

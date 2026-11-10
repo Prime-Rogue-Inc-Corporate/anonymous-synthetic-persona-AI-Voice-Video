@@ -41,6 +41,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Set `cabinet`: new options `wall` (colour), `chair` (off to drop the empty chair) and `flag: "quebec"`.
 - Masks: `sousministre`, `normand`, `felix`, `annie`.
 - Episode 029, *Pendant ce temps*: meanwhile, in Quebec City. Real results; fictional officials; no real politician speaks.
+- Set `longtable`: a state hall in one-point perspective, a very long table, receding chairs and chandeliers, and a static back of a head in the foreground (`vy`, `head_y`, `head_scale`).
+- Masks: `rugeneral`, `ruadmiral`, `ruanalyst`, `ruinterp`. Russian voices via espeak-ng `ru`.
+- Episode 030, *Длинный стол*: meanwhile, in Moscow.
 
 ## [0.16.0] - 2026-11-09
 

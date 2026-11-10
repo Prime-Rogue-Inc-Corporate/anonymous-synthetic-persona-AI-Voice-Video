@@ -34,7 +34,7 @@ DEFAULTS = {
     "cast": {},
     "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
             "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None,
-            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None, "cabinet": None, "zoom": None},
+            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None, "cabinet": None, "zoom": None, "longtable": None},
     "layout": {},
     "credits": [],
     "end_title": "EXPECT US.",
@@ -529,6 +529,8 @@ class Renderer:
             self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
         if cfg["set"].get("boardroom"):
             self.chamber_bg = boardroom_backdrop(cfg["set"]["boardroom"])
+        if cfg["set"].get("longtable"):
+            self.chamber_bg = longtable_backdrop(cfg["set"]["longtable"])
         if cfg["set"].get("zoom"):
             self.chamber_bg = zoom_backdrop(cfg["set"]["zoom"])
         if cfg["set"].get("cabinet"):
@@ -1287,6 +1289,60 @@ def boardroom_backdrop(conf):
     d.rectangle([fx + 2, 90, fx + 82, 130], fill=(240, 240, 236))
     d.rectangle([fx + 2, 90, fx + 22, 130], fill=(200, 30, 40)); d.rectangle([fx + 62, 90, fx + 82, 130], fill=(200, 30, 40))
     d.rectangle([0, 420, W, H], fill=(40, 30, 26))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def longtable_backdrop(conf):
+    """Static state hall with an absurdly long white table in one-point perspective: white walls and gold pilasters,
+    receding chandeliers, tall doors at the far end. In the foreground, the back of a head: generic, thinning, still.
+    It never moves and never speaks. The briefers stand at the far end, very small."""
+    conf = conf if isinstance(conf, dict) else {}
+    im = Image.new("RGB", (W, H), (236, 230, 216)); d = ImageDraw.Draw(im)
+    vx, vy = W // 2, int(conf.get("vy", 250))
+    for k in range(H - vy):                                                      # parquet floor
+        y = vy + k; g = 120 + int(40 * k / (H - vy))
+        d.line([(0, y), (W, y)], fill=(g, int(g * 0.72), int(g * 0.46)))
+    d.polygon([(0, 0), (vx - 170, vy - 170), (vx - 170, vy + 10), (0, H)], fill=(226, 220, 204))   # left wall
+    d.polygon([(W, 0), (vx + 170, vy - 170), (vx + 170, vy + 10), (W, H)], fill=(220, 214, 198))   # right wall
+    d.rectangle([vx - 170, vy - 170, vx + 170, vy + 10], fill=(244, 240, 228))                     # far wall
+    d.rectangle([vx - 60, vy - 140, vx + 60, vy + 10], fill=(250, 248, 240), outline=(200, 170, 80), width=4)   # doors
+    d.line([(vx, vy - 140), (vx, vy + 10)], fill=(200, 170, 80), width=3)
+    for k in range(7):                                                          # gold pilasters, receding
+        f = 0.12 + k * 0.13; f = min(f, 0.95)
+        for s in (-1, 1):
+            x = vx + s * (170 + (W / 2 - 170) * (1 - f)); w = max(3, int(30 * (1 - f)))
+            ytop = vy - 170 - (vy - 170) * (1 - f); ybot = vy + 10 + (H - vy - 10) * (1 - f)
+            d.rectangle([x - w / 2, ytop, x + w / 2, ybot], fill=(206, 172, 90))
+    for k, f in enumerate((0.85, 0.55, 0.3)):                                   # chandeliers
+        cy = vy - 150 - 60 * (1 - f); r = int(70 * (1 - f) + 14)
+        d.line([(vx, 0), (vx, cy - r)], fill=(180, 150, 70), width=2)
+        d.chord([vx - r, cy - r, vx + r, cy + r], 0, 180, fill=(250, 244, 210))
+        for j in range(9):
+            jx = vx - r + j * 2 * r / 8
+            d.line([(jx, cy), (jx, cy + r * 0.8)], fill=(255, 250, 220), width=2)
+    nl, nr = int(W * 0.1), int(W * 0.9)                                         # the table, forever
+    d.polygon([(nl, H), (vx - 34, vy + 40), (vx + 34, vy + 40), (nr, H)], fill=(248, 248, 246))
+    d.line([(nl, H), (vx - 34, vy + 40)], fill=(190, 186, 176), width=3); d.line([(nr, H), (vx + 34, vy + 40)], fill=(190, 186, 176), width=3)
+    d.polygon([(nl, H), (vx - 34, vy + 40), (vx - 34, vy + 48), (nl - 20, H)], fill=(212, 208, 198))
+    for k in range(1, 12):                                                      # chairs down both sides, receding
+        f = (k / 12) ** 0.6
+        y = H - (H - vy - 40) * f; half = (nr - vx) * (1 - f) + 34 * f
+        sz = max(4, int(46 * (1 - f)))
+        for s in (-1, 1):
+            x = vx + s * (half + sz * 0.8)
+            d.rounded_rectangle([x - sz / 2, y - sz * 2.2, x + sz / 2, y], radius=max(1, sz // 4), fill=(236, 226, 200), outline=(200, 170, 80))
+    hs = float(conf.get("head_scale", 0.7))                                     # the back of a head
+    hx, hy = vx, int(conf.get("head_y", 420))
+    def B(a, b, c, e): return [hx + a * hs, hy + b * hs, hx + c * hs, hy + e * hs]
+    d.polygon([(hx - 300 * hs, H), (hx - 200 * hs, hy + 200 * hs), (hx + 200 * hs, hy + 200 * hs), (hx + 300 * hs, H)], fill=(28, 30, 38))
+    d.rectangle(B(-60, 150, 60, 210), fill=(214, 180, 160))
+    d.polygon([(hx - 70 * hs, hy + 200 * hs), (hx, hy + 260 * hs), (hx + 70 * hs, hy + 200 * hs)], fill=(240, 240, 240))
+    for s in (-1, 1):
+        d.ellipse(B(s * 100 - 18, 60, s * 100 + 18, 120), fill=(214, 178, 158))
+    d.ellipse(B(-100, -20, 100, 190), fill=(222, 188, 168))
+    d.chord(B(-100, 40, 100, 190), 0, 180, fill=(190, 172, 150))
+    for k in range(14):
+        d.arc(B(-96 + k * 4, 30 + k * 3, 96 - k * 4, 180), 20, 160, fill=(200, 182, 160), width=1)
     return np.asarray(im).astype(np.float32) / 255
 
 
