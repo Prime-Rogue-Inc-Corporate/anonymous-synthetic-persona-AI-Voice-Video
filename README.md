@@ -37,7 +37,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 027 | [The Pass](episodes/027-the-pass) | Fort Meade and Springfield on a three-tile call watch a satellite pass over Jonah's snowmobile; has Vic gone rogue? · zoom tiles, intercepted radio | ~5:26 |
 | 028 | [Mitts](episodes/028-mitts) | Vic walks home and counts his career out loud, Paris included; a raven, a fox, a muskox and three neighbours are not impressed · arctic pan, animal masks (540p in-tree) | ~10:55 |
 | 029 | [Pendant ce temps](episodes/029-pendant-ce-temps) | Meanwhile in Quebec City: day 20 of the PQ transition, as seen by four fictional public servants; in French with subtitles · cabinet set in blue with the fleurdelisé | ~5:54 |
-| 030 | [Длинный стол / The Long Table](episodes/030-dlinnyi-stol) | Meanwhile in Moscow: four fictional briefers at the far end of a very long table report on Canada to the back of a head that never moves or speaks; in Russian with subtitles · longtable set | ~6:01 |
+| 030 | [Длинный стол / The Long Table](episodes/030-dlinnyi-stol) | Meanwhile in Moscow: four fictional briefers at the far end of a very long table report on Canada to the back of a head that never moves or speaks; in Russian with subtitles · longtable set | ~5:26 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 

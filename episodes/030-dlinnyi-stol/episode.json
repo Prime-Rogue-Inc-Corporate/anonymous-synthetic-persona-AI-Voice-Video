@@ -17,7 +17,7 @@
         "voice": "ru+m4",
         "speed": 168,
         "pitch": 52,
-        "filter": "asetrate=22050*0.96,aresample=44100,atempo=1.042,aecho=0.8:0.7:180|420:0.35|0.22,highpass=f=90,lowpass=f=5200,volume=1.7"
+        "filter": "asetrate=22050*0.96,aresample=44100,atempo=1.042,aecho=0.8:0.5:60:0.12,highpass=f=90,lowpass=f=5200,volume=1.4"
       }
     },
     "GENERAL": {
@@ -35,7 +35,7 @@
         "voice": "ru+m3",
         "speed": 132,
         "pitch": 22,
-        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.163,aecho=0.8:0.7:180|420:0.35|0.22,highpass=f=90,lowpass=f=5200,volume=1.7"
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.163,aecho=0.8:0.5:60:0.12,highpass=f=90,lowpass=f=5200,volume=1.4"
       }
     },
     "ADMIRAL": {
@@ -53,7 +53,7 @@
         "voice": "ru+m6",
         "speed": 138,
         "pitch": 30,
-        "filter": "asetrate=22050*0.9,aresample=44100,atempo=1.111,aecho=0.8:0.7:180|420:0.35|0.22,highpass=f=90,lowpass=f=5200,volume=1.7"
+        "filter": "asetrate=22050*0.9,aresample=44100,atempo=1.111,aecho=0.8:0.5:60:0.12,highpass=f=90,lowpass=f=5200,volume=1.4"
       }
     },
     "ANALYST": {
@@ -71,7 +71,7 @@
         "voice": "ru+f3",
         "speed": 160,
         "pitch": 58,
-        "filter": "asetrate=22050*0.98,aresample=44100,atempo=1.02,aecho=0.8:0.7:180|420:0.35|0.22,highpass=f=90,lowpass=f=5200,volume=1.7"
+        "filter": "asetrate=22050*0.98,aresample=44100,atempo=1.02,aecho=0.8:0.5:60:0.12,highpass=f=90,lowpass=f=5200,volume=1.4"
       }
     },
     "JOSIE": {

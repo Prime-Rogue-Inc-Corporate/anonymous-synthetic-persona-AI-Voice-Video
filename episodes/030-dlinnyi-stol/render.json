@@ -1,9 +1,9 @@
 {
   "output": "dlinnyi_stol.mp4",
   "renderer_version": "0.18.0",
-  "renderer_commit": "e732741-dirty",
-  "rendered_at": "2026-11-10T08:08:21+00:00",
-  "duration_s": 359.5,
+  "renderer_commit": "5989b25",
+  "rendered_at": "2026-11-10T08:14:18+00:00",
+  "duration_s": 326.38,
   "lines": 95,
   "mask": null,
   "cast": {
