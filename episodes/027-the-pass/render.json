@@ -1,0 +1,21 @@
+{
+  "output": "the_pass.mp4",
+  "renderer_version": "0.18.0",
+  "renderer_commit": "0e245d8-dirty",
+  "rendered_at": "2026-11-10T01:30:40+00:00",
+  "duration_s": 325.87,
+  "lines": 102,
+  "mask": null,
+  "cast": {
+    "DENISE": "nsasenior",
+    "CODY": "nsajunior",
+    "PRIYA": "ngaanalyst",
+    "RUSS": "ngachief",
+    "KYLE": null,
+    "JONAH": null,
+    "VIC": null,
+    "MARY": null,
+    "JOSIE": null
+  },
+  "resolution": "1280x720@30"
+}

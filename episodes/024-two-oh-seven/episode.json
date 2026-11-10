@@ -5,7 +5,7 @@
     "CLERK": {
       "name": "The Clerk of the Privy Council (fictional; followed from behind)",
       "mask": "mandarin_back",
-      "x": 0.36,
+      "x": 0.16,
       "scale": 0.95,
       "top": 140,
       "color": [
@@ -25,7 +25,7 @@
     "OFFICIAL": {
       "name": "A senior official (name withheld; fictional)",
       "mask": "official_back",
-      "x": 0.56,
+      "x": 0.34,
       "walk": true,
       "cadence": 2.0,
       "color": [
@@ -59,8 +59,7 @@
       ],
       "x": 0.76,
       "top": 150,
-      "screen": true,
-      "screen_label": "TRIPP · 207 · MAINE"
+      "scale": 0.66
     },
     "DALE": {
       "name": "Dale, producer (off camera)",
@@ -85,7 +84,7 @@
       "linger": 3,
       "name": "Dalton, Public Safety (fictional)",
       "mask": "pubsafety",
-      "x": 0.12,
+      "x": 0.26,
       "enter": "left",
       "color": [
         180,
@@ -119,8 +118,30 @@
       ]
     },
     "chyron": {
-      "title": "PRIVY COUNCIL OFFICE  ·  OTTAWA",
-      "sub": "INCOMING  ·  207  ·  MAINE"
+      "title": "PRIVY COUNCIL OFFICE  ·  OTTAWA     |     THE TRIPP HALLORAN SHOW  ·  MAINE",
+      "sub": "INCOMING  ·  207 → 613  ·  SPLIT SCREEN"
+    },
+    "split": {
+      "x": 0.52,
+      "right": "barn",
+      "conf": {
+        "headshot_caption": "PRIME TIME",
+        "moose_x": 0.88,
+        "frame_x": 0.58,
+        "window_x": 0.6,
+        "shelf_x": 0.9,
+        "lantern_x": 0.76
+      }
+    },
+    "desk": {
+      "x": 0.76,
+      "y": 540,
+      "w": 520,
+      "ornate": true,
+      "mic": true,
+      "mic_x": 1080,
+      "mic_y": 440,
+      "mug": true
     }
   },
   "pronounce": {
