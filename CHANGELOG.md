@@ -50,6 +50,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Episode 031, *The Chain*: Latvia. Slovak and Latvian via espeak-ng `sk` and `lv`.
 - Canadian shoulder flags get the maple leaf; the Slovak flag gets its arms.
 - Jets: `jetcount` (formation), `jetdur`, `jetsize`, `jety`. Episode 031 gets a four-ship flyover and the brouhaha that follows.
+- Set `park`: a gravel off-leash park in Calgary with chain-link, spruce and bare poplars, the tower over the trees, a bench and an unmarked car.
+- `set.pan` now works for any static set, not just the arctic.
+- `set.fetch`: Wilco (brindle, white chest and socks, tan harness with her name on it) and the orange-and-blue ball. She runs on the handler's `[kick]` and on `go` phrases; other people's kicks she ignores. Opens her mouth on `[bark]`.
+- `set.drone`: a quadcopter holding station with a blinking light.
+- Sound cue `[kick]`.
+- Mask `calgaryguy`.
+- Episode 032, *Off-Leash*: twenty minutes, one ball. 540p in-tree; full quality git-ignored.
 
 ## [0.16.0] - 2026-11-09
 

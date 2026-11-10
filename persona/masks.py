@@ -1680,3 +1680,26 @@ _soldier("lcol", (238, 204, 184, 255), "LCOL", hair=(200, 160, 90, 255), doc="A 
 _soldier("col", (222, 184, 160, 255), "COL", moustache=True, glasses=True, doc="The brigade commander: fourteen nations, one question.")
 _soldier("slovakcpl", (236, 200, 178, 255), "DES", flag="sk", doc="A Slovak desiatnik (corporal), cold, drinking coffee.")
 _soldier("latviansgt", (242, 214, 196, 255), "SRŽ", flag="lv", hair=(210, 180, 120, 255), doc="A Latvian seržants: blonde, entirely unconfused.")
+
+
+@mask("calgaryguy", tie=None)
+def calgaryguy(d, amp, t):
+    """The guy from Calgary: a plain white mask (no face but the eye holes and a slot that opens when he talks),
+    a black toque, a charcoal parka with the hood down, a red scarf. Tall. Unnamed, on purpose."""
+    cx = CX; jaw = 5 * amp
+    d.polygon([(cx - 210, 520), (cx - 190, 330), (cx - 100, 290), (cx + 100, 290), (cx + 190, 330), (cx + 210, 520)], fill=(52, 54, 60, 255))
+    d.chord([cx - 130, 250, cx + 130, 360], 180, 360, fill=(70, 72, 80, 255))                 # the hood, down
+    d.line([(cx, 330), (cx, 520)], fill=(30, 30, 34, 255), width=4)
+    for k in range(6):
+        d.line([(cx - 8, 340 + k * 30), (cx + 8, 340 + k * 30)], fill=(150, 150, 150, 255), width=2)
+    d.rounded_rectangle([cx - 80, 270, cx + 80, 320], radius=20, fill=(180, 30, 40, 255))      # scarf
+    d.polygon([(cx + 30, 300), (cx + 70, 300), (cx + 80, 420), (cx + 44, 420)], fill=(160, 26, 36, 255))
+    d.ellipse([cx - 60, 120, cx + 60, 296], fill=(244, 244, 240, 255))                         # the mask
+    for s in (-1, 1):
+        d.ellipse([cx + s * 26 - 14, 188, cx + s * 26 + 14, 206], fill=(16, 16, 18, 255))
+    d.polygon([(cx - 4, 204), (cx + 4, 204), (cx + 7, 236), (cx - 7, 236)], fill=(226, 226, 222, 255))
+    d.rounded_rectangle([cx - 20, 256, cx + 20, 260 + 3 + 14 * amp], radius=3, fill=(20, 20, 22, 255))
+    d.chord([cx - 68, 88, cx + 68, 210], 180, 360, fill=(22, 22, 26, 255))                     # toque
+    d.rectangle([cx - 68, 140, cx + 68, 166], fill=(34, 34, 40, 255))
+    for k in range(9):
+        d.line([(cx - 60 + k * 15, 142), (cx - 60 + k * 15, 164)], fill=(22, 22, 26, 255), width=2)

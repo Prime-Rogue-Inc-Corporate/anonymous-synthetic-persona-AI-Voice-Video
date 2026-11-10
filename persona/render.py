@@ -34,7 +34,7 @@ DEFAULTS = {
     "cast": {},
     "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
             "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None,
-            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None, "cabinet": None, "zoom": None, "longtable": None, "forest": None},
+            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None, "cabinet": None, "zoom": None, "longtable": None, "forest": None, "park": None, "fetch": None, "drone": None},
     "layout": {},
     "credits": [],
     "end_title": "EXPECT US.",
@@ -60,10 +60,10 @@ def merge(a, b):
 
 # ---------------------------------------------------------------- script
 SPEAKER = re.compile(r"^([A-Z][A-Z0-9 .'-]{0,24}):\s+(.*)$")
-CUE = re.compile(r"\[(gavel|bark|cackle|hear|cheer|slam|shot|ding|laugh|jet|ring)\]\s*", re.I)
+CUE = re.compile(r"\[(gavel|bark|cackle|hear|cheer|slam|shot|ding|laugh|jet|ring|kick)\]\s*", re.I)
 CUE_LEAD = 0.55          # seconds of room left before a gavelled line (kept for compatibility)
-CUE_LEN = {"gavel": 0.55, "bark": 0.75, "cackle": 1.45, "hear": 1.6, "cheer": 2.4, "slam": 0.7, "shot": 0.9, "ding": 0.6, "laugh": 1.7, "jet": 2.6, "ring": 2.2}   # room each sound effect takes on the timeline
-CUE_OWNER = {"gavel": None, "bark": "_dog", "cackle": "speaker", "hear": None, "cheer": None, "slam": None, "shot": None, "ding": None, "laugh": None, "jet": None, "ring": None}   # whose mouth moves with it
+CUE_LEN = {"gavel": 0.55, "bark": 0.75, "cackle": 1.45, "hear": 1.6, "cheer": 2.4, "slam": 0.7, "shot": 0.9, "ding": 0.6, "laugh": 1.7, "jet": 2.6, "ring": 2.2, "kick": 0.35}   # room each sound effect takes on the timeline
+CUE_OWNER = {"gavel": None, "bark": "_dog", "cackle": "speaker", "hear": None, "cheer": None, "slam": None, "shot": None, "ding": None, "laugh": None, "jet": None, "ring": None, "kick": None}   # whose mouth moves with it
 
 
 TRANS = re.compile(r"\s*\{=\s*(.*?)\s*\}\s*$")
@@ -306,6 +306,17 @@ def phone_ring():
     return gaussian_filter(out, 0.6) * 0.3
 
 
+def ball_kick():
+    """A rubber ball kicked off a boot: a short low thump with a little hollow ring."""
+    rng = np.random.default_rng(32)
+    n = int((CUE_LEN["kick"] - 0.05) * SR); tt = np.arange(n) / SR
+    thump = np.sin(2 * np.pi * (90 + 60 * np.exp(-tt * 40)) * tt) * np.exp(-tt * 28)
+    ring = np.sin(2 * np.pi * 420 * tt) * np.exp(-tt * 22) * 0.25
+    snap = rng.standard_normal(n) * np.exp(-tt * 120) * 0.3
+    out = (thump + ring + snap).astype(np.float32)
+    return out / np.abs(out).max() * 0.5
+
+
 def jet_pass():
     """A fighter passing low overhead: filtered roar swelling and falling, with a Doppler-ish drop in the whine."""
     rng = np.random.default_rng(71)
@@ -390,7 +401,7 @@ def cheer():
 SFX = {"gavel": lambda: gavel_knock(), "bark": lambda: bark(), "cackle": lambda: cackle(), "hear": lambda: hear_hear(),
        "cheer": lambda: cheer(), "slam": lambda: door_slam(),
        "shot": lambda: gunshot(), "ding": lambda: steel_ding(), "laugh": lambda: group_laugh(),
-       "jet": lambda: jet_pass(), "ring": lambda: phone_ring()}
+       "jet": lambda: jet_pass(), "ring": lambda: phone_ring(), "kick": lambda: ball_kick()}
 
 
 def mix_audio(path, clips, starts, total, speakers=None, lines=None, block_s=60):
@@ -521,6 +532,8 @@ class Renderer:
         self.shots = [(t, speakers[i]) for t, c, i in evs if c == "shot"]
         self.dings = [t for t, c, _ in evs if c == "ding"]
         self.jets = [t for t, c, _ in evs if c == "jet"]
+        self.kicks = [(t, speakers[i]) for t, c, i in evs if c == "kick"]
+        self.barks = [t for t, c, _ in evs if c == "bark"]
         sl = cfg["set"].get("slides")
         self.slides = [(self.phrase_time(p), txt) for p, txt in sl["cues"]] if sl else []
         if cfg["set"].get("chamber"):
@@ -529,6 +542,8 @@ class Renderer:
             self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
         if cfg["set"].get("boardroom"):
             self.chamber_bg = boardroom_backdrop(cfg["set"]["boardroom"])
+        if cfg["set"].get("park"):
+            self.chamber_bg = park_backdrop(cfg["set"]["park"])
         if cfg["set"].get("forest"):
             self.chamber_bg = forest_backdrop(cfg["set"]["forest"])
         if cfg["set"].get("longtable"):
@@ -925,6 +940,107 @@ class Renderer:
         if amp > 0.08:
             d.ellipse(P([(-24, 52 + bob), (24, 70 + bob + 26 * amp)]), fill=(120, 30, 40))
 
+    def draw_drone(self, im, t):
+        """A small quadcopter holding station in the sky, drifting, its light blinking."""
+        dr = self.cfg["set"].get("drone")
+        if not dr:
+            return
+        d = ImageDraw.Draw(im)
+        x = dr.get("x", 0.62) * W + 30 * math.sin(t * 0.21) + 12 * math.sin(t * 0.9)
+        y = dr.get("y", 110) + 10 * math.sin(t * 0.37)
+        k = dr.get("scale", 1.0)
+        d.rectangle([x - 14 * k, y - 5 * k, x + 14 * k, y + 5 * k], fill=(30, 32, 36))
+        for s_ in (-1, 1):
+            d.line([(x + s_ * 12 * k, y), (x + s_ * 28 * k, y - 6 * k)], fill=(30, 32, 36), width=max(1, int(3 * k)))
+            sp = 10 * k * abs(math.sin(t * 40 + s_))
+            d.line([(x + s_ * 28 * k - sp, y - 8 * k), (x + s_ * 28 * k + sp, y - 8 * k)], fill=(90, 90, 96), width=2)
+        if int(t * 2) % 2 == 0:
+            d.ellipse([x - 3 * k, y + 4 * k, x + 3 * k, y + 10 * k], fill=(255, 60, 50))
+
+    def draw_fetch(self, im, t):
+        """A big white dog and an orange ball. On each [kick] the ball sails off right; the dog runs it down and
+        brings it back to the walker's feet. On [bark] she opens her mouth (rarely)."""
+        fc = self.cfg["set"].get("fetch")
+        if not fc:
+            return
+        d = ImageDraw.Draw(im)
+        home, gy, k = fc.get("x", 0.46) * W, fc.get("y", 600), fc.get("scale", 1.0)
+        foot = fc.get("foot", 0.38) * W
+        handler = fc.get("handler", "GUY")
+        if not hasattr(self, "_runs"):
+            self._runs = sorted([kt for kt, sp in self.kicks if sp == handler] + [self.phrase_time(g) for g in fc.get("go", [])])
+        lastk = max([kt for kt, sp in self.kicks if kt <= t], default=None)
+        lastr = max([r for r in self._runs if r <= t], default=None)
+        ball = (foot + 30, gy + 22 * k)                                         # resting at his feet
+        dx, facing, run, mouth_ball = home, -1, 0.0, False
+        if lastk is not None and t - lastk < 1.4:                                # ball in flight, whoever kicked it
+            p = (t - lastk) / 1.4
+            ball = (foot + p * (W + 200 - foot), gy + 22 * k - 260 * 4 * p * (1 - p))
+        elif lastk is not None and (lastr is None or lastr < lastk - 0.01):
+            ball = None                                                          # kicked by someone she ignores
+        if lastr is not None:
+            e = t - lastr
+            if e >= 1.4 and e < 5.2:
+                ball = None
+            if 0.25 <= e < 1.9:                                                  # she's off
+                p = (e - 0.25) / 1.65; dx, facing, run = home + p * (W + 260 - home), 1, 1.0
+            elif 1.9 <= e < 3.4:
+                dx = W + 400                                                     # off screen, finding it
+            elif 3.4 <= e < 5.2:                                                 # coming back with it
+                p = (e - 3.4) / 1.8; dx, facing, run, mouth_ball = W + 260 - p * (W + 260 - home), -1, 1.0, True
+        bob = (6 * abs(math.sin(t * 9)) if run else 2 * math.sin(t * 1.6)) * k
+        if -300 < dx < W + 300:
+            fur, dark, white = (128, 92, 60), (62, 44, 30), (240, 238, 232)
+            P = lambda x, y: (dx + facing * x * k, gy + y * k - bob)
+            def E(x0, y0, x1, y1, **kw):
+                (ax, ay), (bx_, by_) = P(x0, y0), P(x1, y1)
+                d.ellipse([min(ax, bx_), min(ay, by_), max(ax, bx_), max(ay, by_)], **kw)
+            for lx, ph in ((-62, 0), (-42, 1.6), (40, 0.8), (60, 2.4)):          # legs, white socks
+                sw = (18 * math.sin(t * 14 + ph) if run else 0) * k
+                top_ = P(lx, 0); foot_ = (top_[0] + sw, gy + 46 * k)
+                d.line([top_, foot_], fill=fur, width=int(13 * k))
+                d.line([((top_[0] + foot_[0]) / 2 + sw * 0.3, gy + 30 * k), foot_], fill=white, width=int(13 * k))
+            E(-92, -42, 92, 30, fill=fur)                                        # body
+            for j in range(9):                                                   # brindle stripes
+                x = -80 + j * 19
+                a0, b0 = P(x, -38); a1, b1 = P(x + 8 * facing, 24)
+                d.line([(a0, b0), (a1, b1)], fill=dark, width=max(2, int(5 * k)))
+            E(40, -20, 92, 30, fill=white)                                       # white chest
+            hx = -30                                                             # the harness, coyote tan
+            (h0x, h0y), (h1x, h1y) = P(hx - 44, -44), P(hx + 50, 10)
+            d.rounded_rectangle([min(h0x, h1x), h0y, max(h0x, h1x), h1y], radius=int(8 * k), fill=(150, 130, 92), outline=(110, 94, 64), width=2)
+            (q0x, q0y), (q1x, q1y) = P(hx - 26, -34), P(hx + 30, -16)
+            d.rectangle([min(q0x, q1x), q0y, max(q0x, q1x), q1y], fill=(30, 30, 30))
+            fnt = getattr(self, "_patch_font", None) or ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", max(8, int(13 * k)))
+            self._patch_font = fnt
+            d.text(((q0x + q1x) / 2, (q0y + q1y) / 2), "WILCO", font=fnt, fill=(235, 235, 235), anchor="mm")
+            for yy in (-6, 2):
+                a0 = P(hx - 40, yy); a1 = P(hx + 46, yy); d.line([a0, a1], fill=(110, 94, 64), width=2)
+            tx = -96; wag = 14 * math.sin(t * (16 if run or mouth_ball else 6))
+            d.line([P(tx, -20), P(tx - 44, -64 + wag)], fill=fur, width=int(12 * k))
+            E(70, -74, 140, 2, fill=fur)                                         # head
+            for j in range(3):
+                a0 = P(80 + j * 14, -70); a1 = P(84 + j * 14, -40); d.line([a0, a1], fill=dark, width=max(2, int(4 * k)))
+            E(74, -78, 104, -20, fill=dark)                                      # floppy ear
+            E(116, -42, 162, -8, fill=fur)                                       # muzzle
+            E(126, -30, 160, -6, fill=white)
+            nx, ny = P(158, -34); d.ellipse([nx - 6 * k, ny - 5 * k, nx + 6 * k, ny + 5 * k], fill=(26, 22, 20))
+            ix, iy = P(118, -52); d.ellipse([ix - 4 * k, iy - 4 * k, ix + 4 * k, iy + 4 * k], fill=(26, 22, 20))
+            barking = any(0 <= t - b < 0.5 for b in self.barks)
+            if barking:
+                ox, oy = P(150, -10); d.ellipse([ox - 10 * k, oy - 4 * k, ox + 10 * k, oy + 14 * k], fill=(120, 30, 40))
+            if mouth_ball:
+                bx, by = P(162, -14); self._ball(d, bx, by, k)
+        if ball:
+            self._ball(d, ball[0], ball[1], k)
+
+    def _ball(self, d, x, y, k):
+        """The orange ball with the blue band."""
+        r = 15 * k
+        d.ellipse([x - r, y - r, x + r, y + r], fill=(255, 112, 24), outline=(190, 80, 10), width=2)
+        d.chord([x - r, y - r * 0.45, x + r, y + r * 0.45], 0, 360, fill=(40, 90, 200))
+        d.chord([x - r, y - r * 0.25, x + r, y + r * 0.25], 0, 360, fill=(255, 112, 24))
+
     def draw_lectern(self, im):
         lc = self.cfg["set"].get("lectern")
         if not lc:
@@ -1029,6 +1145,7 @@ class Renderer:
                 m = min(1.0, (t - self.swap_t) / 0.8)
                 hall = hall * (1 - m) + self.swap_bg * m
             pan = (cfg["set"].get("arctic") or {}).get("pan") if isinstance(cfg["set"].get("arctic"), dict) else None
+            pan = cfg["set"].get("pan") or pan
             if pan:                                                  # walking: the land slides past
                 hall = np.roll(hall, -int(t * pan) % W, axis=1)
             img = hall * (0.86 + 0.14 * sky[..., None])
@@ -1108,6 +1225,8 @@ class Renderer:
             self.draw_commons_table(im)
             self.draw_range(im, t)
             self.draw_jets(im, t)
+            self.draw_drone(im, t)
+            self.draw_fetch(im, t)
             self.draw_breath(im, fi, t)
             if hasattr(self, "crowd"):
                 hype = max([max(0.0, 1 - abs(t - c - 1.0) / 1.6) for c in self.cheers] + [0.0])
@@ -1296,6 +1415,65 @@ def boardroom_backdrop(conf):
     d.rectangle([fx + 2, 90, fx + 82, 130], fill=(240, 240, 236))
     d.rectangle([fx + 2, 90, fx + 22, 130], fill=(200, 30, 40)); d.rectangle([fx + 62, 90, fx + 82, 130], fill=(200, 30, 40))
     d.rectangle([0, 420, W, H], fill=(40, 30, 26))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def park_backdrop(conf):
+    """Static off-leash dog park in Calgary, November: a big pale sky with a chinook arch, the tall pod tower just
+    over the treeline, blue spruce and bare poplars, a chain-link fence, a wide gravel run, a green bench, and a dark
+    unmarked sedan parked on the road beyond the fence with two shapes inside."""
+    conf = conf if isinstance(conf, dict) else {}
+    rng = np.random.default_rng(32)
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    for y in range(0, 400):
+        f = y / 400; d.line([(0, y), (W, y)], fill=(int(130 + 70 * f), int(166 + 50 * f), int(206 + 30 * f)))
+    if conf.get("chinook", True):
+        d.chord([-200, 90, W + 200, 520], 180, 360, fill=(176, 204, 230))
+        d.chord([-160, 120, W + 160, 560], 180, 360, fill=(146, 180, 216))
+    tx = int(W * conf.get("tower_x", 0.7))                                      # the tower, over the trees
+    d.polygon([(tx - 6, 330), (tx + 6, 330), (tx + 3, 196), (tx - 3, 196)], fill=(150, 154, 164))
+    d.ellipse([tx - 15, 182, tx + 15, 204], fill=(190, 60, 50)); d.line([(tx, 182), (tx, 160)], fill=(150, 154, 164), width=2)
+    for _ in range(26):                                                         # bare poplars
+        x = int(rng.integers(0, W)); h = int(rng.integers(120, 200))
+        d.line([(x, 380), (x, 380 - h)], fill=(96, 84, 72), width=4)
+        for j in range(7):
+            yy = 380 - h + j * h // 8; ln = int(rng.integers(14, 40)); sd = 1 if j % 2 else -1
+            d.line([(x, yy + 10), (x + sd * ln, yy - ln // 2)], fill=(110, 98, 84), width=2)
+    for _ in range(18):                                                         # blue spruce
+        x = int(rng.integers(-20, W + 20)); h = int(rng.integers(110, 190))
+        for j in range(5):
+            w_ = int(h * 0.32 * (j + 1) / 5)
+            d.polygon([(x, 380 - h + j * h // 6), (x - w_, 380 - h + (j + 2) * h // 6), (x + w_, 380 - h + (j + 2) * h // 6)], fill=(58 + j * 4, 84 + j * 3, 88))
+    d.rectangle([0, 372, W, 392], fill=(96, 92, 84))                            # the road beyond
+    cx0 = int(W * conf.get("car_x", 0.16))                                      # the unmarked car
+    d.rounded_rectangle([cx0, 348, cx0 + 150, 388], radius=10, fill=(28, 30, 36))
+    d.polygon([(cx0 + 32, 348), (cx0 + 50, 326), (cx0 + 108, 326), (cx0 + 128, 348)], fill=(28, 30, 36))
+    d.polygon([(cx0 + 40, 348), (cx0 + 54, 331), (cx0 + 104, 331), (cx0 + 120, 348)], fill=(70, 84, 100))
+    for hx in (cx0 + 68, cx0 + 96):
+        d.ellipse([hx - 8, 332, hx + 8, 348], fill=(20, 20, 24))
+    for wx in (cx0 + 30, cx0 + 120):
+        d.ellipse([wx - 14, 376, wx + 14, 400], fill=(14, 14, 16))
+    d.rectangle([0, 392, W, H], fill=(178, 170, 156))                           # the gravel run
+    for _ in range(4000):
+        x, y = int(rng.integers(0, W)), int(rng.integers(392, H))
+        v = int(rng.integers(120, 210)); d.point((x, y), fill=(v, v - 6, v - 16))
+    for _ in range(30):                                                         # fallen leaves, pine cones
+        x, y = int(rng.integers(0, W)), int(rng.integers(400, H))
+        d.ellipse([x - 4, y - 2, x + 4, y + 2], fill=(150, 120, 60))
+    for x in range(0, W, 120):                                                  # chain-link fence
+        d.rectangle([x, 330, x + 4, 410], fill=(120, 124, 128))
+    d.line([(0, 332), (W, 332)], fill=(130, 134, 138), width=3)
+    for x in range(-80, W + 80, 10):
+        d.line([(x, 334), (x + 40, 408)], fill=(150, 154, 158)); d.line([(x + 40, 334), (x, 408)], fill=(150, 154, 158))
+    bx = int(W * conf.get("bench_x", 0.86))                                     # the bench
+    d.rectangle([bx, 440, bx + 150, 452], fill=(70, 110, 60)); d.rectangle([bx, 410, bx + 150, 422], fill=(70, 110, 60))
+    for lx in (bx + 10, bx + 136):
+        d.rectangle([lx, 452, lx + 6, 490], fill=(40, 40, 40))
+    px = int(W * 0.05)
+    d.rectangle([px, 360, px + 6, 450], fill=(80, 80, 80))
+    d.rectangle([px - 50, 340, px + 56, 380], fill=(30, 110, 60))
+    f = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 12)
+    d.text((px - 44, 345), "OFF-LEASH", font=f, fill=(250, 250, 250)); d.text((px - 44, 361), "AREA", font=f, fill=(250, 250, 250))
     return np.asarray(im).astype(np.float32) / 255
 
 
