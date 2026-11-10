@@ -1,0 +1,17 @@
+{
+  "output": "pendant_ce_temps.mp4",
+  "renderer_version": "0.18.0",
+  "renderer_commit": "b3b752f-dirty",
+  "rendered_at": "2026-11-10T07:29:52+00:00",
+  "duration_s": 354.76,
+  "lines": 88,
+  "mask": null,
+  "cast": {
+    "ANNIE": "annie",
+    "NORMAND": "normand",
+    "SM": "sousministre",
+    "FELIX": "felix",
+    "TRIPP": null
+  },
+  "resolution": "1280x720@30"
+}

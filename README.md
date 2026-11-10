@@ -36,6 +36,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 026 | [Cabinet](episodes/026-cabinet) | Cabinet, in camera, with the Prime Minister's chair empty; consensus on a roof, a napkin, the Habs, and item one · cabinet room, new minister masks | ~7:44 |
 | 027 | [The Pass](episodes/027-the-pass) | Fort Meade and Springfield on a three-tile call watch a satellite pass over Jonah's snowmobile; has Vic gone rogue? · zoom tiles, intercepted radio | ~5:26 |
 | 028 | [Mitts](episodes/028-mitts) | Vic walks home and counts his career out loud, Paris included; a raven, a fox, a muskox and three neighbours are not impressed · arctic pan, animal masks (540p in-tree) | ~10:55 |
+| 029 | [Pendant ce temps](episodes/029-pendant-ce-temps) | Meanwhile in Quebec City: day 20 of the PQ transition, as seen by four fictional public servants; in French with subtitles · cabinet set in blue with the fleurdelisé | ~5:54 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
@@ -83,6 +84,7 @@ The persona's head changes per episode and moves with the voice.
 | `nsasenior`, `nsajunior`, `ngaanalyst`, `ngachief` | half-moon readers and badges / headset and hoodie / glasses up and a ponytail / red beard | mouths open with the voice |
 | `raven`, `arcticfox`, `muskox` (no suit) | a beak / a white fox / a haystack with horns | beaks and mouths open with the voice |
 | `villagekid`, `elderisaac`, `nellie` (no suit) | toque and fat-bike jacket / caribou hat and jigging stick / flowered cover and a bun | mouths open with the voice |
+| `sousministre`, `normand`, `felix`, `annie` | black bob with a silver streak and red glasses / walrus moustache and cardigan / tuque indoors and a beard / ponytail and a stopwatch | mouths open with the voice |
 | `cirnac`, `heritage` | dark hair, rectangular glasses, cardigan, lanyard / trimmed beard, tortoiseshell glasses, scarf | mouths open with the voice |
 
 Add one by writing a function in `persona/masks.py` decorated with `@mask("name")`. It gets the frame's voice loudness (`amp`, 0–1) and time (`t`), and draws on a 520×520 canvas with the suit's collar at y=300.

@@ -38,6 +38,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Arctic `pan`: the land slides past while someone walks.
 - Episode 027, *The Pass*: the American agencies watch the snowmobile.
 - Episode 028, *Mitts*: Vic's walk home, a monologue. 540p in-tree; full quality git-ignored.
+- Set `cabinet`: new options `wall` (colour), `chair` (off to drop the empty chair) and `flag: "quebec"`.
+- Masks: `sousministre`, `normand`, `felix`, `annie`.
+- Episode 029, *Pendant ce temps*: meanwhile, in Quebec City. Real results; fictional officials; no real politician speaks.
 
 ## [0.16.0] - 2026-11-09
 

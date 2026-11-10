@@ -1350,8 +1350,9 @@ def cabinet_backdrop(conf):
     conf = conf if isinstance(conf, dict) else {}
     rng = np.random.default_rng(26)
     im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    wall = tuple(conf.get("wall", (46, 78, 62)))
     for x in range(0, W, 6):
-        d.line([(x, 0), (x, 300)], fill=(46 + (x // 6) % 3 * 3, 78, 62))
+        d.line([(x, 0), (x, 300)], fill=(wall[0] + (x // 6) % 3 * 3, wall[1], wall[2]))
     d.rectangle([0, 300, W, 430], fill=(96, 66, 40))
     for x in range(0, W, 120):
         d.rectangle([x + 10, 312, x + 110, 420], outline=(70, 46, 28), width=4)
@@ -1374,9 +1375,19 @@ def cabinet_backdrop(conf):
     d.line([(tx, 186), (tx + 6, 80)], fill=(30, 30, 30), width=5)
     for k in range(5):
         d.line([(tx + 3, 100 + k * 16), (tx + 40 - k * 4, 94 + k * 16)], fill=(30, 50, 34), width=6)
+    if conf.get("flag") == "quebec":                                            # the fleurdelisé on a pole
+        fx = int(W * 0.31)
+        d.line([(fx, 60), (fx, 300)], fill=(200, 180, 120), width=6)
+        d.rectangle([fx + 3, 70, fx + 123, 150], fill=(0, 62, 165))
+        d.rectangle([fx + 57, 70, fx + 69, 150], fill=(255, 255, 255)); d.rectangle([fx + 3, 104, fx + 123, 116], fill=(255, 255, 255))
+        for qx, qy in ((fx + 30, 87), (fx + 96, 87), (fx + 30, 133), (fx + 96, 133)):
+            d.polygon([(qx, qy - 11), (qx + 4, qy), (qx, qy + 9), (qx - 4, qy)], fill=(255, 255, 255))
+            d.ellipse([qx - 11, qy - 5, qx - 3, qy + 3], fill=(255, 255, 255)); d.ellipse([qx + 3, qy - 5, qx + 11, qy + 3], fill=(255, 255, 255))
+            d.rectangle([qx - 9, qy + 3, qx + 9, qy + 5], fill=(255, 255, 255))
     cx = W // 2                                                                 # the chair, empty
-    d.rounded_rectangle([cx - 70, 200, cx + 70, 440], radius=30, fill=(130, 24, 30), outline=(80, 14, 18), width=6)
-    for k in range(4):
+    if conf.get("chair", True):
+      d.rounded_rectangle([cx - 70, 200, cx + 70, 440], radius=30, fill=(130, 24, 30), outline=(80, 14, 18), width=6)
+    for k in (range(4) if conf.get("chair", True) else ()):
         for j in range(3):
             d.ellipse([cx - 48 + j * 48 - 4, 236 + k * 44 - 4, cx - 48 + j * 48 + 4, 236 + k * 44 + 4], fill=(90, 14, 20))
     d.rectangle([0, 430, W, H], fill=(40, 30, 26))
