@@ -28,6 +28,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Set `cabinet`: green silk, two snowy windows, an original northern landscape, and an empty red chair.
 - Masks: `dpm`, `finmin`, `psmin`, `cirnacmin`.
 - Episode 026, *Cabinet*: the Cabinet meets without the Prime Minister and answers item one on a napkin.
+- Split screen: `set.split` puts a static set (barn, boardroom, hall, arctic) on the right of a corridor.
+- Desk: `"ornate": true` for mahogany, gilt, a banker's lamp and a desk flag.
+- Episode 024 re-cut as a split screen, with Tripp at the ornate desk.
+- Set `zoom`: video-call tiles (`sigint`, `geoint`, `feed` with overhead imagery).
+- Masks: `nsasenior`, `nsajunior`, `ngaanalyst`, `ngachief`; animals `raven`, `arcticfox`, `muskox`; villagers `villagekid`, `elderisaac`, `nellie`. Masks registered with `tie=None` get no suit.
+- Cast `until`: a walk-on stays on screen until a later phrase.
+- Arctic `pan`: the land slides past while someone walks.
+- Episode 027, *The Pass*: the American agencies watch the snowmobile.
+- Episode 028, *Mitts*: Vic's walk home, a monologue. 540p in-tree; full quality git-ignored.
 
 ## [0.16.0] - 2026-11-09
 

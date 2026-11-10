@@ -31,9 +31,11 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 021 | [The Addresses](episodes/021-the-addresses) | Nathan gives the Clerk a plain-language briefing on a real access complaint about Shared Services Canada's IP address ranges, plus fantasy hockey · slides | ~8:38 |
 | 022 | [En français](episodes/022-en-francais) | Official Languages walks in: the meeting must be held again in French. Half perfect French, half joual, then the Habs · English subtitles | ~5:46 |
 | 023 | [The Corridor](episodes/023-the-corridor) | The Clerk and an unnamed senior official, followed from behind; eleven people catch them with bigger problems, nobody knows where they are going, two phones ring · corridor (reversed), back-view masks, ring cue | ~10:28 |
-| 024 | [Two Oh Seven](episodes/024-two-oh-seven) | Tripp calls the Clerk from Maine about Biscuit, the premier, and the guy from Calgary; Dalton fixes it with a napkin · corridor (reversed), on-screen caller | ~5:14 |
+| 024 | [Two Oh Seven](episodes/024-two-oh-seven) | Tripp calls the Clerk from Maine about Biscuit, the premier, and the guy from Calgary; Dalton fixes it with a napkin · split screen: corridor (reversed) / barn with an ornate desk | ~5:14 |
 | 025 | [Eight Six Seven](episodes/025-eight-six-seven) | Cambridge Bay calls Ottawa on the community radio: the roof, the snowmobile with a rotor, the elders' verdict, "shorter" · hall, on-screen caller (back of head) | ~4:44 |
 | 026 | [Cabinet](episodes/026-cabinet) | Cabinet, in camera, with the Prime Minister's chair empty; consensus on a roof, a napkin, the Habs, and item one · cabinet room, new minister masks | ~7:44 |
+| 027 | [The Pass](episodes/027-the-pass) | Fort Meade and Springfield on a three-tile call watch a satellite pass over Jonah's snowmobile; has Vic gone rogue? · zoom tiles, intercepted radio | ~5:26 |
+| 028 | [Mitts](episodes/028-mitts) | Vic walks home and counts his career out loud, Paris included; a raven, a fox, a muskox and three neighbours are not impressed · arctic pan, animal masks (540p in-tree) | ~10:55 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
@@ -78,6 +80,9 @@ The persona's head changes per episode and moves with the voice.
 | `tbsanalyst` | high ponytail, cat-eye glasses, a binder | mouth opens with the voice |
 | `diplomat`, `finance`, `nrcan`, `pubsafety` | pocket square / suspenders and a pencil / hard hat with a suit / buzz cut and earpiece | mouths open with the voice |
 | `dpm`, `finmin`, `psmin`, `cirnacmin` | silver bob and glasses chain / bald, rimless glasses, calculator / slicked hair and very white teeth / braid, beaded earrings, ribbon trim | mouths open with the voice |
+| `nsasenior`, `nsajunior`, `ngaanalyst`, `ngachief` | half-moon readers and badges / headset and hoodie / glasses up and a ponytail / red beard | mouths open with the voice |
+| `raven`, `arcticfox`, `muskox` (no suit) | a beak / a white fox / a haystack with horns | beaks and mouths open with the voice |
+| `villagekid`, `elderisaac`, `nellie` (no suit) | toque and fat-bike jacket / caribou hat and jigging stick / flowered cover and a bun | mouths open with the voice |
 | `cirnac`, `heritage` | dark hair, rectangular glasses, cardigan, lanyard / trimmed beard, tortoiseshell glasses, scarf | mouths open with the voice |
 
 Add one by writing a function in `persona/masks.py` decorated with `@mask("name")`. It gets the frame's voice loudness (`amp`, 0–1) and time (`t`), and draws on a 520×520 canvas with the suit's collar at y=300.
