@@ -1,8 +1,8 @@
 {
   "output": "off_leash.mp4",
   "renderer_version": "0.18.0",
-  "renderer_commit": "f5ca279-dirty",
-  "rendered_at": "2026-11-10T09:38:18+00:00",
+  "renderer_commit": "7aed7fe-dirty",
+  "rendered_at": "2026-11-10T10:05:40+00:00",
   "duration_s": 1211.9,
   "lines": 187,
   "mask": null,

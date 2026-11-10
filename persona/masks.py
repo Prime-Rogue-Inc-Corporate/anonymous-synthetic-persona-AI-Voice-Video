@@ -1685,7 +1685,8 @@ _soldier("latviansgt", (242, 214, 196, 255), "SRŽ", flag="lv", hair=(210, 180, 
 @mask("calgaryguy", tie=None)
 def calgaryguy(d, amp, t):
     """The guy from Calgary: a plain white mask (no face but the eye holes and a slot that opens when he talks),
-    a black toque, a charcoal parka with the hood down, a red scarf. Tall. Unnamed, on purpose."""
+    a massive beard coming out from under it, a black toque, a charcoal parka with the hood down, a red scarf.
+    Tall. Unnamed, on purpose."""
     cx = CX; jaw = 5 * amp
     d.polygon([(cx - 210, 520), (cx - 190, 330), (cx - 100, 290), (cx + 100, 290), (cx + 190, 330), (cx + 210, 520)], fill=(52, 54, 60, 255))
     d.chord([cx - 130, 250, cx + 130, 360], 180, 360, fill=(70, 72, 80, 255))                 # the hood, down
@@ -1694,11 +1695,24 @@ def calgaryguy(d, amp, t):
         d.line([(cx - 8, 340 + k * 30), (cx + 8, 340 + k * 30)], fill=(150, 150, 150, 255), width=2)
     d.rounded_rectangle([cx - 80, 270, cx + 80, 320], radius=20, fill=(180, 30, 40, 255))      # scarf
     d.polygon([(cx + 30, 300), (cx + 70, 300), (cx + 80, 420), (cx + 44, 420)], fill=(160, 26, 36, 255))
+    rng = np.random.default_rng(7)                                                             # the beard: massive
+    bc, bd = (128, 82, 48, 255), (92, 58, 34, 255)
+    d.polygon([(cx - 40, 300), (cx + 40, 300), (cx + 54, 360), (cx - 54, 360)], fill=(86, 100, 64, 255))   # olive shirt collar
+    d.ellipse([cx - 100, 200, cx + 100, 430], fill=bc)
+    d.polygon([(cx - 96, 300), (cx + 96, 300), (cx + 50, 452), (cx, 470), (cx - 50, 452)], fill=bc)
+    for _ in range(70):
+        x = int(rng.integers(cx - 84, cx + 84)); y = int(rng.integers(260, 440))
+        d.arc([x - 10, y - 14, x + 10, y + 14], 60, 200, fill=bd, width=2)
     d.ellipse([cx - 60, 120, cx + 60, 296], fill=(244, 244, 240, 255))                         # the mask
     for s in (-1, 1):
         d.ellipse([cx + s * 26 - 14, 188, cx + s * 26 + 14, 206], fill=(16, 16, 18, 255))
     d.polygon([(cx - 4, 204), (cx + 4, 204), (cx + 7, 236), (cx - 7, 236)], fill=(226, 226, 222, 255))
     d.rounded_rectangle([cx - 20, 256, cx + 20, 260 + 3 + 14 * amp], radius=3, fill=(20, 20, 22, 255))
+    for k in range(9):                                                                          # hair escaping the toque
+        a = -60 + k * 15
+        d.ellipse([cx + a - 12, 148 + (k % 3) * 4, cx + a + 14, 186 + (k % 3) * 6], fill=(122, 80, 48, 255))
+    for s_ in (-1, 1):
+        d.ellipse([cx + s_ * 70 - 18, 150, cx + s_ * 70 + 18, 220], fill=(122, 80, 48, 255))
     d.chord([cx - 68, 88, cx + 68, 210], 180, 360, fill=(22, 22, 26, 255))                     # toque
     d.rectangle([cx - 68, 140, cx + 68, 166], fill=(34, 34, 40, 255))
     for k in range(9):

@@ -90,7 +90,7 @@ The persona's head changes per episode and moves with the voice.
 | `sousministre`, `normand`, `felix`, `annie` | black bob with a silver streak and red glasses / walrus moustache and cardigan / tuque indoors and a beard / ponytail and a stopwatch | mouths open with the voice |
 | `rugeneral`, `ruadmiral`, `ruanalyst`, `ruinterp` | peaked cap and ribbons / white cap and a beard / chignon and a tablet / wire glasses and one earpiece | mouths open with the voice |
 | `pte`, `sgt`, `wo`, `lt`, `capt`, `maj`, `lcol`, `col`, `slovakcpl`, `latviansgt` (no suit) | helmets, a disruptive-pattern smock, a rank slide and a shoulder flag (Canada, Slovakia, Latvia) | mouths open with the voice |
-| `calgaryguy` (no suit) | a plain white mask, black toque, charcoal parka, red scarf | the slot opens with the voice |
+| `calgaryguy` (no suit) | a plain white mask, a massive auburn beard, hair escaping a black toque, charcoal parka, olive collar, red scarf | the slot opens with the voice |
 | `cirnac`, `heritage` | dark hair, rectangular glasses, cardigan, lanyard / trimmed beard, tortoiseshell glasses, scarf | mouths open with the voice |
 
 Add one by writing a function in `persona/masks.py` decorated with `@mask("name")`. It gets the frame's voice loudness (`amp`, 0–1) and time (`t`), and draws on a 520×520 canvas with the suit's collar at y=300.

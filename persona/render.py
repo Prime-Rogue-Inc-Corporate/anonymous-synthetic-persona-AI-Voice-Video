@@ -1024,6 +1024,7 @@ class Renderer:
             E(74, -78, 104, -20, fill=dark)                                      # floppy ear
             E(116, -42, 162, -8, fill=fur)                                       # muzzle
             E(126, -30, 160, -6, fill=white)
+            a0 = P(96, -72); a1 = P(150, -30); d.line([a0, a1], fill=white, width=max(3, int(9 * k)))   # the blaze
             nx, ny = P(158, -34); d.ellipse([nx - 6 * k, ny - 5 * k, nx + 6 * k, ny + 5 * k], fill=(26, 22, 20))
             ix, iy = P(118, -52); d.ellipse([ix - 4 * k, iy - 4 * k, ix + 4 * k, iy + 4 * k], fill=(26, 22, 20))
             barking = any(0 <= t - b < 0.5 for b in self.barks)
