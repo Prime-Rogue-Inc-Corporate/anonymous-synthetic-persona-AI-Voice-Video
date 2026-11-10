@@ -164,6 +164,50 @@
         230,
         230
       ]
+    },
+    "LOUISE": {
+      "walk": true,
+      "cadence": 2.3,
+      "scale": 0.82,
+      "top": 180,
+      "linger": 1.5,
+      "name": "Louise, Treasury Board (fictional)",
+      "mask": "tbsanalyst",
+      "x": 0.88,
+      "enter": "right",
+      "color": [
+        200,
+        230,
+        200
+      ],
+      "voice": {
+        "voice": "en-us+f5",
+        "speed": 176,
+        "pitch": 58,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.4:25:0.15,highpass=f=130,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "SOPHIE": {
+      "walk": true,
+      "cadence": 2.3,
+      "scale": 0.82,
+      "top": 180,
+      "linger": 1.5,
+      "name": "Sophie Lacasse, Official Languages compliance (fictional)",
+      "mask": "deputy",
+      "color": [
+        170,
+        220,
+        250
+      ],
+      "voice": {
+        "voice": "fr-fr+f4",
+        "speed": 150,
+        "pitch": 50,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.5:40:0.2,highpass=f=130,lowpass=f=6000,volume=1.6"
+      },
+      "x": 0.12,
+      "enter": "left"
     }
   },
   "layout": {
@@ -172,7 +216,7 @@
   },
   "set": {
     "corridor": {
-      "speed": 1.4,
+      "speed": -1.4,
       "plaques": [
         "80 WELLINGTON",
         "CABINET OPERATIONS",
@@ -186,7 +230,7 @@
     },
     "chyron": {
       "title": "PRIVY COUNCIL OFFICE  ·  OTTAWA",
-      "sub": "A CORRIDOR  ·  FOLLOWED FROM BEHIND"
+      "sub": "A CORRIDOR  ·  FOLLOWED FROM BEHIND  ·  ORAL ONLY"
     }
   },
   "pronounce": {
@@ -194,7 +238,8 @@
     "Slafkovský": "Slaf-kov-ski",
     "Rusyn": "Roo-sin",
     "Carpatho-Rusyn": "Car-pa-tho Roo-sin",
-    "Gatineau": "Gat-in-oh"
+    "Gatineau": "Gat-in-oh",
+    "Wilco": "Wil-co"
   },
   "signoff_lines": 0,
   "gaps": {
@@ -214,7 +259,14 @@
       "Only on the Slovak side.": 0.8,
       "That's not nothing.": 1.0,
       "Expect us.": 0.8,
-      "Hello?": 1.5
+      "Hello?": 1.5,
+      "He has a dog.": 0.8,
+      "There is a template for requesting a template.": 0.8,
+      "We'll need the napkin in both official languages.": 1.0,
+      "We don't have any helicopters either.": 1.0,
+      "Everything is on the radio.": 0.8,
+      "Only if he learns to code.": 1.0,
+      "And Wilco.": 1.0
     }
   },
   "light": {

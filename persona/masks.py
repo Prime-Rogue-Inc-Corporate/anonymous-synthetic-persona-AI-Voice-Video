@@ -1095,3 +1095,21 @@ def cseliaison(d, amp, t):
     d.ellipse([cx + 52, 200, cx + 62, 212], fill=(240, 240, 240, 255))                          # earbud
     d.ellipse([cx - 120, 400, cx - 96, 424], fill=(40, 40, 44, 255))                            # badge reel
     d.rectangle([cx - 126, 424, cx - 90, 470], fill=(236, 236, 236, 255))
+
+
+@mask("tbsanalyst", tie=False)
+def tbsanalyst(d, amp, t):
+    """Treasury Board analyst: a tight high ponytail, cat-eye glasses, a binder clutched to the chest."""
+    cx = CX
+    d.polygon([(cx - 200, 520), (cx - 180, 340), (cx - 90, 290), (cx + 90, 290), (cx + 180, 340), (cx + 200, 520)], fill=(70, 90, 80, 255))
+    d.rectangle([cx - 110, 380, cx + 30, 520], fill=(30, 60, 140, 255), outline=(220, 220, 230, 255), width=3)   # binder
+    d.rectangle([cx - 100, 400, cx + 20, 420], fill=(240, 240, 240, 255))
+    skin, hair, jaw = (210, 170, 140, 255), (34, 26, 24, 255), 6 * amp
+    d.ellipse([cx - 20, 50, cx + 20, 110], fill=hair)                                            # high ponytail
+    d.ellipse([cx - 56, 116, cx + 56, 288 + jaw], fill=skin)
+    d.chord([cx - 62, 100, cx + 62, 186], 180, 360, fill=hair)
+    for s in (-1, 1):
+        d.polygon([(cx + s * 8, 186), (cx + s * 48, 178), (cx + s * 50, 200), (cx + s * 12, 204)], outline=(30, 30, 34, 255), fill=None)
+        d.ellipse([cx + s * 28 - 5, 187, cx + s * 28 + 5, 197], fill=(30, 24, 20, 255))
+    d.polygon([(cx - 4, 202), (cx + 4, 202), (cx + 9, 232), (cx - 9, 232)], fill=(196, 156, 126, 255))
+    _mouth(d, cx, 256 + jaw * 0.5, amp, w=15, lip=(170, 80, 90, 255))

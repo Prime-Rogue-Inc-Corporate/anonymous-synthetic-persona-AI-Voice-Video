@@ -10,12 +10,35 @@ OFFICIAL: That's all it is?
 CLERK: That's all it is. He wants a list of which department owns which internet address. The list is a spreadsheet. The spreadsheet is in a drawer. The drawer, I'm told, is in Gatineau.
 OFFICIAL: Then why are we walking?
 CLERK: Because he isn't the problem. He's the smoke detector. Everybody hates the smoke detector.
+OFFICIAL: How many bots does he have now?
+CLERK: Two that we know of. One reads old Wikipedia edits. The other reads fantasy hockey trades.
+OFFICIAL: Fantasy hockey.
+CLERK: Don't ask. Our people sign their trades from work.
+OFFICIAL: Under their real names?
+CLERK: Under their real names. It's very Canadian.
+OFFICIAL: And he's alone out there? In Calgary?
+CLERK: He has a dog.
 DOREEN: Sir. Quick one. Official Languages. They want the third version of the meeting. In Inuinnaqtun.
 CLERK: Then find an interpreter.
 DOREEN: The only one available in Cambridge Bay is Mary. She's busy. She's teaching Special Forces to tie down a sled.
 CLERK: Put it in the queue.
 DOREEN: Which queue?
 CLERK: The long one.
+LOUISE: Sir. Treasury Board. The Rangers' equipment rate.
+CLERK: I approved it on Friday.
+LOUISE: You approved it orally. We need a submission. The submission needs a gender-based analysis plus.
+CLERK: On snowmobiles.
+LOUISE: On the policy, sir.
+CLERK: The snowmobiles don't have a gender.
+LOUISE: Not yet. And the roof needs its own submission. On the new template.
+CLERK: When does the new template come out?
+LOUISE: It's been coming out since twenty nineteen.
+CLERK: Then use the old one.
+LOUISE: The old one has been retired.
+CLERK: So there is no template.
+LOUISE: There is a template for requesting a template.
+OFFICIAL: Approve the roof on a napkin. I'll sign the napkin.
+LOUISE: We'll need the napkin in both official languages.
 MARGARET: Sir. The Americans. They've heard about the phone call.
 OFFICIAL: Which phone call?
 MARGARET: The one where a retired CIA officer and an American podcaster said a four-letter acronym, and then a five-letter word. It was on the community radio. The barn podcast picked it up.
@@ -23,6 +46,10 @@ OFFICIAL: And Washington's reaction?
 MARGARET: They want to know whether Canada has a secret Thursday cell.
 CLERK: We do. It's search and rescue.
 MARGARET: That's what I told them. They didn't believe me.
+MARGARET: Also, the retired CIA officer has mailed the Rangers a box of helicopter parts. Through Canada Post.
+OFFICIAL: Are they the right parts?
+MARGARET: They're for an American helicopter. We don't have that helicopter.
+CLERK: Then they're the right parts for us. We don't have any helicopters either.
 DESMOND: Alberta. The premier has booked herself on the barn show. To talk about energy. And freedom.
 CLERK: Whose side is she on?
 DESMOND: Whichever side is on the show.
@@ -34,11 +61,20 @@ CLERK: Of course it did.
 NATHAN: The error page is only in English.
 DOREEN: I'll tell Sophie.
 CLERK: Don't tell Sophie.
+SOPHIE: Bonjour. Hi. J'ai vu la page d'erreur. {= Hello. Hi. I saw the error page.}
+CLERK: Who told her?
+SOPHIE: C'était à la radio. {= It was on the radio.}
+CLERK: Everything is on the radio.
 TREVOR: Sir. Signals side. Quick word on the man from Calgary.
 OFFICIAL: Go ahead, Trevor.
 TREVOR: We had a look at the addresses ourselves. He's mostly right.
 CLERK: Don't tell him that.
 TREVOR: We don't tell anybody anything, sir. It's a whole culture.
+TREVOR: And the dog's name is Wilco.
+CLERK: How do you know that?
+TREVOR: The dog has a bigger online footprint than half of Cabinet, sir.
+OFFICIAL: Is the dog a national security matter?
+TREVOR: Only if he learns to code.
 CLERK: Did you see the game Saturday?
 TREVOR: Four to two. In Toronto.
 CLERK: Newhook, two goals. Kreider with the winner. I said it in French this morning, and it still sounded wrong.
@@ -54,9 +90,10 @@ CLERK: Is that a national security matter?
 TREVOR: Only on the Slovak side.
 OFFICIAL: Minnesota on Tuesday.
 CLERK: And Ottawa on the sixth. Don't tell Sophie.
-OFFICIAL: So. Let me see if I have it. The Americans are listening to community radio. Alberta is going on an American podcast. The Rangers want a roof. The kids want rifles. The recruiting site is down, in one official language. And Official Languages wants a third language.
+OFFICIAL: So. Let me see if I have it. The Americans are listening to community radio. Alberta is going on an American podcast. The Rangers want a roof, and the roof needs a template that doesn't exist. The kids want rifles. The recruiting site is down, in one official language. A retired spy is mailing us helicopter parts. And Official Languages wants a third language.
 CLERK: And the man from Calgary.
-OFFICIAL: And the man from Calgary.
+OFFICIAL: And the man from Calgary. And the dog.
+CLERK: And Wilco.
 CLERK: The only thing anyone in this country agrees on this week is the Habs.
 OFFICIAL: That's not nothing.
 DOREEN: We are Anonymous.

@@ -1,10 +1,10 @@
 {
   "output": "the_corridor.mp4",
   "renderer_version": "0.18.0",
-  "renderer_commit": "fb64a8a-dirty",
-  "rendered_at": "2026-11-09T23:53:28+00:00",
-  "duration_s": 287.16,
-  "lines": 73,
+  "renderer_commit": "20854bc-dirty",
+  "rendered_at": "2026-11-10T00:03:42+00:00",
+  "duration_s": 423.18,
+  "lines": 110,
   "mask": null,
   "cast": {
     "CLERK": "mandarin_back",
@@ -14,7 +14,9 @@
     "DESMOND": "comms",
     "NATHAN": "pcoanalyst",
     "TREVOR": "cseliaison",
-    "BOTH": null
+    "BOTH": null,
+    "LOUISE": "tbsanalyst",
+    "SOPHIE": "deputy"
   },
   "resolution": "1280x720@30"
 }
