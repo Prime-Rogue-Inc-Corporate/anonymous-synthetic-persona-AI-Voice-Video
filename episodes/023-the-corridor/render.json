@@ -1,10 +1,10 @@
 {
   "output": "the_corridor.mp4",
   "renderer_version": "0.18.0",
-  "renderer_commit": "bce1dde-dirty",
-  "rendered_at": "2026-11-10T00:17:55+00:00",
-  "duration_s": 429.47,
-  "lines": 112,
+  "renderer_commit": "8bb1a15-dirty",
+  "rendered_at": "2026-11-10T00:47:17+00:00",
+  "duration_s": 628.17,
+  "lines": 175,
   "mask": null,
   "cast": {
     "CLERK": "mandarin_back",
@@ -16,7 +16,11 @@
     "BOTH": null,
     "LOUISE": "tbsanalyst",
     "PAULINE": "cirnac",
-    "MARCANDRE": "heritage"
+    "MARCANDRE": "heritage",
+    "KWAME": "diplomat",
+    "GERRY": "finance",
+    "TANYA": "nrcan",
+    "DALTON": "pubsafety"
   },
   "resolution": "1280x720@30"
 }

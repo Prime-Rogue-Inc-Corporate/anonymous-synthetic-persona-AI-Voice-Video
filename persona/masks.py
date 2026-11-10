@@ -1150,3 +1150,72 @@ def heritage(d, amp, t):
         d.ellipse([cx - 14, 250, cx + 14, 254 + 12 * amp], fill=(60, 26, 26, 255))
     d.polygon([(cx - 80, 300), (cx + 80, 300), (cx + 70, 340), (cx - 70, 340)], fill=(170, 40, 50, 255))   # scarf
     d.polygon([(cx + 20, 330), (cx + 50, 330), (cx + 44, 430), (cx + 16, 426)], fill=(170, 40, 50, 255))
+
+
+@mask("diplomat", tie=True)
+def diplomat(d, amp, t):
+    """Global Affairs: close-cropped hair with grey at the temples, a pocket square, a diplomatic half-smile."""
+    cx = CX
+    skin, jaw = (120, 82, 60, 255), 6 * amp
+    d.ellipse([cx - 58, 116, cx + 58, 288 + jaw], fill=skin)
+    d.chord([cx - 62, 104, cx + 62, 170], 180, 360, fill=(30, 26, 24, 255))
+    for s in (-1, 1):
+        d.rectangle([cx + s * 58 - 6, 150, cx + s * 58 + 4, 176], fill=(150, 150, 150, 255))
+    _eyes(d, cx, 188, gap=27, socket=(104, 70, 50, 255))
+    d.polygon([(cx - 5, 200), (cx + 5, 200), (cx + 10, 232), (cx - 10, 232)], fill=(104, 70, 50, 255))
+    my = 258 + jaw * 0.5
+    if amp > 0.08:
+        d.chord([cx - 18, my - 6, cx + 20, my + 8 + 12 * amp], 0, 180, fill=(50, 20, 20, 255))
+    else:
+        d.arc([cx - 18, my - 10, cx + 20, my + 4], 30, 150, fill=(70, 40, 30, 255), width=4)
+    d.polygon([(cx + 100, 360), (cx + 140, 360), (cx + 130, 380), (cx + 110, 380)], fill=(230, 200, 60, 255))   # pocket square
+
+
+@mask("finance", tie=False)
+def finance(d, amp, t):
+    """Finance: shirtsleeves and suspenders, a pencil behind the ear, reading glasses on the forehead."""
+    cx = CX
+    d.polygon([(cx - 200, 520), (cx - 180, 340), (cx - 90, 290), (cx + 90, 290), (cx + 180, 340), (cx + 200, 520)], fill=(220, 226, 236, 255))
+    for s in (-1, 1):
+        d.line([(cx + s * 70, 300), (cx + s * 60, 520)], fill=(140, 30, 40, 255), width=12)
+    d.polygon([(cx - 12, 306), (cx + 12, 306), (cx + 16, 400), (cx, 420), (cx - 16, 400)], fill=(40, 60, 100, 255))
+    skin, jaw = (236, 206, 186, 255), 6 * amp
+    d.ellipse([cx - 58, 116, cx + 58, 288 + jaw], fill=skin)
+    d.chord([cx - 62, 104, cx + 62, 150], 180, 360, fill=(160, 120, 90, 255))
+    for s in (-1, 1):
+        d.ellipse([cx + s * 24 - 16, 130, cx + s * 24 + 16, 150], outline=(40, 40, 44, 255), width=3)   # glasses up top
+    d.line([(cx + 52, 170), (cx + 86, 130)], fill=(240, 200, 60, 255), width=6)
+    _eyes(d, cx, 192, gap=27, socket=(220, 190, 170, 255))
+    d.polygon([(cx - 5, 204), (cx + 5, 204), (cx + 10, 234), (cx - 10, 234)], fill=(220, 190, 170, 255))
+    _mouth(d, cx, 258 + jaw * 0.5, amp, w=15)
+
+
+@mask("nrcan", tie=True)
+def nrcan(d, amp, t):
+    """Natural Resources: a white hard hat worn with a business suit, safety glasses pushed up, a hi-vis lanyard."""
+    cx = CX
+    skin, hair, jaw = (226, 190, 160, 255), (110, 70, 40, 255), 6 * amp
+    d.polygon([(cx - 70, 160), (cx - 74, 260), (cx + 74, 260), (cx + 70, 160)], fill=hair)
+    d.ellipse([cx - 56, 120, cx + 56, 288 + jaw], fill=skin)
+    d.chord([cx - 66, 76, cx + 66, 186], 180, 360, fill=(246, 246, 246, 255))                   # hard hat
+    d.rectangle([cx - 80, 128, cx + 80, 140], fill=(230, 230, 230, 255))
+    d.rectangle([cx - 52, 146, cx + 52, 160], fill=(40, 40, 44, 200))                            # safety glasses up
+    _eyes(d, cx, 192, gap=27, socket=(210, 174, 146, 255))
+    d.polygon([(cx - 4, 204), (cx + 4, 204), (cx + 9, 234), (cx - 9, 234)], fill=(210, 174, 146, 255))
+    _mouth(d, cx, 258 + jaw * 0.5, amp, w=15, lip=(160, 80, 80, 255))
+    d.line([(cx - 40, 300), (cx, 400), (cx + 40, 300)], fill=(220, 240, 40, 255), width=6)
+
+
+@mask("pubsafety", tie=True)
+def pubsafety(d, amp, t):
+    """Public Safety: a buzz cut, a radio earpiece with a coiled cord, a square jaw."""
+    cx = CX
+    skin, jaw = (236, 200, 176, 255), 6 * amp
+    d.rounded_rectangle([cx - 60, 112, cx + 60, 290 + jaw], radius=40, fill=skin)
+    d.rounded_rectangle([cx - 62, 104, cx + 62, 150], radius=20, fill=(170, 140, 110, 255))
+    _eyes(d, cx, 190, gap=27, socket=(220, 184, 160, 255))
+    d.polygon([(cx - 5, 202), (cx + 5, 202), (cx + 10, 232), (cx - 10, 232)], fill=(220, 184, 160, 255))
+    _mouth(d, cx, 258 + jaw * 0.5, amp, w=16)
+    d.ellipse([cx + 56, 196, cx + 66, 210], fill=(30, 30, 34, 255))
+    for k in range(8):
+        d.arc([cx + 58, 210 + k * 12, cx + 70, 224 + k * 12], 270, 90, fill=(30, 30, 34, 255), width=2)

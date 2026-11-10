@@ -208,6 +208,94 @@
         "pitch": 40,
         "filter": "asetrate=22050*0.93,aresample=44100,atempo=1.05,aecho=0.8:0.4:25:0.15,highpass=f=90,lowpass=f=6000,volume=1.6"
       }
+    },
+    "KWAME": {
+      "walk": true,
+      "cadence": 2.3,
+      "scale": 0.82,
+      "top": 180,
+      "linger": 1.5,
+      "name": "Kwame, Global Affairs (fictional)",
+      "mask": "diplomat",
+      "x": 0.88,
+      "enter": "right",
+      "color": [
+        230,
+        210,
+        140
+      ],
+      "voice": {
+        "voice": "en-gb+m7",
+        "speed": 162,
+        "pitch": 30,
+        "filter": "asetrate=22050*0.9,aresample=44100,atempo=1.05,aecho=0.8:0.4:25:0.15,highpass=f=80,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "GERRY": {
+      "walk": true,
+      "cadence": 2.3,
+      "scale": 0.82,
+      "top": 180,
+      "linger": 1.5,
+      "name": "Gerry, Finance (fictional)",
+      "mask": "finance",
+      "x": 0.12,
+      "enter": "left",
+      "color": [
+        220,
+        200,
+        180
+      ],
+      "voice": {
+        "voice": "en-us+m4",
+        "speed": 176,
+        "pitch": 42,
+        "filter": "asetrate=22050*0.93,aresample=44100,atempo=1.05,aecho=0.8:0.4:25:0.15,highpass=f=90,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "TANYA": {
+      "walk": true,
+      "cadence": 2.3,
+      "scale": 0.82,
+      "top": 180,
+      "linger": 1.5,
+      "name": "Tanya, Natural Resources (fictional)",
+      "mask": "nrcan",
+      "x": 0.88,
+      "enter": "right",
+      "color": [
+        240,
+        230,
+        120
+      ],
+      "voice": {
+        "voice": "en-us+f2",
+        "speed": 170,
+        "pitch": 50,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.4:25:0.15,highpass=f=130,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "DALTON": {
+      "walk": true,
+      "cadence": 2.3,
+      "scale": 0.82,
+      "top": 180,
+      "linger": 1.5,
+      "name": "Dalton, Public Safety (fictional)",
+      "mask": "pubsafety",
+      "x": 0.12,
+      "enter": "left",
+      "color": [
+        180,
+        200,
+        230
+      ],
+      "voice": {
+        "voice": "en-us+m7",
+        "speed": 164,
+        "pitch": 28,
+        "filter": "asetrate=22050*0.9,aresample=44100,atempo=1.05,aecho=0.8:0.4:25:0.15,highpass=f=80,lowpass=f=6000,volume=1.6"
+      }
     }
   },
   "layout": {
@@ -239,7 +327,9 @@
     "Rusyn": "Roo-sin",
     "Carpatho-Rusyn": "Car-pa-tho Roo-sin",
     "Gatineau": "Gat-in-oh",
-    "Wilco": "Wil-co"
+    "Wilco": "Wil-co",
+    "Coutts": "Coots",
+    "Kwame": "Kwah-mee"
   },
   "signoff_lines": 0,
   "gaps": {
@@ -266,7 +356,21 @@
       "Everything is on the radio.": 0.8,
       "And Wilco.": 1.0,
       "We have no fucking clue, sir.": 1.1,
-      "Don't tell Official Languages.": 0.6
+      "Don't tell Official Languages.": 0.6,
+      "We'll come around to it. Everyone does.": 0.8,
+      "They're reorganizing the trays.": 0.8,
+      "Then they'll be very happy here.": 0.8,
+      "We're walking slowly.": 1.0,
+      "They have a very large couch.": 0.8,
+      "That's the new standard.": 1.0,
+      "That's the point.": 0.6,
+      "you've passed this water fountain three times.": 1.0,
+      "Biscuit has a podcast.": 0.8,
+      "Toronto won't notice.": 1.0,
+      "She has a bot, sir.": 1.0,
+      "In both official languages.": 0.8,
+      "Who the fuck knows where Canada is going, Margaret.": 1.2,
+      "It's the format.": 1.2
     }
   },
   "light": {
