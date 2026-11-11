@@ -68,6 +68,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Set `basement`: a windowless Ottawa basement with a drop ceiling, a whiteboard and Brian's cake.
 - Masks: `lgenmargo`, `colpruden`, `dranjali`, `fenwick`, `bethany`.
 - Episode 036, *Conditional*: figures from Prime Rogue's Force-on-Force simulation v0.1 to v0.1.2.2. 540p in-tree.
+- Set `scif`: a Pentagon secure room with a vault door, phone lockers, four clocks and the RG 407 box.
+- Masks: `usmaj`, `diaanalyst`, `historian`; `_officeface` gains `agsu` and `bowtie` dress.
+- Episode 037, *Crimson*.
 
 ## [0.16.0] - 2026-11-09
 

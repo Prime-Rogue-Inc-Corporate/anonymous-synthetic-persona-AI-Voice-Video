@@ -34,7 +34,7 @@ DEFAULTS = {
     "cast": {},
     "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
             "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None,
-            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None, "cabinet": None, "zoom": None, "longtable": None, "forest": None, "park": None, "fetch": None, "drone": None, "stubble": None, "classroom": None, "basement": None},
+            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None, "cabinet": None, "zoom": None, "longtable": None, "forest": None, "park": None, "fetch": None, "drone": None, "stubble": None, "classroom": None, "basement": None, "scif": None},
     "layout": {},
     "credits": [],
     "end_title": "EXPECT US.",
@@ -542,6 +542,8 @@ class Renderer:
             self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
         if cfg["set"].get("boardroom"):
             self.chamber_bg = boardroom_backdrop(cfg["set"]["boardroom"])
+        if cfg["set"].get("scif"):
+            self.chamber_bg = scif_backdrop(cfg["set"]["scif"])
         if cfg["set"].get("basement"):
             self.chamber_bg = basement_backdrop(cfg["set"]["basement"])
         if cfg["set"].get("classroom"):
@@ -1422,6 +1424,43 @@ def boardroom_backdrop(conf):
     d.rectangle([fx + 2, 90, fx + 82, 130], fill=(240, 240, 236))
     d.rectangle([fx + 2, 90, fx + 22, 130], fill=(200, 30, 40)); d.rectangle([fx + 62, 90, fx + 82, 130], fill=(200, 30, 40))
     d.rectangle([0, 420, W, H], fill=(40, 30, 26))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def scif_backdrop(conf):
+    """Static secure room somewhere in the Pentagon: grey acoustic wall panels, a vault door with a spin dial, a
+    rack of phone lockers by the door, a red light marked SECURE AREA, a wall clock showing four time zones, and a
+    gray archive box on a side table labelled RG 407 / WAR PLAN RED."""
+    conf = conf if isinstance(conf, dict) else {}
+    im = Image.new("RGB", (W, H), (120, 126, 134)); d = ImageDraw.Draw(im)
+    for x in range(0, W, 80):                                                   # acoustic panels
+        for y in range(0, 470, 80):
+            d.rectangle([x + 3, y + 3, x + 77, y + 77], fill=(132, 138, 146), outline=(108, 114, 122))
+    f = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 14)
+    fb = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 18)
+    vx = int(W * 0.04)                                                          # vault door
+    d.rectangle([vx, 90, vx + 180, 470], fill=(170, 172, 176), outline=(90, 92, 96), width=6)
+    d.ellipse([vx + 60, 220, vx + 120, 280], fill=(60, 62, 66)); d.ellipse([vx + 72, 232, vx + 108, 268], fill=(200, 200, 204))
+    for k in range(12):
+        a = k / 12 * 2 * math.pi
+        d.line([(vx + 90 + 26 * math.cos(a), 250 + 26 * math.sin(a)), (vx + 90 + 30 * math.cos(a), 250 + 30 * math.sin(a))], fill=(20, 20, 20), width=2)
+    d.rectangle([vx + 30, 60, vx + 150, 84], fill=(180, 30, 30)); d.text((vx + 90, 72), "SECURE AREA", font=f, fill=(255, 230, 230), anchor="mm")
+    for r in range(3):                                                          # phone lockers
+        for c in range(4):
+            x = vx + 200 + c * 34; y = 300 + r * 40
+            d.rectangle([x, y, x + 30, y + 36], fill=(96, 100, 108), outline=(60, 62, 66)); d.ellipse([x + 22, y + 15, x + 27, y + 20], fill=(200, 200, 200))
+    cxs = int(W * 0.72)                                                         # clocks
+    for k, lab in enumerate(conf.get("clocks", ["DC", "OTTAWA", "CALGARY", "ZULU"])):
+        x = cxs + k * 80
+        d.ellipse([x, 90, x + 60, 150], fill=(240, 240, 236), outline=(40, 40, 40), width=3)
+        a = -math.pi / 2 + k * 0.9; d.line([(x + 30, 120), (x + 30 + 20 * math.cos(a), 120 + 20 * math.sin(a))], fill=(20, 20, 20), width=3)
+        d.text((x + 30, 162), lab, font=f, fill=(230, 230, 230), anchor="mm")
+    bx = int(W * 0.82)                                                          # the archive box
+    d.rectangle([bx, 360, bx + 180, 380], fill=(110, 90, 70))
+    d.rectangle([bx + 20, 300, bx + 160, 360], fill=(150, 150, 146), outline=(100, 100, 96), width=2)
+    d.text((bx + 90, 318), "RG 407", font=f, fill=(30, 30, 30), anchor="mm"); d.text((bx + 90, 340), "WAR PLAN RED", font=fb, fill=(150, 20, 20), anchor="mm")
+    d.rectangle([0, 470, W, H], fill=(70, 74, 82))
+    d.polygon([(int(W * 0.06), 490), (int(W * 0.94), 490), (W, 570), (0, 570)], fill=(40, 42, 48))
     return np.asarray(im).astype(np.float32) / 255
 
 

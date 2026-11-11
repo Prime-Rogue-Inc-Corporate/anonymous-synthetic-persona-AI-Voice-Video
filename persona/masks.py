@@ -1852,6 +1852,18 @@ def _officeface(name, skin, hair, style, shirt, extra, tie=None, doc=""):
             if extra == "tie":
                 d.polygon([(cx - 40, 296), (cx, 330), (cx + 40, 296)], fill=(240, 240, 240, 255))
                 d.polygon([(cx - 10, 330), (cx + 10, 330), (cx + 16, 460), (cx, 480), (cx - 16, 460)], fill=(120, 20, 40, 255))
+            if extra == "agsu":                                                  # US Army service jacket, olive-brown, ribbons
+                d.polygon([(cx - 60, 296), (cx, 400), (cx + 60, 296)], fill=(214, 200, 170, 255))
+                d.polygon([(cx - 10, 330), (cx + 10, 330), (cx + 14, 420), (cx - 14, 420)], fill=(60, 50, 40, 255))
+                for r in range(3):
+                    for k in range(4):
+                        d.rectangle([cx - 150 + k * 20, 360 + r * 12, cx - 132 + k * 20, 370 + r * 12], fill=[(180, 40, 40, 255), (40, 80, 160, 255), (220, 180, 60, 255), (40, 120, 60, 255)][(r + k) % 4])
+                for s_ in (-1, 1):
+                    d.rectangle([cx + s_ * 140 - 24, 312, cx + s_ * 140 + 24, 328], fill=(70, 60, 44, 255))
+                    d.ellipse([cx + s_ * 140 - 8, 312, cx + s_ * 140 + 8, 328], fill=(220, 190, 90, 255))
+            if extra == "bowtie":
+                d.polygon([(cx - 40, 296), (cx, 330), (cx + 40, 296)], fill=(240, 240, 240, 255))
+                d.polygon([(cx, 316), (cx - 30, 300), (cx - 30, 332)], fill=(30, 70, 140, 255)); d.polygon([(cx, 316), (cx + 30, 300), (cx + 30, 332)], fill=(30, 70, 140, 255))
             if extra == "cardigan":
                 d.polygon([(cx - 50, 296), (cx, 380), (cx + 50, 296)], fill=(236, 230, 214, 255))
         if style == "bob":
@@ -1891,3 +1903,7 @@ _officeface("colpruden", (226, 186, 160, 255), (120, 100, 80, 255), "brush", (19
 _officeface("dranjali", (186, 134, 100, 255), (24, 20, 20, 255), "curls", (80, 90, 110, 255), "lanyard", doc="Dr. Anjali Lafleur-Okafor: big dark curls, a cardigan, a lanyard, a laptop whose fans you can hear.")
 _officeface("fenwick", (240, 214, 196, 255), (150, 120, 90, 255), "part", (40, 44, 60, 255), "tie", doc="Neil Fenwick, PCO: a side part, rimless glasses, a burgundy tie, two printed decks.")
 _officeface("bethany", (230, 190, 160, 255), (180, 90, 50, 255), "bun", (120, 150, 200, 255), "cardigan", doc="Bethany, a co-op student: a messy bun, big glasses, a notebook nobody asked for.")
+
+_officeface("usmaj", (214, 170, 140, 255), (40, 30, 26, 255), "bob", (96, 84, 60, 255), "agsu", doc="Maj. Kendra Whitlock, Joint Staff J-5: a dark regulation bob, ribbons, a laser pointer.")
+_officeface("diaanalyst", (240, 210, 190, 255), (210, 180, 120, 255), "part", (60, 70, 90, 255), "lanyard", doc="Owen, a DIA analyst: a side part, rimless glasses, two badges, a Costco-size coffee.")
+_officeface("historian", (226, 190, 166, 255), (200, 200, 204, 255), "curls", (120, 90, 70, 255), "bowtie", doc="Dr. Harold Pinkney, an Army War College historian: white curls, a bow tie, a box from the National Archives.")

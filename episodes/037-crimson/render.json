@@ -1,0 +1,16 @@
+{
+  "output": "crimson.mp4",
+  "renderer_version": "0.18.0",
+  "renderer_commit": "652ef50-dirty",
+  "rendered_at": "2026-11-11T03:44:06+00:00",
+  "duration_s": 521.21,
+  "lines": 87,
+  "mask": null,
+  "cast": {
+    "WHITLOCK": "usmaj",
+    "OWEN": "diaanalyst",
+    "PINKNEY": "historian",
+    "DARCY": "truckerdarcy"
+  },
+  "resolution": "1280x720@30"
+}
