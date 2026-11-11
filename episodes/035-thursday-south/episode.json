@@ -38,7 +38,7 @@
         "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.053,highpass=f=90,lowpass=f=6500,volume=0.7"
       },
       "enter": "right",
-      "linger": 30
+      "linger": 120
     },
     "VIC": {
       "mask": "vicparka",
@@ -59,6 +59,28 @@
       "top": 60,
       "screen": true,
       "screen_label": "867 · CAMBRIDGE BAY"
+    },
+    "LINCOLN": {
+      "mask": "lincoln",
+      "name": "Abraham Lincoln, Lyceum Address, Springfield, Illinois, January 27, 1838 (on Vic's tape)",
+      "voice": {
+        "voice": "en-us+m3",
+        "speed": 136,
+        "pitch": 22,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.6:40:0.25,highpass=f=300,lowpass=f=3200,volume=1.3"
+      },
+      "color": [
+        200,
+        220,
+        255
+      ],
+      "x": 0.84,
+      "scale": 0.3,
+      "top": 60,
+      "screen": true,
+      "screen_label": "TAPE · SPRINGFIELD, 1838",
+      "enter": "right",
+      "linger": 20
     }
   },
   "set": {
@@ -80,7 +102,8 @@
     "Nunavut": "Noona-voot",
     "Darlene": "Darleen",
     "Moose Jaw": "Moose Jaw",
-    "Langley": "Langley"
+    "Langley": "Langley",
+    "Buonaparte": "Bonaparte"
   },
   "signoff_lines": 5,
   "gaps": {
@@ -111,14 +134,23 @@
       "Everything else always comes north.": 1.2,
       "Potash knows where it's going.": 1.2,
       "They're going to need a bigger satellite.": 1.2,
-      "That's the point.": 1.2
+      "That's the point.": 1.2,
+      "Shoot at who?": 0.8,
+      "Not the scared one with the loud one.": 1.0,
+      "Everybody had him. Here. Listen.": 1.0,
+      "As a nation of freemen, we must live through all time, or die by suicide.": 1.6,
+      "That's the tape.": 1.0,
+      "So the danger's us.": 0.9,
+      "The casserole is so it doesn't start inside.": 1.2,
+      "Everybody goes home.": 1.0,
+      "Now you're Thursday.": 1.2
     }
   },
   "light": {
     "line": null
   },
   "credits": [
-    "An original sketch. Earl, Gary, Darlene and Vic are fictional.",
+    "An original sketch. Earl, Gary, Darlene and Vic are fictional. Lincoln's words: the Lyceum Address, Springfield, Illinois, January 27, 1838 (public domain), as in episode 002.",
     "309 is a central Illinois area code. 867 is the territories.",
     "Previously: 014 Thursday, 028 Mitts, 031 The Chain, 033 Potash, 034 N-P-K"
   ],
