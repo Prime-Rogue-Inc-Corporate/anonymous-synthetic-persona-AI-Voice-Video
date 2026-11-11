@@ -63,6 +63,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Set `classroom`: a county extension office with a chalkboard, ribbon board, wall phone and fertilizer bags.
 - Masks: `leaderjan`, `kidmaddie`, `kidtyler`, `kidjosh`.
 - Episode 034, *N-P-K*.
+- Episode 035, *Thursday South*.
 
 ## [0.16.0] - 2026-11-09
 

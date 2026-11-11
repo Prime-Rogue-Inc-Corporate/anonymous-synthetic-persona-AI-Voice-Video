@@ -42,6 +42,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 032 | [Off-Leash](episodes/032-off-leash) | The guy from Calgary walks Wilco and talks for twenty minutes while the RCMP, a drone, a satellite, Moscow and Langley watch; she fetches, he explains · park set, fetch animation, drone (540p in-tree) | ~20:12 |
 | 033 | [Potash](episodes/033-potash) | Meanwhile in McLean County, Illinois: two farmers spreading fall potash worry about what happens if the Canadians find out · stubble set | ~5:09 |
 | 034 | [N-P-K](episodes/034-n-p-k) | Same night in Iowa: a youth ag club leader learns where the K comes from, freaks out, and calls "Canada", reaching the Cambridge Bay community radio · classroom set, kid masks | ~5:37 |
+| 035 | [Thursday South](episodes/035-thursday-south) | One week later: Vic calls Earl (he got the number from Darlene) to start a Thursday chapter in Illinois. Is it a cult? It's a casserole · stubble set, caller on a monitor | ~5:35 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 

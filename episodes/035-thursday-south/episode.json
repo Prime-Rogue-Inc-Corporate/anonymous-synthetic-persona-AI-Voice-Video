@@ -1,0 +1,126 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "thursday south",
+  "cast": {
+    "EARL": {
+      "mask": "farmerearl",
+      "name": "Earl, corn and beans, McLean County, Illinois (fictional)",
+      "x": 0.28,
+      "scale": 0.62,
+      "top": 176,
+      "color": [
+        230,
+        200,
+        150
+      ],
+      "voice": {
+        "voice": "en-us+m7",
+        "speed": 132,
+        "pitch": 24,
+        "filter": "asetrate=22050*0.88,aresample=44100,atempo=1.136,highpass=f=90,lowpass=f=6500,volume=0.7"
+      }
+    },
+    "GARY": {
+      "mask": "farmergary",
+      "name": "Gary, his neighbour, also corn and beans (fictional)",
+      "x": 0.6,
+      "scale": 0.62,
+      "top": 176,
+      "color": [
+        200,
+        220,
+        250
+      ],
+      "voice": {
+        "voice": "en-us+m3",
+        "speed": 150,
+        "pitch": 36,
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.053,highpass=f=90,lowpass=f=6500,volume=0.7"
+      },
+      "enter": "right",
+      "linger": 30
+    },
+    "VIC": {
+      "mask": "vicparka",
+      "color": [
+        240,
+        200,
+        120
+      ],
+      "voice": {
+        "voice": "en-us+m1",
+        "speed": 172,
+        "pitch": 24,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.1,aecho=0.6:0.3:20:0.1,highpass=f=80,lowpass=f=6500,volume=1.6"
+      },
+      "name": "Vic, retired, on the phone from Cambridge Bay (fictional)",
+      "x": 0.84,
+      "scale": 0.3,
+      "top": 60,
+      "screen": true,
+      "screen_label": "867 · CAMBRIDGE BAY"
+    }
+  },
+  "set": {
+    "stubble": {
+      "bins_x": 0.66,
+      "tender_x": 0.42,
+      "truck_x": 0.02
+    },
+    "chyron": {
+      "title": "ONE WEEK LATER  ·  McLEAN COUNTY, ILLINOIS",
+      "sub": "INCOMING  ·  867 → 309  ·  TUESDAY, NOVEMBER 17"
+    }
+  },
+  "layout": {
+    "top": 176,
+    "scale": 0.62
+  },
+  "pronounce": {
+    "Nunavut": "Noona-voot",
+    "Darlene": "Darleen",
+    "Moose Jaw": "Moose Jaw",
+    "Langley": "Langley"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.42,
+    "after_greeting": 0.4,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "I don't know a Vic.": 0.8,
+      "Darlene.": 0.8,
+      "Of course.": 1.0,
+      "She told Canada about my colonoscopy.": 1.0,
+      "Congratulations.": 1.0,
+      "It's Tuesday.": 0.8,
+      "That's why it works.": 1.0,
+      "Thursday South.": 0.9,
+      "Vic. Is this a cult?": 0.8,
+      "It's a casserole.": 1.0,
+      "It's called church.": 0.9,
+      "I'm only asking you to do it on purpose.": 1.0,
+      "It went stupid.": 0.9,
+      "She was right.": 1.2,
+      "Oh. We have that.": 1.0,
+      "I know some people.": 1.0,
+      "Latvia.": 0.9,
+      "Those are different things.": 1.2,
+      "Till she was ninety-one.": 1.1,
+      "Everything else always comes north.": 1.2,
+      "Potash knows where it's going.": 1.2,
+      "They're going to need a bigger satellite.": 1.2,
+      "That's the point.": 1.2
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "credits": [
+    "An original sketch. Earl, Gary, Darlene and Vic are fictional.",
+    "309 is a central Illinois area code. 867 is the territories.",
+    "Previously: 014 Thursday, 028 Mitts, 031 The Chain, 033 Potash, 034 N-P-K"
+  ],
+  "output": "thursday_south.mp4"
+}
