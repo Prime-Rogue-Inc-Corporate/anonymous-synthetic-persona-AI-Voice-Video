@@ -40,6 +40,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 030 | [Длинный стол / The Long Table](episodes/030-dlinnyi-stol) | Meanwhile in Moscow: four fictional briefers at the far end of a very long table report on Canada to the back of a head that never moves or speaks; in Russian with subtitles · longtable set | ~5:40 |
 | 031 | [The Chain](episodes/031-the-chain) | A trench in eastern Latvia: "Americans or Russians?" climbs from private to colonel to the CDS, and comes back down on a napkin; Slovak and Latvian partners in their own languages · forest set, field-soldier masks | ~7:08 |
 | 032 | [Off-Leash](episodes/032-off-leash) | The guy from Calgary walks Wilco and talks for twenty minutes while the RCMP, a drone, a satellite, Moscow and Langley watch; she fetches, he explains · park set, fetch animation, drone (540p in-tree) | ~20:12 |
+| 033 | [Potash](episodes/033-potash) | Meanwhile in McLean County, Illinois: two farmers spreading fall potash worry about what happens if the Canadians find out · stubble set | ~5:09 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
@@ -91,6 +92,7 @@ The persona's head changes per episode and moves with the voice.
 | `rugeneral`, `ruadmiral`, `ruanalyst`, `ruinterp` | peaked cap and ribbons / white cap and a beard / chignon and a tablet / wire glasses and one earpiece | mouths open with the voice |
 | `pte`, `sgt`, `wo`, `lt`, `capt`, `maj`, `lcol`, `col`, `slovakcpl`, `latviansgt` (no suit) | helmets, a disruptive-pattern smock, a rank slide and a shoulder flag (Canada, Slovakia, Latvia) | mouths open with the voice |
 | `calgaryguy` (no suit) | a plain white mask, a massive auburn beard, hair escaping a black toque, charcoal parka, olive collar, red scarf | the slot opens with the voice |
+| `farmerearl`, `farmergary` (no suit) | green seed cap, flannel and bib overalls / mesh-back cap, canvas jacket, moustache, readers on a cord | mouths open with the voice |
 | `cirnac`, `heritage` | dark hair, rectangular glasses, cardigan, lanyard / trimmed beard, tortoiseshell glasses, scarf | mouths open with the voice |
 
 Add one by writing a function in `persona/masks.py` decorated with `@mask("name")`. It gets the frame's voice loudness (`amp`, 0–1) and time (`t`), and draws on a 520×520 canvas with the suit's collar at y=300.

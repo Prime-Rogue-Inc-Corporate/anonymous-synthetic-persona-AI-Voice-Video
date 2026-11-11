@@ -1,0 +1,105 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "potash",
+  "cast": {
+    "EARL": {
+      "mask": "farmerearl",
+      "name": "Earl, corn and beans, McLean County, Illinois (fictional)",
+      "x": 0.3,
+      "scale": 0.62,
+      "top": 176,
+      "color": [
+        230,
+        200,
+        150
+      ],
+      "voice": {
+        "voice": "en-us+m7",
+        "speed": 132,
+        "pitch": 24,
+        "filter": "asetrate=22050*0.88,aresample=44100,atempo=1.136,highpass=f=90,lowpass=f=6500,volume=0.7"
+      }
+    },
+    "GARY": {
+      "mask": "farmergary",
+      "name": "Gary, his neighbour, also corn and beans (fictional)",
+      "x": 0.72,
+      "scale": 0.62,
+      "top": 176,
+      "color": [
+        200,
+        220,
+        250
+      ],
+      "voice": {
+        "voice": "en-us+m3",
+        "speed": 150,
+        "pitch": 36,
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.053,highpass=f=90,lowpass=f=6500,volume=0.7"
+      }
+    }
+  },
+  "set": {
+    "stubble": {
+      "bins_x": 0.66,
+      "tender_x": 0.42,
+      "truck_x": 0.02
+    },
+    "chyron": {
+      "title": "MEANWHILE, McLEAN COUNTY, ILLINOIS",
+      "sub": "FALL POTASH APPLICATION  ·  NOVEMBER  ·  CORN STUBBLE  ·  ~80% OF U.S. POTASH IMPORTS: CANADA"
+    }
+  },
+  "layout": {
+    "top": 176,
+    "scale": 0.62
+  },
+  "pronounce": {
+    "Saskatchewan": "Saskatchewan",
+    "Belarus": "Bela-roos",
+    "Moose Jaw": "Moose Jaw",
+    "Darlene": "Darleen",
+    "Tripp Halloran": "Tripp Halloran"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.42,
+    "after_greeting": 0.4,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "I'm not a hobo.": 1.0,
+      "That's how they keep it safe.": 1.0,
+      "Your knee.": 0.7,
+      "That we need it.": 1.0,
+      "Oh.": 0.9,
+      "Oh, no.": 0.9,
+      "Darlene told the whole church about my colonoscopy.": 1.1,
+      "In both their languages.": 0.9,
+      "Hm.": 1.0,
+      "I think the Canadians know about the potash.": 1.2,
+      "Since the potash.": 1.1,
+      "Until you brought it up.": 1.0,
+      "That's so much worse.": 1.2,
+      "So it's Russia with a different hat.": 0.9,
+      "At least they say sorry.": 1.1,
+      "Our government doesn't last long.": 1.1,
+      "You can't tariff a napkin.": 0.9,
+      "Course they did.": 1.2,
+      "Fifty years.": 0.9,
+      "He was Canadian, Gary.": 1.2,
+      "Never told anybody.": 0.9,
+      "Every farm's got a guy.": 1.0,
+      "Gary. They know.": 1.4
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "credits": [
+    "An original sketch. Earl, Gary, Darlene and Earl's dad are fictional.",
+    "Facts as reported: Canada supplies almost 80% of U.S. potash imports (USGS 2026); most enters duty-free under USMCA; a first Belarusian shipment in four years arrived in October 2026.",
+    "Previously: 013 Canada Options, 024 Two Oh Seven, 031 The Chain"
+  ],
+  "output": "potash.mp4"
+}

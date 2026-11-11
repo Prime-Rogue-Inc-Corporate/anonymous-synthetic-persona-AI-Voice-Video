@@ -57,6 +57,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Sound cue `[kick]`.
 - Mask `calgaryguy`.
 - Episode 032, *Off-Leash*: twenty minutes, one ball. 540p in-tree; full quality git-ignored.
+- Set `stubble`: a harvested Corn Belt field at dusk with bins, an elevator, a pickup and a red fertilizer tender.
+- Masks: `farmerearl`, `farmergary`.
+- Episode 033, *Potash*.
 
 ## [0.16.0] - 2026-11-09
 

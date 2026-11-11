@@ -34,7 +34,7 @@ DEFAULTS = {
     "cast": {},
     "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
             "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None,
-            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None, "cabinet": None, "zoom": None, "longtable": None, "forest": None, "park": None, "fetch": None, "drone": None},
+            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None, "cabinet": None, "zoom": None, "longtable": None, "forest": None, "park": None, "fetch": None, "drone": None, "stubble": None},
     "layout": {},
     "credits": [],
     "end_title": "EXPECT US.",
@@ -542,6 +542,8 @@ class Renderer:
             self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
         if cfg["set"].get("boardroom"):
             self.chamber_bg = boardroom_backdrop(cfg["set"]["boardroom"])
+        if cfg["set"].get("stubble"):
+            self.chamber_bg = stubble_backdrop(cfg["set"]["stubble"])
         if cfg["set"].get("park"):
             self.chamber_bg = park_backdrop(cfg["set"]["park"])
         if cfg["set"].get("forest"):
@@ -1416,6 +1418,56 @@ def boardroom_backdrop(conf):
     d.rectangle([fx + 2, 90, fx + 82, 130], fill=(240, 240, 236))
     d.rectangle([fx + 2, 90, fx + 22, 130], fill=(200, 30, 40)); d.rectangle([fx + 62, 90, fx + 82, 130], fill=(200, 30, 40))
     d.rectangle([0, 420, W, H], fill=(40, 30, 26))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def stubble_backdrop(conf):
+    """Static harvested cornfield in the Corn Belt, November, late afternoon: a huge flat sky going orange, a row of
+    grain bins and an elevator on the horizon, corn stubble in rows running to the vanishing point, a pickup with
+    the tailgate down, and a red fertilizer tender with a spinner spreader, half full of pink-grey potash."""
+    conf = conf if isinstance(conf, dict) else {}
+    rng = np.random.default_rng(33)
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    hz = 390
+    for y in range(hz):
+        f = y / hz; d.line([(0, y), (W, y)], fill=(int(110 + 140 * f), int(140 + 70 * f), int(190 - 60 * f)))
+    for k in range(6):                                                          # long flat clouds
+        y = int(rng.integers(60, 260)); x = int(rng.integers(-200, W)); w = int(rng.integers(200, 520))
+        d.ellipse([x, y, x + w, y + 18], fill=(236, 200, 180))
+    bx = int(W * conf.get("bins_x", 0.7))                                       # bins and an elevator
+    for k in range(4):
+        x = bx + k * 46
+        d.rectangle([x, hz - 70, x + 40, hz], fill=(190, 194, 200)); d.polygon([(x - 2, hz - 70), (x + 20, hz - 92), (x + 42, hz - 70)], fill=(176, 180, 186))
+        for j in range(5):
+            d.line([(x, hz - 64 + j * 13), (x + 40, hz - 64 + j * 13)], fill=(160, 164, 170))
+    d.rectangle([bx + 196, hz - 150, bx + 236, hz], fill=(214, 210, 200)); d.rectangle([bx + 190, hz - 162, bx + 242, hz - 150], fill=(200, 196, 186))
+    d.line([(bx + 216, hz - 150), (bx + 140, hz - 92)], fill=(150, 150, 150), width=3)
+    d.rectangle([0, hz - 6, W, hz], fill=(70, 80, 60))                          # treeline at the section line
+    d.rectangle([0, hz, W, H], fill=(124, 96, 64))
+    vx = W // 2
+    for k in range(-40, 41):                                                    # stubble rows to the vanishing point
+        xb = vx + k * 46
+        d.line([(vx + k * 2, hz), (xb, H)], fill=(150, 124, 84), width=2)
+    for _ in range(1800):
+        x, y = int(rng.integers(0, W)), int(rng.integers(hz + 4, H))
+        h = 2 + int(8 * (y - hz) / (H - hz))
+        d.line([(x, y), (x + 1, y - h)], fill=(200, 176, 120))
+    tx = int(W * conf.get("tender_x", 0.62))                                    # the fertilizer tender
+    d.polygon([(tx, 360), (tx + 230, 360), (tx + 210, 430), (tx + 20, 430)], fill=(180, 34, 30))
+    d.polygon([(tx + 8, 364), (tx + 222, 364), (tx + 214, 380), (tx + 16, 380)], fill=(196, 170, 168))
+    d.rectangle([tx + 14, 430, tx + 216, 440], fill=(60, 60, 60))
+    for wx in (tx + 40, tx + 190):
+        d.ellipse([wx - 24, 424, wx + 24, 472], fill=(24, 24, 24)); d.ellipse([wx - 9, 439, wx + 9, 457], fill=(150, 150, 150))
+    d.ellipse([tx + 226, 428, tx + 262, 444], fill=(160, 160, 160))
+    px = int(W * conf.get("truck_x", 0.04))                                     # the pickup, tailgate down
+    d.rounded_rectangle([px, 372, px + 260, 450], radius=10, fill=(150, 156, 164))
+    d.polygon([(px + 150, 372), (px + 172, 330), (px + 248, 330), (px + 260, 372)], fill=(150, 156, 164))
+    d.polygon([(px + 160, 372), (px + 178, 338), (px + 242, 338), (px + 252, 372)], fill=(90, 110, 130))
+    d.rectangle([px - 40, 420, px + 4, 428], fill=(120, 126, 134))
+    for wx in (px + 50, px + 210):
+        d.ellipse([wx - 28, 428, wx + 28, 484], fill=(20, 20, 20)); d.ellipse([wx - 10, 446, wx + 10, 466], fill=(150, 150, 150))
+    d.rectangle([px + 20, 356, px + 70, 374], fill=(240, 240, 240))           # a thermos and a seed bag on the bed
+    d.rectangle([px + 84, 346, px + 100, 374], fill=(40, 90, 60))
     return np.asarray(im).astype(np.float32) / 255
 
 

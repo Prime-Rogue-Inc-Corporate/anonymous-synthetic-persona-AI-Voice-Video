@@ -1717,3 +1717,53 @@ def calgaryguy(d, amp, t):
     d.rectangle([cx - 68, 140, cx + 68, 166], fill=(34, 34, 40, 255))
     for k in range(9):
         d.line([(cx - 60 + k * 15, 142), (cx - 60 + k * 15, 164)], fill=(22, 22, 26, 255), width=2)
+
+
+@mask("farmerearl", tie=None)
+def farmerearl(d, amp, t):
+    """Earl: seventies, a faded green seed cap with no logo, bib overalls over a flannel shirt, a sunburnt neck."""
+    cx = CX; jaw = 6 * amp
+    skin = (226, 168, 136, 255)
+    d.polygon([(cx - 200, 520), (cx - 180, 330), (cx - 90, 294), (cx + 90, 294), (cx + 180, 330), (cx + 200, 520)], fill=(170, 40, 40, 255))
+    for k in range(-6, 7):                                                       # flannel
+        d.line([(cx + k * 30, 300), (cx + k * 30, 520)], fill=(110, 20, 24, 255), width=4)
+    for y in range(320, 520, 30):
+        d.line([(cx - 200, y), (cx + 200, y)], fill=(110, 20, 24, 255), width=4)
+    d.rectangle([cx - 110, 380, cx + 110, 520], fill=(60, 84, 120, 255))         # bib
+    for s in (-1, 1):
+        d.line([(cx + s * 100, 384), (cx + s * 80, 296)], fill=(60, 84, 120, 255), width=22)
+        d.ellipse([cx + s * 96 - 9, 380, cx + s * 96 + 9, 398], fill=(200, 190, 150, 255))
+    d.ellipse([cx - 60, 124, cx + 60, 292 + jaw], fill=skin)
+    d.chord([cx - 60, 220 + jaw, cx + 60, 300 + jaw], 0, 180, fill=(200, 196, 190, 255))   # grey stubble
+    _eyes(d, cx, 196, gap=27, socket=(204, 146, 116, 255))
+    for s in (-1, 1):
+        for k in range(3):
+            d.line([(cx + s * 44, 192 + k * 6), (cx + s * 58, 186 + k * 8)], fill=(190, 130, 100, 255), width=2)
+    d.polygon([(cx - 6, 204), (cx + 6, 204), (cx + 12, 236), (cx - 12, 236)], fill=(204, 146, 116, 255))
+    _mouth(d, cx, 262 + jaw * 0.5, amp, w=15)
+    d.chord([cx - 68, 96, cx + 68, 200], 180, 360, fill=(70, 110, 60, 255))     # cap
+    d.rectangle([cx - 68, 146, cx + 68, 152], fill=(60, 96, 52, 255))
+    d.chord([cx - 70, 136, cx + 110, 176], 180, 360, fill=(60, 96, 52, 255))
+
+
+@mask("farmergary", tie=None)
+def farmergary(d, amp, t):
+    """Gary: fifties, a canvas work jacket, a mesh-back seed cap, a moustache, reading glasses on a cord."""
+    cx = CX; jaw = 6 * amp
+    skin = (232, 186, 156, 255)
+    d.polygon([(cx - 200, 520), (cx - 180, 330), (cx - 90, 294), (cx + 90, 294), (cx + 180, 330), (cx + 200, 520)], fill=(176, 130, 70, 255))
+    d.polygon([(cx - 90, 294), (cx, 360), (cx + 90, 294), (cx + 70, 290), (cx, 336), (cx - 70, 290)], fill=(80, 52, 30, 255))   # corduroy collar
+    d.line([(cx, 360), (cx, 520)], fill=(120, 86, 44, 255), width=4)
+    d.ellipse([cx - 58, 124, cx + 58, 292 + jaw], fill=skin)
+    _eyes(d, cx, 196, gap=26, socket=(212, 164, 134, 255))
+    d.polygon([(cx - 6, 204), (cx + 6, 204), (cx + 11, 234), (cx - 11, 234)], fill=(212, 164, 134, 255))
+    d.chord([cx - 34, 236, cx + 34, 262], 180, 360, fill=(110, 80, 52, 255))
+    _mouth(d, cx, 266 + jaw * 0.5, amp, w=13)
+    d.line([(cx - 40, 214), (cx - 60, 320)], fill=(40, 40, 40, 255), width=2); d.line([(cx + 40, 214), (cx + 60, 320)], fill=(40, 40, 40, 255), width=2)
+    for s in (-1, 1):
+        d.ellipse([cx + s * 28 - 16, 316, cx + s * 28 + 16, 334], outline=(40, 40, 40, 255), width=3)
+    d.chord([cx - 66, 96, cx + 66, 200], 180, 360, fill=(240, 240, 236, 255))   # cap: white front, mesh back
+    for k in range(6):
+        d.line([(cx - 60 + k * 10, 110), (cx - 66 + k * 10, 148)], fill=(120, 120, 120, 255))
+    d.rectangle([cx - 66, 146, cx + 66, 152], fill=(200, 60, 40, 255))
+    d.chord([cx - 70, 136, cx + 110, 176], 180, 360, fill=(200, 60, 40, 255))
