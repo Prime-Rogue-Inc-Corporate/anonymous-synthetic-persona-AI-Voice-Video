@@ -64,6 +64,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Masks: `leaderjan`, `kidmaddie`, `kidtyler`, `kidjosh`.
 - Episode 034, *N-P-K*.
 - Episode 035, *Thursday South*.
+- Set `basement`: a windowless Ottawa basement with a drop ceiling, a whiteboard and Brian's cake.
+- Masks: `lgenmargo`, `colpruden`, `dranjali`, `fenwick`, `bethany`.
+- Episode 036, *Conditional*: figures from Prime Rogue's Force-on-Force simulation v0.1 to v0.1.2.2. 540p in-tree.
 
 ## [0.16.0] - 2026-11-09
 

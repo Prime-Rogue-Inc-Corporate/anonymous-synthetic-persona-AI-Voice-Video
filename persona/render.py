@@ -34,7 +34,7 @@ DEFAULTS = {
     "cast": {},
     "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
             "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None,
-            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None, "cabinet": None, "zoom": None, "longtable": None, "forest": None, "park": None, "fetch": None, "drone": None, "stubble": None, "classroom": None},
+            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None, "cabinet": None, "zoom": None, "longtable": None, "forest": None, "park": None, "fetch": None, "drone": None, "stubble": None, "classroom": None, "basement": None},
     "layout": {},
     "credits": [],
     "end_title": "EXPECT US.",
@@ -542,6 +542,8 @@ class Renderer:
             self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
         if cfg["set"].get("boardroom"):
             self.chamber_bg = boardroom_backdrop(cfg["set"]["boardroom"])
+        if cfg["set"].get("basement"):
+            self.chamber_bg = basement_backdrop(cfg["set"]["basement"])
         if cfg["set"].get("classroom"):
             self.chamber_bg = classroom_backdrop(cfg["set"]["classroom"])
         if cfg["set"].get("stubble"):
@@ -1420,6 +1422,38 @@ def boardroom_backdrop(conf):
     d.rectangle([fx + 2, 90, fx + 82, 130], fill=(240, 240, 236))
     d.rectangle([fx + 2, 90, fx + 22, 130], fill=(200, 30, 40)); d.rectangle([fx + 62, 90, fx + 82, 130], fill=(200, 30, 40))
     d.rectangle([0, 420, W, H], fill=(40, 30, 26))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def basement_backdrop(conf):
+    """Static windowless basement room under an Ottawa office building: a drop ceiling with one fluorescent tube
+    dead, beige walls with a scuff line at chair height, a side table with half a sheet cake that says HAPPY
+    RETIREMENT BRIAN, a whiteboard that says HOW WE DON'T DIE, a long laminate table."""
+    conf = conf if isinstance(conf, dict) else {}
+    im = Image.new("RGB", (W, H), (214, 206, 186)); d = ImageDraw.Draw(im)
+    for x in range(0, W, 120):                                                  # drop ceiling
+        d.line([(x, 0), (x, 60)], fill=(170, 166, 156), width=2)
+    d.rectangle([0, 0, W, 60], outline=(170, 166, 156), width=2)
+    for k, x in enumerate(range(80, W, 320)):
+        lit = k != 2
+        d.rectangle([x, 14, x + 200, 40], fill=(250, 250, 240) if lit else (150, 150, 146), outline=(140, 140, 136))
+    d.rectangle([0, 60, W, 66], fill=(170, 160, 140))
+    d.line([(0, 300), (W, 300)], fill=(190, 180, 160), width=3)                 # chair-scuff line
+    f = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 22)
+    fs = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 13)
+    wx = int(W * 0.03)                                                          # whiteboard
+    d.rectangle([wx, 90, wx + 270, 260], fill=(246, 246, 244), outline=(160, 160, 160), width=4)
+    d.text((wx + 14, 104), conf.get("whiteboard", "HOW WE DON'T DIE"), font=f, fill=(30, 60, 160))
+    for k, ln in enumerate(conf.get("wb_lines", ["1. don't sign", "2. don't die", "3. don't do a Montana", "4. be expensive (+ boring)"])):
+        d.text((wx + 18, 144 + k * 24), ln, font=fs, fill=(40, 40, 40))
+    cx0 = int(W * 0.8)                                                          # the cake
+    d.rectangle([cx0, 250, cx0 + 200, 300], fill=(120, 100, 80))
+    d.rectangle([cx0 + 10, 222, cx0 + 150, 252], fill=(250, 248, 240), outline=(220, 210, 200))
+    d.rectangle([cx0 + 150, 230, cx0 + 190, 252], fill=(240, 236, 226))
+    d.text((cx0 + 18, 226), "HAPPY RETIREMENT", font=fs, fill=(40, 90, 180)); d.text((cx0 + 50, 238), "BRIAN", font=fs, fill=(200, 60, 80))
+    d.rectangle([0, 420, W, H], fill=(140, 130, 116))                           # carpet tile
+    d.polygon([(int(W * 0.04), 470), (int(W * 0.96), 470), (W, 560), (0, 560)], fill=(196, 186, 166))   # the long table
+    d.rectangle([0, 560, W, 576], fill=(150, 140, 120))
     return np.asarray(im).astype(np.float32) / 255
 
 

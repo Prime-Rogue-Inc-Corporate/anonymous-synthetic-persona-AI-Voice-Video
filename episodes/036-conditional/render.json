@@ -1,0 +1,19 @@
+{
+  "output": "conditional.mp4",
+  "renderer_version": "0.18.0",
+  "renderer_commit": "391882a-dirty",
+  "rendered_at": "2026-11-11T03:26:55+00:00",
+  "duration_s": 1217.43,
+  "lines": 214,
+  "mask": null,
+  "cast": {
+    "FENWICK": "fenwick",
+    "PRUDEN": "colpruden",
+    "MARGO": "lgenmargo",
+    "ANJALI": "dranjali",
+    "BETHANY": "bethany",
+    "JONAH": "rangerjonah",
+    "DPM": null
+  },
+  "resolution": "1280x720@30"
+}

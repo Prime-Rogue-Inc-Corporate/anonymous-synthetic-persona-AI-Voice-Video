@@ -43,6 +43,7 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 033 | [Potash](episodes/033-potash) | Meanwhile in McLean County, Illinois: two farmers spreading fall potash worry about what happens if the Canadians find out · stubble set | ~5:09 |
 | 034 | [N-P-K](episodes/034-n-p-k) | Same night in Iowa: a youth ag club leader learns where the K comes from, freaks out, and calls "Canada", reaching the Cambridge Bay community radio · classroom set, kid masks | ~5:37 |
 | 035 | [Thursday South](episodes/035-thursday-south) | One week later: Vic calls Earl (he got the number from Darlene) to start a Thursday chapter in Illinois. Is it a cult? It's a casserole · stubble set, caller on a monitor | ~5:35 |
+| 036 | [Conditional](episodes/036-conditional) | A DND basement war-plan review on Prime Rogue's Force-on-Force numbers: every cool idea backfires; don't sign, don't die, don't do a Montana, be expensive · basement set, slides (540p in-tree) | ~20:17 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
@@ -96,6 +97,7 @@ The persona's head changes per episode and moves with the voice.
 | `calgaryguy` (no suit) | a plain white mask, a massive auburn beard, hair escaping a black toque, charcoal parka, olive collar, red scarf | the slot opens with the voice |
 | `farmerearl`, `farmergary` (no suit) | green seed cap, flannel and bib overalls / mesh-back cap, canvas jacket, moustache, readers on a cord | mouths open with the voice |
 | `leaderjan`, `kidmaddie`, `kidtyler`, `kidjosh` (no suit) | grey perm, fleece vest, fair-badge lanyard / braids / seed cap and freckles / glasses and a hoodie | mouths open with the voice |
+| `lgenmargo`, `colpruden`, `dranjali`, `fenwick`, `bethany` (no suit) | a bob and LGen slides / a brush cut and colonel's slides / curls and a lanyard / a side part and a burgundy tie / a bun and a cardigan | mouths open with the voice |
 | `cirnac`, `heritage` | dark hair, rectangular glasses, cardigan, lanyard / trimmed beard, tortoiseshell glasses, scarf | mouths open with the voice |
 
 Add one by writing a function in `persona/masks.py` decorated with `@mask("name")`. It gets the frame's voice loudness (`amp`, 0–1) and time (`t`), and draws on a 520×520 canvas with the suit's collar at y=300.

@@ -1827,3 +1827,67 @@ def _kid(name, skin, shirt, hair, style, doc):
 _kid("kidmaddie", (244, 214, 196, 255), (60, 140, 70, 255), (200, 150, 70, 255), "braids", "Maddie, eleven: braids, a green club T-shirt, the answer to everything.")
 _kid("kidtyler", (236, 196, 170, 255), (120, 120, 126, 255), (0, 0, 0, 255), "cap", "Tyler, nine: freckles, a seed cap from his grandpa, mostly thinking about pigs.")
 _kid("kidjosh", (176, 128, 96, 255), (40, 70, 130, 255), (30, 24, 22, 255), "glasses", "Josh, twelve: glasses, a hoodie, has read the whole fertilizer bag.")
+
+
+def _officeface(name, skin, hair, style, shirt, extra, tie=None, doc=""):
+    @mask(name, tie=None)
+    def f(d, amp, t):
+        cx = CX; jaw = 6 * amp
+        if extra == "dnd_lgen" or extra == "dnd_col":                            # CADPAT-free office dress: tan shirt, rank slide
+            d.polygon([(cx - 200, 520), (cx - 180, 330), (cx - 90, 294), (cx + 90, 294), (cx + 180, 330), (cx + 200, 520)], fill=shirt)
+            d.polygon([(cx - 50, 296), (cx, 360), (cx + 50, 296)], fill=(30, 50, 34, 255))
+            for s in (-1, 1):
+                d.rectangle([cx + s * 130 - 30, 316, cx + s * 130 + 30, 336], fill=(40, 60, 40, 255))
+                if extra == "dnd_lgen":
+                    for k in range(3):
+                        d.polygon([(cx + s * 130 - 20 + k * 14, 326), (cx + s * 130 - 14 + k * 14, 318), (cx + s * 130 - 8 + k * 14, 326), (cx + s * 130 - 14 + k * 14, 334)], fill=(220, 190, 90, 255))
+                else:
+                    d.ellipse([cx + s * 130 - 22, 318, cx + s * 130 - 8, 332], fill=(220, 190, 90, 255))
+                    d.ellipse([cx + s * 130 - 4, 318, cx + s * 130 + 10, 332], fill=(220, 190, 90, 255))
+        else:
+            d.polygon([(cx - 200, 520), (cx - 180, 330), (cx - 90, 294), (cx + 90, 294), (cx + 180, 330), (cx + 200, 520)], fill=shirt)
+            if extra == "lanyard":
+                d.line([(cx - 40, 300), (cx, 400)], fill=(200, 40, 40, 255), width=4); d.line([(cx + 40, 300), (cx, 400)], fill=(200, 40, 40, 255), width=4)
+                d.rectangle([cx - 18, 398, cx + 18, 430], fill=(240, 240, 240, 255), outline=(80, 80, 80, 255))
+            if extra == "tie":
+                d.polygon([(cx - 40, 296), (cx, 330), (cx + 40, 296)], fill=(240, 240, 240, 255))
+                d.polygon([(cx - 10, 330), (cx + 10, 330), (cx + 16, 460), (cx, 480), (cx - 16, 460)], fill=(120, 20, 40, 255))
+            if extra == "cardigan":
+                d.polygon([(cx - 50, 296), (cx, 380), (cx + 50, 296)], fill=(236, 230, 214, 255))
+        if style == "bob":
+            d.chord([cx - 68, 106, cx + 68, 300], 180, 360, fill=hair); d.rectangle([cx - 68, 200, cx - 48, 286], fill=hair); d.rectangle([cx + 48, 200, cx + 68, 286], fill=hair)
+        if style == "curls":
+            for k in range(14):
+                a = k / 13 * math.pi; x = cx - 70 * math.cos(a); y = 170 - 60 * math.sin(a)
+                d.ellipse([x - 20, y - 20, x + 20, y + 20], fill=hair)
+            for s in (-1, 1):
+                d.ellipse([cx + s * 64 - 18, 190, cx + s * 64 + 18, 270], fill=hair)
+        d.ellipse([cx - 58, 120, cx + 58, 292 + jaw], fill=skin)
+        if style in ("bob",):
+            d.chord([cx - 62, 110, cx + 62, 178], 180, 360, fill=hair)
+        elif style == "brush":
+            d.chord([cx - 60, 112, cx + 60, 168], 180, 360, fill=hair)
+            d.chord([cx - 56, 222 + jaw, cx + 56, 298 + jaw], 0, 180, fill=(140, 120, 100, 255))
+        elif style == "part":
+            d.chord([cx - 60, 106, cx + 60, 184], 180, 360, fill=hair); d.line([(cx - 20, 110), (cx - 26, 150)], fill=skin, width=3)
+        elif style == "curls":
+            for k in range(7):
+                x = cx - 48 + k * 16; d.ellipse([x - 13, 112, x + 13, 146], fill=hair)
+        elif style == "bun":
+            d.ellipse([cx - 26, 80, cx + 26, 124], fill=hair); d.chord([cx - 60, 110, cx + 60, 176], 180, 360, fill=hair)
+        sock = tuple(max(0, v - 24) for v in skin[:3]) + (255,)
+        _eyes(d, cx, 196, gap=26, socket=sock)
+        if style in ("part", "bun"):
+            for s in (-1, 1):
+                d.ellipse([cx + s * 26 - 16, 184, cx + s * 26 + 16, 208], outline=(40, 40, 40, 255), width=3)
+        d.polygon([(cx - 5, 204), (cx + 5, 204), (cx + 9, 232), (cx - 9, 232)], fill=sock)
+        _mouth(d, cx, 258 + jaw * 0.5, amp, w=14)
+    f.__doc__ = doc
+    return f
+
+
+_officeface("lgenmargo", (236, 204, 184, 255), (60, 50, 50, 255), "bob", (190, 170, 120, 255), "dnd_lgen", doc="LGen Margo Lessard: a dark bob, three gold maple-leaf-and-crossed-sword-ish devices on each slide, an almond.")
+_officeface("colpruden", (226, 186, 160, 255), (120, 100, 80, 255), "brush", (190, 170, 120, 255), "dnd_col", doc="Col. Barry Pruden: a brush cut, a greying moustache-and-chin situation, a binder labelled BALTIC.")
+_officeface("dranjali", (186, 134, 100, 255), (24, 20, 20, 255), "curls", (80, 90, 110, 255), "lanyard", doc="Dr. Anjali Lafleur-Okafor: big dark curls, a cardigan, a lanyard, a laptop whose fans you can hear.")
+_officeface("fenwick", (240, 214, 196, 255), (150, 120, 90, 255), "part", (40, 44, 60, 255), "tie", doc="Neil Fenwick, PCO: a side part, rimless glasses, a burgundy tie, two printed decks.")
+_officeface("bethany", (230, 190, 160, 255), (180, 90, 50, 255), "bun", (120, 150, 200, 255), "cardigan", doc="Bethany, a co-op student: a messy bun, big glasses, a notebook nobody asked for.")

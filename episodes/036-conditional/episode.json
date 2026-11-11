@@ -1,0 +1,325 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "conditional",
+  "cast": {
+    "FENWICK": {
+      "mask": "fenwick",
+      "name": "Neil Fenwick, Assistant Secretary, PCO (fictional)",
+      "x": 0.09,
+      "scale": 0.44,
+      "top": 262,
+      "color": [
+        200,
+        210,
+        250
+      ],
+      "voice": {
+        "voice": "en-gb+m4",
+        "speed": 162,
+        "pitch": 46,
+        "filter": "asetrate=22050*1.0,aresample=44100,atempo=1.0,highpass=f=90,lowpass=f=6500,volume=0.75"
+      }
+    },
+    "PRUDEN": {
+      "mask": "colpruden",
+      "name": "Col. Barry Pruden, Army plans (fictional)",
+      "x": 0.25,
+      "scale": 0.44,
+      "top": 262,
+      "color": [
+        230,
+        200,
+        150
+      ],
+      "voice": {
+        "voice": "en-us+m3",
+        "speed": 150,
+        "pitch": 30,
+        "filter": "asetrate=22050*0.92,aresample=44100,atempo=1.087,highpass=f=90,lowpass=f=6500,volume=0.75"
+      }
+    },
+    "MARGO": {
+      "mask": "lgenmargo",
+      "name": "LGen Marguerite \"Margo\" Lessard (fictional)",
+      "x": 0.41,
+      "scale": 0.44,
+      "top": 262,
+      "color": [
+        240,
+        200,
+        200
+      ],
+      "voice": {
+        "voice": "en-us+f3",
+        "speed": 150,
+        "pitch": 42,
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.053,highpass=f=90,lowpass=f=6500,volume=0.75"
+      }
+    },
+    "ANJALI": {
+      "mask": "dranjali",
+      "name": "Dr. Anjali Lafleur-Okafor, defence scientist (fictional)",
+      "x": 0.57,
+      "scale": 0.44,
+      "top": 262,
+      "color": [
+        200,
+        240,
+        210
+      ],
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 164,
+        "pitch": 52,
+        "filter": "asetrate=22050*1.0,aresample=44100,atempo=1.0,highpass=f=90,lowpass=f=6500,volume=0.75"
+      }
+    },
+    "BETHANY": {
+      "mask": "bethany",
+      "name": "Bethany, Global Affairs co-op student (fictional)",
+      "x": 0.73,
+      "scale": 0.44,
+      "top": 262,
+      "color": [
+        250,
+        220,
+        170
+      ],
+      "voice": {
+        "voice": "en-us+f2",
+        "speed": 170,
+        "pitch": 70,
+        "filter": "asetrate=22050*1.03,aresample=44100,atempo=0.971,highpass=f=90,lowpass=f=6500,volume=0.75"
+      }
+    },
+    "JONAH": {
+      "mask": "rangerjonah",
+      "name": "Jonah, Canadian Ranger, on Teams from Cambridge Bay (fictional)",
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 150,
+        "pitch": 48,
+        "filter": "asetrate=22050*0.96,aresample=44100,atempo=1.03,aecho=0.6:0.3:20:0.1,highpass=f=100,lowpass=f=6500,volume=1.6"
+      },
+      "color": [
+        200,
+        170,
+        240
+      ],
+      "x": 0.87,
+      "scale": 0.26,
+      "top": 30,
+      "screen": true,
+      "screen_label": "TEAMS · CAMBRIDGE BAY (LAGGING)"
+    },
+    "DPM": {
+      "mask": null,
+      "name": "The Hon. Helen Ashdown, Deputy PM, on speakerphone from a Swiss Chalet (fictional)",
+      "voice": {
+        "voice": "en-us+f5",
+        "speed": 176,
+        "pitch": 58,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.4:25:0.15,highpass=f=130,lowpass=f=6000,volume=1.6,highpass=f=300,lowpass=f=3400"
+      },
+      "color": [
+        240,
+        190,
+        200
+      ]
+    }
+  },
+  "set": {
+    "basement": {
+      "whiteboard": "HOW WE DON'T DIE"
+    },
+    "slides": {
+      "x": 0.5,
+      "y": 70,
+      "w": 480,
+      "h": 200,
+      "banner": "FICTIONAL EXERCISE · NOT A GOVERNMENT OF CANADA DOCUMENT",
+      "first": "WAR PLAN REVIEW\nForce-on-Force v0.1 - 0.1.2.2\nconditional on the war starting",
+      "cues": [
+        [
+          "Thirty-six thousand simulated wars.",
+          "FORCE-ON-FORCE\n36,000 simulated wars\nconditional on the war starting"
+        ],
+        [
+          "Quickly, what this is.",
+          "WHAT IT IS\nconventional · occupation\npolitics · economics\n2,000 runs per scenario"
+        ],
+        [
+          "We checked it against Iraq.",
+          "HISTORICAL CHECK\nIraq 2003: model ~157 / actual ~139\nIraq 2003-11: ~3,545 / ~3,500\n(tuned to it: fit, not proof)"
+        ],
+        [
+          "And the weak spots?",
+          "WEAKEST ASSUMPTIONS\n1. govt accepts terms (judgment)\n2. US support on day one\n3. share who take up arms\n4. economics  5. resistance ceiling"
+        ],
+        [
+          "Full annexation. The whole country.",
+          "FULL ANNEXATION\nconventional phase:\n~27 DAYS (summer)\n~36 DAYS (winter)"
+        ],
+        [
+          "Slide two. Now the good news.",
+          "TROOPS TO HOLD CANADA\nNEEDED: 490,000-710,000\nSUSTAINABLE (no draft): ~370,000"
+        ],
+        [
+          "Slide three. This is the one",
+          "WILL\n~2% of Americans backed force\nno pretext: US gives up 58-68%\ncrisis: Canada gives in 63-75%"
+        ],
+        [
+          "The Arctic grab.",
+          "ARCTIC SEIZURE\nUS deaths: 5-10\nstill ends badly ~2/3 of runs\ncheap to take, expensive to own"
+        ],
+        [
+          "Alberta detachment.",
+          "ALBERTA DETACHMENT\nUS absorbs Alberta 15-20%\nUS gives up 42-48%\npreserve forces: -55% Cdn deaths"
+        ],
+        [
+          "Economic coercion. No invasion.",
+          "ECONOMIC COERCION\nunresolved after 5 yrs: 60-66%\nCanada GDP -14% (worst)\nUS GDP -1 to -2.4%"
+        ],
+        [
+          "Slide four. No raids",
+          "RAIDS INTO ALASKA\nno raids: US gives up 68%\nSOF raids: 34%\nAlaska Highway push: 25%\nearly-warning sites: 5%"
+        ],
+        [
+          "It's all about the story.",
+          "THE MONTANA SHOCK\nno incident: 72%\nassassination: 8%\ncontested: 46%\nlawful target: 66%"
+        ],
+        [
+          "Ran it. The Americans give up zero",
+          "SEVEN GOVERNORS\nUS gives up: 0%\nCanada gives in: 63%\nWAR CRIME. WORST TESTED."
+        ],
+        [
+          "Slide five.",
+          "MOST US DEAD: ~6,700\nCOST: ~69,000 CANADIANS"
+        ],
+        [
+          "Okay. The mobilization plan.",
+          "MOBILIZATION PLAN (400,000)\nUS deaths +25-45%\noutcome +4-8 pts\nCdn deaths +20-30%"
+        ],
+        [
+          "Size isn't the lever.",
+          "DESIGN > SIZE\nUS gives up +17-20 pts\nCanada gives in: 25-32% -> 7-10%"
+        ],
+        [
+          "Slide six. The money slide.",
+          "MAX-KILL: 4,100 US / 47,100 CDN\nFABIAN:   3,660 US /  8,200 CDN\nUS leaves 86% (Fabian)"
+        ],
+        [
+          "Slide seven.",
+          "MONTREAL IN DEPTH\nlow: 47%  high: 57%\nfanatical: 83%\n~47,100 Canadian dead"
+        ],
+        [
+          "A winter start stretches",
+          "WINTER\n27 -> 36 days\nUS deaths in phase +35%\n~940 cold casualties"
+        ],
+        [
+          "And what's not in the model?",
+          "NOT MODELLED\nescalation · repression\nprovinces & Indigenous nations\nUS institutions · terrain"
+        ],
+        [
+          "And what comes next?",
+          "ROADMAP\ntest harness (~1,000 variables)\ncold weather · northern resources\noil · hydro · Rangers · narrative\n0.1.2.1.1: ARCTIC WILDLIFE"
+        ],
+        [
+          "Three decisions.",
+          "DECISIONS\n1. fund the plan (incl. 50,000)\n2. a government that never signs\n3. discipline (no Montanas)"
+        ],
+        [
+          "Then use a napkin.",
+          "DON'T SIGN\nDON'T DIE\nDON'T DO A MONTANA\nBE EXPENSIVE"
+        ]
+      ]
+    },
+    "chyron": {
+      "title": "MEANWHILE, A BASEMENT UNDER AN OTTAWA OFFICE BUILDING",
+      "sub": "WAR PLAN REVIEW  ·  NIGHT  ·  CONDITIONAL ON THE WAR STARTING"
+    }
+  },
+  "layout": {
+    "top": 262,
+    "scale": 0.44
+  },
+  "pronounce": {
+    "four-oh-one": "four-oh-one",
+    "Lafleur-Okafor": "La-flur Oh-kah-for",
+    "Inuinnaqtun": "In-oo-in-nak-tun",
+    "Turcot": "Tur-co",
+    "Champlain": "Sham-plane",
+    "Fabian": "Fay-bee-an",
+    "Iqaluit": "Ee-kal-oo-it",
+    "Fort McMurray": "Fort McMurray"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.42,
+    "after_greeting": 0.4,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "So a deck.": 0.9,
+      "Not the good kind.": 1.0,
+      "This one has tabs.": 0.9,
+      "With Brian's cake.": 0.9,
+      "Nobody knows who Brian is.": 1.1,
+      "No.": 1.0,
+      "A booth.": 1.0,
+      "That's fit, not proof. Conditional on the war starting.": 1.0,
+      "The rest is them driving to Vancouver.": 1.0,
+      "Latvia has a plan.": 1.0,
+      "And I hate it.": 1.0,
+      "That's why they're good.": 1.1,
+      "Oh, that's great.": 0.8,
+      "And we.": 1.2,
+      "Less great.": 0.9,
+      "At about two in the morning.": 1.2,
+      "That's the important version.": 0.9,
+      "That's true of my snowmobile.": 1.0,
+      "He's not a secession.": 1.0,
+      "There's a farmer in Illinois who'd like a word.": 0.9,
+      "It was on the radio.": 1.2,
+      "Five percent what?": 0.8,
+      "I need a minute.": 1.2,
+      "For the notes!": 1.0,
+      "It's the worst thing we tested.": 1.2,
+      "I know.": 1.0,
+      "Fuck.": 1.4,
+      "Not even close.": 1.2,
+      "Boring is how we stay alive while we're expensive.": 1.0,
+      "Bilingual mug, maybe.": 1.0,
+      "For the tabs.": 1.0,
+      "Fair.": 1.0,
+      "The cold is good for something.": 1.0,
+      "That's the plan.": 1.0,
+      "Write it down.": 0.8,
+      "That's my whole parish.": 1.4,
+      "We hold Montreal by not making it a tomb.": 1.2,
+      "Fort McMurray in January is not a Leafs game.": 1.0,
+      "So, there.": 1.0,
+      "That's four mugs.": 1.2,
+      "And the bears.": 1.0,
+      "Now you're the idiot who knows.": 1.0,
+      "Shorter.": 1.0,
+      "Is the cake for anyone?": 1.6,
+      "That's how you know they're lying.": 1.1,
+      "I'm going to need a minute about that too.": 1.0,
+      "Real people react to bad weeks.": 1.0,
+      "Then there's two weeks of mosquitoes.": 1.1,
+      "Finally.": 0.8,
+      "The bears were here first.": 1.0
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "credits": [
+    "Satire. Every character is invented. No real officials are portrayed; the Prime Minister is travelling.",
+    "All figures are medians and shares from Prime Rogue's Force-on-Force simulation (v0.1 to v0.1.2.2, November 2026), not any departmental assessment. Every result assumes the war has already started.",
+    "Brian, wherever you are, enjoy your retirement.",
+    "Previously: 016 Range Day, 026 Cabinet, 031 The Chain, 033 Potash, 035 Thursday South"
+  ],
+  "output": "conditional.mp4"
+}
