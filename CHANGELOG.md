@@ -10,6 +10,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
 
+## [0.19.0] - 2026-11-10
+
 ### Added
 - Episode 021, *The Addresses*: a plain-language explainer, in universe, of a real complaint to the Information Commissioner about Shared Services Canada withholding its IP address allocations under ATIA 16(2)(c). Fictional characters; the complaint is real and under investigation.
 
@@ -246,7 +248,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
   Repo copy is re-encoded to 540p to stay under the push size limit; render locally for 720p.
 - Versioning: `VERSION`, this changelog, semver git tags.
 
-[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.16.0...HEAD
+[Unreleased]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.19.0...HEAD
+[0.19.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.16.0...v0.19.0
 [0.16.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.15.0...v0.16.0
 [0.15.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.14.0...v0.15.0
 [0.14.0]: https://github.com/Prime-Rogue-Inc-Corporate/anonymous-synthetic-persona-AI-Voice-Video/compare/v0.13.0...v0.14.0
