@@ -1,0 +1,14 @@
+{
+  "output": "potash.mp4",
+  "renderer_version": "0.18.0",
+  "renderer_commit": "d333403-dirty",
+  "rendered_at": "2026-11-11T02:20:52+00:00",
+  "duration_s": 309.3,
+  "lines": 89,
+  "mask": null,
+  "cast": {
+    "EARL": "farmerearl",
+    "GARY": "farmergary"
+  },
+  "resolution": "1280x720@30"
+}

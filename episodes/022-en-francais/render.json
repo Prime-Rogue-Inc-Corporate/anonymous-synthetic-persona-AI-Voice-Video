@@ -1,0 +1,18 @@
+{
+  "output": "en_francais.mp4",
+  "renderer_version": "0.18.0",
+  "renderer_commit": "65346c0",
+  "rendered_at": "2026-11-09T21:14:02+00:00",
+  "duration_s": 345.65,
+  "lines": 71,
+  "mask": null,
+  "cast": {
+    "MARGARET": "deputyclerk",
+    "CLERK": "mandarin",
+    "DESMOND": "comms",
+    "OCOL": "deputy",
+    "DOREEN": "atipcoord",
+    "NATHAN": "pcoanalyst"
+  },
+  "resolution": "1280x720@30"
+}

@@ -1,0 +1,23 @@
+{
+  "output": "off_leash.mp4",
+  "renderer_version": "0.18.0",
+  "renderer_commit": "7aed7fe-dirty",
+  "rendered_at": "2026-11-10T10:05:40+00:00",
+  "duration_s": 1211.9,
+  "lines": 187,
+  "mask": null,
+  "cast": {
+    "GUY": "calgaryguy",
+    "MOUNTIE1": null,
+    "MOUNTIE2": null,
+    "DRONE": null,
+    "CODY": "nsajunior",
+    "DENISE": "nsasenior",
+    "RUANALYST": "ruanalyst",
+    "RUGENERAL": "rugeneral",
+    "KYLE": "analyst",
+    "CLERK": "mandarin",
+    "WILCO": null
+  },
+  "resolution": "1280x720@30"
+}

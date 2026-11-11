@@ -28,6 +28,23 @@ Current version: see [`VERSION`](VERSION) · history in [`CHANGELOG.md`](CHANGEL
 | 018 | [The Call](episodes/018-the-call) | Vic calls Tripp; two shooting ranges, one realization · video call, duet lines | ~1:15 |
 | 019 | [The Hall](episodes/019-the-hall) | The defence brass fly to Cambridge Bay on a Thursday and get a briefing from three Rangers · hall set, slides | ~11:15 |
 | 020 | [Privy Council](episodes/020-privy-council) | Meanwhile at the Privy Council Office: seven cheap commitments made on community radio, four hundred access requests, and a rich oral culture · boardroom set | ~4:53 |
+| 021 | [The Addresses](episodes/021-the-addresses) | Nathan gives the Clerk a plain-language briefing on a real access complaint about Shared Services Canada's IP address ranges, plus fantasy hockey · slides | ~8:38 |
+| 022 | [En français](episodes/022-en-francais) | Official Languages walks in: the meeting must be held again in French. Half perfect French, half joual, then the Habs · English subtitles | ~5:46 |
+| 023 | [The Corridor](episodes/023-the-corridor) | The Clerk and an unnamed senior official, followed from behind; eleven people catch them with bigger problems, nobody knows where they are going, two phones ring · corridor (reversed), back-view masks, ring cue | ~10:28 |
+| 024 | [Two Oh Seven](episodes/024-two-oh-seven) | Tripp calls the Clerk from Maine about Biscuit, the premier, and the guy from Calgary; Dalton fixes it with a napkin · split screen: corridor (reversed) / barn with an ornate desk | ~5:14 |
+| 025 | [Eight Six Seven](episodes/025-eight-six-seven) | Cambridge Bay calls Ottawa on the community radio: the roof, the snowmobile with a rotor, the elders' verdict, "shorter" · hall, on-screen caller (back of head) | ~4:44 |
+| 026 | [Cabinet](episodes/026-cabinet) | Cabinet, in camera, with the Prime Minister's chair empty; consensus on a roof, a napkin, the Habs, and item one · cabinet room, new minister masks | ~7:44 |
+| 027 | [The Pass](episodes/027-the-pass) | Fort Meade and Springfield on a three-tile call watch a satellite pass over Jonah's snowmobile; has Vic gone rogue? · zoom tiles, intercepted radio | ~5:40 |
+| 028 | [Mitts](episodes/028-mitts) | Vic walks home and counts his career out loud, Paris included; a raven, a fox, a muskox and three neighbours are not impressed · arctic pan, animal masks (540p in-tree) | ~10:55 |
+| 029 | [Pendant ce temps](episodes/029-pendant-ce-temps) | Meanwhile in Quebec City: day 20 of the PQ transition, as seen by four fictional public servants; in French with subtitles · cabinet set in blue with the fleurdelisé | ~5:54 |
+| 030 | [Длинный стол / The Long Table](episodes/030-dlinnyi-stol) | Meanwhile in Moscow: four fictional briefers at the far end of a very long table report on Canada to the back of a head that never moves or speaks; in Russian with subtitles · longtable set | ~5:40 |
+| 031 | [The Chain](episodes/031-the-chain) | A trench in eastern Latvia: "Americans or Russians?" climbs from private to colonel to the CDS, and comes back down on a napkin; Slovak and Latvian partners in their own languages · forest set, field-soldier masks | ~7:08 |
+| 032 | [Off-Leash](episodes/032-off-leash) | The guy from Calgary walks Wilco and talks for twenty minutes while the RCMP, a drone, a satellite, Moscow and Langley watch; she fetches, he explains · park set, fetch animation, drone (540p in-tree) | ~20:12 |
+| 033 | [Potash](episodes/033-potash) | Meanwhile in McLean County, Illinois: two farmers spreading fall potash worry about what happens if the Canadians find out · stubble set | ~5:09 |
+| 034 | [N-P-K](episodes/034-n-p-k) | Same night in Iowa: a youth ag club leader learns where the K comes from, freaks out, and calls "Canada", reaching the Cambridge Bay community radio · classroom set, kid masks | ~5:37 |
+| 035 | [Thursday South](episodes/035-thursday-south) | One week later: Vic calls Earl (he got the number from Darlene) to start a Thursday chapter in Illinois. Is it a cult? It's a casserole. Plus steel-plate practice on Thursdays, and Lincoln's Lyceum tape on speakerphone · stubble set, caller on a monitor | ~7:48 |
+| 036 | [Conditional](episodes/036-conditional) | A DND basement war-plan review on Prime Rogue's Force-on-Force numbers: every cool idea backfires; don't sign, don't die, don't do a Montana, be expensive · basement set, slides (540p in-tree) | ~20:17 |
+| 037 | [Crimson](episodes/037-crimson) | A Pentagon SCIF reviews War Plan Red (1930) and the record of what Canadians actually do in a war; Darcy from Alberta is still there for some reason · SCIF set, slides | ~8:41 |
 
 Each episode folder holds `script.txt`, `episode.json`, the rendered `.mp4` and (from v0.2.0) `render.json`, which records the renderer version and commit that produced it.
 
@@ -67,6 +84,23 @@ The persona's head changes per episode and moves with the voice.
 | `minister`, `general`, `admiral`, `sofcom` | grey part and flag pin / green tunic, grey moustache / navy tunic, gold boards / balaclava and a pixelated face | mouths open with the voice |
 | `rangerjosie` | eldest Ranger: white hair under a fur-ruffed red hood, smile lines | mouth opens with the voice |
 | `mandarin`, `deputyclerk`, `atipcoord`, `comms`, `pcoanalyst` | silver hair, glasses on a chain, bow tie / grey bob, scarf / frizz with a pencil, sticky notes / fade and phone / round glasses, cowlick, lanyard | mouths open with the voice |
+| `mandarin_back`, `official_back` | followed from behind: silver hair and ears / grey crew cut under a fedora, coat collar up | the head nods with the voice |
+| `cseliaison` | hoodie under a blazer, one earbud, short beard, badge reel | mouth opens with the voice |
+| `tbsanalyst` | high ponytail, cat-eye glasses, a binder | mouth opens with the voice |
+| `diplomat`, `finance`, `nrcan`, `pubsafety` | pocket square / suspenders and a pencil / hard hat with a suit / buzz cut and earpiece | mouths open with the voice |
+| `dpm`, `finmin`, `psmin`, `cirnacmin` | silver bob and glasses chain / bald, rimless glasses, calculator / slicked hair and very white teeth / braid, beaded earrings, ribbon trim | mouths open with the voice |
+| `nsasenior`, `nsajunior`, `ngaanalyst`, `ngachief` | half-moon readers and badges / headset and hoodie / glasses up and a ponytail / red beard | mouths open with the voice |
+| `raven`, `arcticfox`, `muskox` (no suit) | a beak / a white fox / a haystack with horns | beaks and mouths open with the voice |
+| `villagekid`, `elderisaac`, `nellie` (no suit) | toque and fat-bike jacket / caribou hat and jigging stick / flowered cover and a bun | mouths open with the voice |
+| `sousministre`, `normand`, `felix`, `annie` | black bob with a silver streak and red glasses / walrus moustache and cardigan / tuque indoors and a beard / ponytail and a stopwatch | mouths open with the voice |
+| `rugeneral`, `ruadmiral`, `ruanalyst`, `ruinterp` | peaked cap and ribbons / white cap and a beard / chignon and a tablet / wire glasses and one earpiece | mouths open with the voice |
+| `pte`, `sgt`, `wo`, `lt`, `capt`, `maj`, `lcol`, `col`, `slovakcpl`, `latviansgt` (no suit) | helmets, a disruptive-pattern smock, a rank slide and a shoulder flag (Canada, Slovakia, Latvia) | mouths open with the voice |
+| `calgaryguy` (no suit) | a plain white mask, a massive auburn beard, hair escaping a black toque, charcoal parka, olive collar, red scarf | the slot opens with the voice |
+| `farmerearl`, `farmergary` (no suit) | green seed cap, flannel and bib overalls / mesh-back cap, canvas jacket, moustache, readers on a cord | mouths open with the voice |
+| `leaderjan`, `kidmaddie`, `kidtyler`, `kidjosh` (no suit) | grey perm, fleece vest, fair-badge lanyard / braids / seed cap and freckles / glasses and a hoodie | mouths open with the voice |
+| `lgenmargo`, `colpruden`, `dranjali`, `fenwick`, `bethany` (no suit) | a bob and LGen slides / a brush cut and colonel's slides / curls and a lanyard / a side part and a burgundy tie / a bun and a cardigan | mouths open with the voice |
+| `usmaj`, `diaanalyst`, `historian` (no suit) | a bob and Army service jacket with ribbons / a side part and badges / white curls and a bow tie | mouths open with the voice |
+| `cirnac`, `heritage` | dark hair, rectangular glasses, cardigan, lanyard / trimmed beard, tortoiseshell glasses, scarf | mouths open with the voice |
 
 Add one by writing a function in `persona/masks.py` decorated with `@mask("name")`. It gets the frame's voice loudness (`amp`, 0–1) and time (`t`), and draws on a 520×520 canvas with the suit's collar at y=300.
 
@@ -226,7 +260,7 @@ A projector screen whose slide changes when each phrase is spoken. `"MAP"` draws
 
 `"set": {"arctic": {"breath": true}}` is an Arctic night with moving aurora, distant hamlet lights, a research station, a snowmobile and a sled; with `breath`, whoever is speaking puffs visible breath. `"set": {"diner": {}}` is a highway truck stop at night: panelling, a window onto idling semis, a neon EAT sign, a counter and a pie case. Pair it with `"desk"` for the booth table. On the arctic set, `"twilight": true` swaps night for a November noon (no stars), `"aurora": false` turns the lights off, and `"range": {"plates": [...]}` adds steel plates that swing on each `[ding]`; `[shot]` adds a muzzle flash at the shooter. `[laugh]` is a few people cracking up.
 
-`"set": {"prairie": {"on": true}}` is a rifle range on the prairie in November, seen from under the firing-line shelter; `[jet]` sends a fighter across the sky with a roar. `"set": {"boardroom": {"on": true}}` is an Ottawa boardroom at dusk with a snowy view of the Hill. `"set": {"hall": {"board": ["line", ...]}}` is a northern community hall: block walls, a bingo board, a whiteboard roster, a dark window and a roof stain. A cast entry with `"duet": ["A", "B"]` (and `"mask": null`) speaks its lines in both voices at once and moves both mouths: `BOTH: Oh.`
+`"set": {"prairie": {"on": true}}` is a rifle range on the prairie in November, seen from under the firing-line shelter; `[jet]` sends a fighter across the sky with a roar. `"set": {"boardroom": {"on": true}}` is an Ottawa boardroom at dusk with a snowy view of the Hill. `"set": {"hall": {"board": ["line", ...]}}` is a northern community hall: block walls, a bingo board, a whiteboard roster, a dark window and a roof stain. End any line with `{= translation}` to speak the line as written and show the translation as a smaller gold subtitle under the caption: `NATHAN: Chu là. {= I'm in.}`. French voices are `fr-fr`, `fr-be` and `fr-ch` with the usual `+m1`…`+f5` variants. A cast entry with `"duet": ["A", "B"]` (and `"mask": null`) speaks its lines in both voices at once and moves both mouths: `BOTH: Oh.`
 
 ### Verbatim episodes
 

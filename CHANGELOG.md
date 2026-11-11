@@ -10,6 +10,68 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Host full-quality renders as GitHub Release assets instead of in-tree.
 - More test episodes: another historical speech or two.
 
+### Added
+- Episode 021, *The Addresses*: a plain-language explainer, in universe, of a real complaint to the Information Commissioner about Shared Services Canada withholding its IP address allocations under ATIA 16(2)(c). Fictional characters; the complaint is real and under investigation.
+
+### Added
+- Subtitled lines: a trailing `{= translation}` is shown as a smaller gold subtitle under the caption and never spoken.
+- Episode 022, *En français*: Official Languages makes the Privy Council hold the 021 meeting again in French.
+
+### Added
+- Sound cue `[ring]` (a North American phone ring).
+- Masks: `mandarin_back`, `official_back` (back views for following characters from behind), `cseliaison`.
+- Corridor: a negative `speed` moves the hall toward the camera, for following characters from behind.
+- Masks: `tbsanalyst`, `cirnac`, `heritage`, `diplomat`, `finance`, `nrcan`, `pubsafety`.
+- Episode 023, *The Corridor*: a walk-and-talk followed from behind, ending on calls from Maine and the North.
+- Episode 024, *Two Oh Seven*: the first call. Tripp, from Maine, on a monitor in the corridor.
+- Episode 025, *Eight Six Seven*: the second call. Cambridge Bay, live on the community radio.
+- Set `cabinet`: green silk, two snowy windows, an original northern landscape, and an empty red chair.
+- Masks: `dpm`, `finmin`, `psmin`, `cirnacmin`.
+- Episode 026, *Cabinet*: the Cabinet meets without the Prime Minister and answers item one on a napkin.
+- Split screen: `set.split` puts a static set (barn, boardroom, hall, arctic) on the right of a corridor.
+- Desk: `"ornate": true` for mahogany, gilt, a banker's lamp and a desk flag.
+- Episode 024 re-cut as a split screen, with Tripp at the ornate desk.
+- Set `zoom`: video-call tiles (`sigint`, `geoint`, `feed` with overhead imagery).
+- Masks: `nsasenior`, `nsajunior`, `ngaanalyst`, `ngachief`; animals `raven`, `arcticfox`, `muskox`; villagers `villagekid`, `elderisaac`, `nellie`. Masks registered with `tie=None` get no suit.
+- Cast `until`: a walk-on stays on screen until a later phrase.
+- Cast `since`: a cast member is on screen from this time (e.g. `0`) even before their first line; in 024 the official now leaves at "It's the North" and returns.
+- Arctic `pan`: the land slides past while someone walks.
+- Episode 027, *The Pass*: the American agencies watch the snowmobile.
+- Episode 028, *Mitts*: Vic's walk home, a monologue. 540p in-tree; full quality git-ignored.
+- Set `cabinet`: new options `wall` (colour), `chair` (off to drop the empty chair) and `flag: "quebec"`.
+- Masks: `sousministre`, `normand`, `felix`, `annie`.
+- Episode 029, *Pendant ce temps*: meanwhile, in Quebec City. Real results; fictional officials; no real politician speaks.
+- Set `longtable`: a state hall in one-point perspective, a very long table, receding chairs and chandeliers, and a static back of a head in the foreground (`vy`, `head_y`, `head_scale`).
+- Masks: `rugeneral`, `ruadmiral`, `ruanalyst`, `ruinterp`. Russian voices via espeak-ng `ru`.
+- Episode 030, *Длинный стол*: meanwhile, in Moscow.
+- Set `forest`: a November defensive position with spruce, birch, sandbags, a netted vehicle and a signpost east.
+- Masks: field soldiers from one factory (`pte` … `col`, `slovakcpl`, `latviansgt`).
+- Cast `tail`: a listener stays on screen a few seconds after their line.
+- Episode 031, *The Chain*: Latvia. Slovak and Latvian via espeak-ng `sk` and `lv`.
+- Canadian shoulder flags get the maple leaf; the Slovak flag gets its arms.
+- Jets: `jetcount` (formation), `jetdur`, `jetsize`, `jety`. Episode 031 gets a four-ship flyover and the brouhaha that follows.
+- Set `park`: a gravel off-leash park in Calgary with chain-link, spruce and bare poplars, the tower over the trees, a bench and an unmarked car.
+- `set.pan` now works for any static set, not just the arctic.
+- `set.fetch`: Wilco (brindle, white chest and socks, tan harness with her name on it) and the orange-and-blue ball. She runs on the handler's `[kick]` and on `go` phrases; other people's kicks she ignores. Opens her mouth on `[bark]`.
+- `set.drone`: a quadcopter holding station with a blinking light.
+- Sound cue `[kick]`.
+- Mask `calgaryguy`.
+- Episode 032, *Off-Leash*: twenty minutes, one ball. 540p in-tree; full quality git-ignored.
+- Set `stubble`: a harvested Corn Belt field at dusk with bins, an elevator, a pickup and a red fertilizer tender.
+- Masks: `farmerearl`, `farmergary`.
+- Episode 033, *Potash*.
+- Set `classroom`: a county extension office with a chalkboard, ribbon board, wall phone and fertilizer bags.
+- Masks: `leaderjan`, `kidmaddie`, `kidtyler`, `kidjosh`.
+- Episode 034, *N-P-K*.
+- Episode 035, *Thursday South*.
+- Episode 035 v2: Thursday includes steel-plate practice, and Vic plays the Lyceum tape (episode 002's lines, Lincoln, 1838) over the speakerphone.
+- Set `basement`: a windowless Ottawa basement with a drop ceiling, a whiteboard and Brian's cake.
+- Masks: `lgenmargo`, `colpruden`, `dranjali`, `fenwick`, `bethany`.
+- Episode 036, *Conditional*: figures from Prime Rogue's Force-on-Force simulation v0.1 to v0.1.2.2. 540p in-tree.
+- Set `scif`: a Pentagon secure room with a vault door, phone lockers, four clocks and the RG 407 box.
+- Masks: `usmaj`, `diaanalyst`, `historian`; `_officeface` gains `agsu` and `bowtie` dress.
+- Episode 037, *Crimson*.
+
 ## [0.16.0] - 2026-11-09
 
 ### Added

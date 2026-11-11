@@ -1,0 +1,224 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "cabinet",
+  "cast": {
+    "FINMIN": {
+      "cadence": 2.3,
+      "scale": 0.5,
+      "top": 200,
+      "name": "The Hon. Bernard Wu, Minister of Finance (fictional)",
+      "mask": "finmin",
+      "x": 0.08,
+      "color": [
+        220,
+        200,
+        180
+      ],
+      "voice": {
+        "voice": "en-us+m4",
+        "speed": 176,
+        "pitch": 42,
+        "filter": "asetrate=22050*0.93,aresample=44100,atempo=1.05,aecho=0.8:0.4:25:0.15,highpass=f=90,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "POMEROY": {
+      "name": "The Hon. Gerald Pomeroy, Minister of National Defence (fictional)",
+      "mask": "minister",
+      "x": 0.22,
+      "scale": 0.5,
+      "top": 200,
+      "color": [
+        200,
+        200,
+        240
+      ],
+      "voice": {
+        "voice": "en-us+m4",
+        "speed": 166,
+        "pitch": 38,
+        "filter": "asetrate=22050*0.92,aresample=44100,atempo=1.05,aecho=0.8:0.5:40:0.2,highpass=f=90,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "DPM": {
+      "cadence": 2.3,
+      "scale": 0.5,
+      "top": 200,
+      "name": "The Hon. Helen Ashdown, Deputy Prime Minister, in the chair (fictional)",
+      "mask": "dpm",
+      "x": 0.37,
+      "color": [
+        240,
+        190,
+        200
+      ],
+      "voice": {
+        "voice": "en-us+f5",
+        "speed": 176,
+        "pitch": 58,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.4:25:0.15,highpass=f=130,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "CLERK": {
+      "name": "The Clerk of the Privy Council, Secretary to the Cabinet (fictional)",
+      "mask": "mandarin",
+      "x": 0.63,
+      "scale": 0.5,
+      "top": 200,
+      "color": [
+        230,
+        210,
+        160
+      ],
+      "voice": {
+        "voice": "en-gb+m3",
+        "speed": 140,
+        "pitch": 24,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.5:40:0.2,highpass=f=80,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "ROSE": {
+      "cadence": 2.3,
+      "scale": 0.5,
+      "top": 200,
+      "name": "The Hon. Rose Ironside, Minister of Crown-Indigenous Relations (fictional)",
+      "mask": "cirnacmin",
+      "x": 0.78,
+      "color": [
+        230,
+        170,
+        180
+      ],
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 168,
+        "pitch": 46,
+        "filter": "asetrate=22050*0.96,aresample=44100,atempo=1.03,aecho=0.8:0.4:25:0.15,highpass=f=120,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "PSMIN": {
+      "name": "The Hon. Tyler Brisebois, Minister of Public Safety (fictional)",
+      "mask": "psmin",
+      "x": 0.92,
+      "scale": 0.5,
+      "top": 200,
+      "color": [
+        160,
+        210,
+        240
+      ],
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 176,
+        "pitch": 62,
+        "filter": "asetrate=22050*0.98,aresample=44100,atempo=1.03,aecho=0.8:0.5:40:0.2,highpass=f=110,lowpass=f=6000,volume=1.6"
+      },
+      "cadence": 2.3
+    },
+    "JONAH": {
+      "color": [
+        200,
+        170,
+        240
+      ],
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 150,
+        "pitch": 48,
+        "filter": "asetrate=22050*0.96,aresample=44100,atempo=1.03,aecho=0.6:0.3:20:0.1,highpass=f=100,lowpass=f=6500,volume=1.6"
+      },
+      "mask": null,
+      "name": "Jonah, Ranger on the phone, on the radio (fictional)"
+    },
+    "MARY": {
+      "color": [
+        240,
+        140,
+        140
+      ],
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 150,
+        "pitch": 44,
+        "filter": "asetrate=22050*0.96,aresample=44100,atempo=1.03,aecho=0.6:0.3:20:0.1,highpass=f=120,lowpass=f=6500,volume=1.6"
+      },
+      "mask": null,
+      "name": "Mary, sergeant, Ranger patrol on the phone, on the radio (fictional)"
+    },
+    "JOSIE": {
+      "color": [
+        240,
+        170,
+        150
+      ],
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 136,
+        "pitch": 36,
+        "filter": "asetrate=22050*0.93,aresample=44100,atempo=1.02,aecho=0.8:0.5:40:0.2,highpass=f=110,lowpass=f=6000,volume=1.6"
+      },
+      "mask": null,
+      "name": "Josie, Ranger, eldest in the patrol on the phone, on the radio (fictional)"
+    }
+  },
+  "set": {
+    "cabinet": {
+      "on": true
+    },
+    "table": true,
+    "chyron": {
+      "title": "CABINET ROOM  ·  OTTAWA",
+      "sub": "IN CAMERA  ·  CABINET CONFIDENCE  ·  SEALED 20 YEARS"
+    }
+  },
+  "layout": {
+    "top": 200,
+    "scale": 0.5
+  },
+  "pronounce": {
+    "Inuinnaqtun": "In-oo-in-nak-tun",
+    "Josie": "Joe-see",
+    "Slafkovský": "Slaf-kov-skee",
+    "Canadiens": "Canadiens",
+    "Rusyn": "Roo-sin",
+    "Brisebois": "Brees-bwah",
+    "twenty thirties": "twenty-thirties"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.4,
+    "after_greeting": 0.4,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "Not that chair.": 0.8,
+      "Not south.": 0.7,
+      "Somewhere between \"north\" and \"a feeling.\"": 1.0,
+      "We always do.": 1.0,
+      "Cabinet confidence.": 1.0,
+      "There is consensus, minus one briefing.": 1.0,
+      "She has a podcast.": 0.8,
+      "Everything else is the minutes.": 1.0,
+      "We declined, Minister. See item one.": 1.0,
+      "But it looks very confident.": 0.9,
+      "No.": 0.8,
+      "Thursday.": 1.0,
+      "We have no fucking clue, Minister.": 1.2,
+      "Everything.": 1.0,
+      "We are not doing this again.": 1.0,
+      "Okay. You're live on the community radio.": 1.2,
+      "And don't go alone.": 1.2,
+      "Shorter.": 0.9,
+      "Where is the country going. Thursday.": 1.4,
+      "Bring your own tea.": 1.0
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "credits": [
+    "An original sketch. Every minister, official and Ranger here is fictional. The Prime Minister is travelling and says nothing.",
+    "Cabinet confidences are generally excluded from access to information for twenty years.",
+    "Previously: 019 The Hall, 023 The Corridor, 024 Two Oh Seven, 025 Eight Six Seven"
+  ],
+  "output": "cabinet.mp4"
+}

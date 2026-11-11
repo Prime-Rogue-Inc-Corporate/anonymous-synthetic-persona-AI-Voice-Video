@@ -1,0 +1,214 @@
+FENWICK: Before we start. Is this a deck, or a conversation? Because PCO has a policy on conversations.
+MARGO: It's a war plan, Neil.
+FENWICK: So a deck.
+JONAH: Hello? You're frozen. Not the good kind.
+PRUDEN: Ma'am. For the record. I object to this whole exercise. I have twenty-two years and four binders on fighting Russians. This one has tabs.
+MARGO: The Russians aren't coming down the four-oh-one, Barry.
+PRUDEN: They might be. They're very unpredictable.
+MARGO: The soldiers in Latvia asked last week who we're getting ready to fight. It went all the way up the chain and came back down on a napkin. It said Russians.
+PRUDEN: Thank you.
+MARGO: Then somebody in Ottawa asked what happens if the napkin is wrong. So here we are. In the basement. With Brian's cake.
+FENWICK: Who's Brian?
+MARGO: Nobody knows who Brian is.
+ANJALI: Before anyone says a number out loud. Everything I show you tonight is conditional on the war starting. The model does not say how likely a war is. It says what happens if one starts.
+FENWICK: Can we say "in the unlikely event of"?
+ANJALI: No.
+DPM: Go ahead, I'm listening. I'm at a Swiss Chalet. The Prime Minister is travelling and I have the chair. Not that chair. A booth.
+MARGO: Thank you, Deputy Prime Minister. Doctor. Thirty-six thousand simulated wars. Let's go.
+ANJALI: Thank you. Quickly, what this is. A campaign simulation. It runs the war two thousand times per scenario, and every uncertain number is drawn from a range. Four parts. The conventional fight. The occupation and resistance. The politics. And the economics.
+FENWICK: And how far do we trust it?
+ANJALI: We checked it against Iraq. The two thousand three invasion: the model gives about a hundred and fifty-seven American deaths. About a hundred and thirty-nine actually died. The occupation: it gives about three thousand five hundred. That's about what happened.
+PRUDEN: So it works.
+ANJALI: So it fits. I tuned it to Iraq. That's fit, not proof. Conditional on the war starting.
+FENWICK: And the weak spots? PCO likes to know the weak spots before the Minister does.
+ANJALI: In order. One. How readily our government accepts terms. Set by judgment. Two. How much Americans support the war on day one. Three. What share of Canadians who oppose the occupation actually take up arms. Four. The economic coefficients. Five. A ceiling on how much organized fighters add to the resistance. It understates big, well-trained reserves.
+FENWICK: That's five weak spots.
+ANJALI: That's five honest weak spots. Most decks have none, Neil. That's how you know they're lying.
+FENWICK: I'm going to need a minute about that too.
+MARGO: Slide one.
+ANJALI: Full annexation. The whole country. They come over the border. The conventional fight takes about twenty-seven days in summer. Thirty-six in winter.
+PRUDEN: And how long do we hold?
+ANJALI: That is how long we hold. Our regulars break in the first few days. The rest is them driving to Vancouver.
+PRUDEN: We'd have done better in Latvia.
+MARGO: Everyone would do better in Latvia, Barry. Latvia has a plan.
+FENWICK: Can the slide say "Canada holds for up to thirty-six days"?
+ANJALI: It would be true. And I hate it.
+ANJALI: Slide two. Now the good news. Holding a country takes troops in proportion to the people in it. Forty-one million Canadians. To hold all of us they'd need four hundred and ninety thousand to seven hundred and ten thousand soldiers. Without a draft, they can sustain about three hundred and seventy thousand.
+BETHANY: So they win the war, and then they can't afford to be here.
+MARGO: Who are you?
+BETHANY: Global Affairs. Co-op. I'm taking notes.
+FENWICK: Nobody asked for notes.
+BETHANY: That's why they're good.
+ANJALI: Slide three. This is the one that matters. Polling found about two percent of Americans backed using force to take Canada.
+PRUDEN: Two percent of Americans is still a lot of guys.
+ANJALI: And the other ninety-eight percent vote. With no pretext, the Americans give up in fifty-eight to sixty-eight percent of runs. Usually inside fifteen to seventeen months.
+DPM: Oh, that's great.
+ANJALI: With a manufactured crisis, something that gets half of America on side, the war runs about three years. Their dead roughly double. And we.
+MARGO: And we what?
+ANJALI: Our government gives in. Sixty-three to seventy-five percent of runs.
+DPM: Less great.
+FENWICK: Who in the government signs?
+ANJALI: The model doesn't say. That parameter is set by judgment. It is the weakest number in the whole thing.
+FENWICK: Whose judgment?
+ANJALI: Mine. At about two in the morning.
+ANJALI: And the Americans actually absorb Canada, end the resistance, in only two to ten percent of runs. They control about half to seventy percent of the country. If Europe backs us, the chance they give up goes up another eight to fourteen points.
+FENWICK: Europe. Write that down.
+BETHANY: I wrote it down.
+JONAH: Does the Arctic one have the bears?
+ANJALI: Not yet. Version zero point one point two point one point one.
+JONAH: Okay. That's the important version.
+MARGO: The Arctic grab.
+ANJALI: Militarily it costs them five to ten dead. It still ends in them leaving or us giving in about two-thirds of the time, because being at war with your biggest trading partner is expensive. The Arctic is cheap to take and expensive to own.
+JONAH: That's true of my snowmobile.
+ANJALI: Alberta detachment. A secession the Americans back. They absorb Alberta in about fifteen to twenty percent of runs. They give up in about forty-two to forty-eight. And if we preserve our forces instead of fighting forward, Canadian deaths drop by about fifty-five percent.
+PRUDEN: There's a guy in Calgary. He walks a dog. He's on every list.
+MARGO: He's on a list for asking for a phone book, Barry. He's not a secession.
+ANJALI: Economic coercion. No invasion. After five years it's mostly unresolved, sixty to sixty-six percent. Our economy drops about fourteen percent at the worst point. Theirs, one to two point four.
+FENWICK: And the oil? We send them, what.
+ANJALI: About three point nine million barrels a day. Cutting it off barely changes the outcome. Power exports in winter are the bigger lever. That's untested.
+FENWICK: And potash.
+ANJALI: Potash isn't in the model.
+FENWICK: There's a farmer in Illinois who'd like a word.
+BETHANY: His dad was from Moose Jaw.
+MARGO: How do you know that?
+BETHANY: It was on the radio.
+PRUDEN: Fine. If they're coming, we take it to them. Alaska.
+MARGO: Barry.
+PRUDEN: Raids! Special forces! Hit their bases. Make them pull troops home.
+ANJALI: I ran it.
+PRUDEN: And?
+ANJALI: Slide four. No raids: the Americans give up sixty-eight percent of the time. Special-forces raids on military targets: thirty-four. A conventional push up the Alaska Highway: twenty-five. If the raids touch their missile-defence or early-warning sites: five.
+PRUDEN: Five percent what?
+ANJALI: Five percent of the time they quit. You gave them the war they couldn't sell. Every raid hands Washington the pretext it was missing. And escalation isn't even modelled, so it's probably worse.
+DPM: Who's Barry? Is Barry the one who wants to invade Alaska?
+MARGO: He's being managed, Deputy Prime Minister.
+PRUDEN: Okay. Okay. What if it's not us. What if a guy.
+ANJALI: I ran that too.
+PRUDEN: I haven't said it yet.
+ANJALI: A drunk militia member fires across the border and kills the Governor of Montana.
+PRUDEN: That's very specific.
+ANJALI: It's all about the story. No incident: they give up seventy-two percent of the time. If America calls it an assassination: eight. If it's contested: forty-six. If the governor was at the front with a Guard unit and it's arguably a lawful target: sixty-six.
+FENWICK: So the comms line determines the war.
+ANJALI: Neil. For the first time in your career, the comms line actually determines the war.
+FENWICK: I need a minute.
+BETHANY: What if special forces did it on purpose? Like, seven governors.
+BETHANY: For the notes!
+ANJALI: Ran it. The Americans give up zero percent of the time. We give in sixty-three percent. They absorb Canada twenty-four percent. And it would be a war crime. It's the worst thing we tested.
+MARGO: So every cool idea we have.
+ANJALI: Is a gift to the other side. Canada's best weapon is Americans not wanting this. Anything we do on their soil spends it.
+JONAH: It's like a bear. You don't go poke the bear in its den. You just make your camp a pain to be in.
+MARGO: Thank you, Ranger.
+JONAH: Version zero point one point two point one point one.
+ANJALI: I know.
+PRUDEN: Fuck.
+PRUDEN: Fuck. How do we not die?
+FENWICK: Can we say "minimize adverse outcomes"?
+MARGO: Neil.
+PRUDEN: No, I'm serious. Twenty-two years I've been planning how to stop Russians. Doctor, just tell me. What costs them the most?
+ANJALI: I ran that. Thirty-six combinations of the choices we control. Slide five.
+ANJALI: Defend Montreal street by street, a fanatical uprising, raids on their soil. You get the most American dead. About six thousand seven hundred. And about sixty-nine thousand of us die. And they're less likely to leave, because the raids keep them angry.
+PRUDEN: So the most of theirs is.
+ANJALI: Not the same thing as winning. Not even close.
+MARGO: That's the question, Barry. Not how many of them. How few of us, for long enough that they get bored.
+PRUDEN: We win by being boring?
+MARGO: We win by being expensive. Boring is how we stay alive while we're expensive.
+JONAH: That's just winter. That's how everybody up here lives.
+BETHANY: "Win by being expensive and boring." Can I put that on a mug?
+FENWICK: Absolutely not. Bilingual mug, maybe.
+DPM: I like expensive and boring. That's the whole government's brand.
+PRUDEN: I'm keeping the binder. For the tabs.
+MARGO: Okay. The mobilization plan. Four hundred thousand.
+FENWICK: Which is not approved. And the Minister says it's for floods.
+MARGO: Then it's for a very large flood, Neil.
+ANJALI: As designed, it raises American deaths by twenty-five to forty-five percent. It moves who wins by four to eight points. Our deaths go up twenty to thirty percent, mostly in the occupation, because the regulars break before most of the mobilized arrive. So they go straight into the resistance.
+PRUDEN: And if the Americans mobilize too? A draft?
+ANJALI: Then they close the troop gap. Their control goes to ninety, a hundred percent. And the chance they absorb us roughly triples. Six percent to eighteen, in the crisis case.
+PRUDEN: So size.
+ANJALI: Size isn't the lever. Design is. Same people, organized properly, against a fully mobilized America: the chance they give up goes up seventeen to twenty points. Us giving in drops from twenty-five, thirty-two percent, to seven to ten.
+MARGO: What's "properly"?
+ANJALI: One. A government that never signs. In exile, in Iqaluit, I don't care. Two. Non-cooperation is the main effort. Civil servants, provinces, courts, all saying no, in both official languages.
+FENWICK: Both official languages.
+ANJALI: Three. Discipline. Undirected local uprisings do slightly worse than improvised ones, because every war has about one idiot who does a Montana.
+PRUDEN: We need to identify the idiot in advance.
+BETHANY: It's Barry.
+PRUDEN: Fair.
+ANJALI: Four. Fifty thousand of the four hundred get real training. Six weeks or more. And they stay where they live. Spread evenly. They know the land.
+JONAH: That's the Rangers. But everywhere.
+JONAH: The signal's good when it's minus thirty. The cold is good for something.
+ANJALI: That core cuts the chance they absorb us from six point six percent to three point eight. And keep them out of the first fight. Otherwise we lose about two thousand of our best people for nothing.
+PRUDEN: So we don't fight the first fight.
+ANJALI: Fabian strategy. Avoid the big battles. Stay out of the cities. Keep exposure low. Wear them down. Slide six. The money slide.
+ANJALI: The plan that maximizes their dead: about four thousand one hundred Americans, forty-seven thousand one hundred Canadians. Fabian: about three thousand six hundred and sixty Americans. Eight thousand two hundred Canadians. And they leave eighty-six percent of the time.
+PRUDEN: Almost as many of them. For a sixth of us.
+MARGO: That's the plan.
+PRUDEN: That's the plan.
+BETHANY: Where do the polar bears come in?
+JONAH: Thank you.
+ANJALI: Version zero point one point two point one point one. It's on the roadmap. Small northern detachments get a wildlife hazard.
+JONAH: Their guys won't know which way to point the rifle. That's a real number. Write it down.
+BETHANY: "Bears. Real number."
+PRUDEN: Okay. But somebody's going to ask about Montreal.
+MARGO: I'm from Montreal.
+ANJALI: We ran it. Their opening strikes destroy about three quarters of our air power. We concede the border. We drop the bridges and defend the island.
+FENWICK: Drop all the bridges? The Champlain is new.
+MARGO: Neil, the Champlain is the least of it. The Turcot would finally get fixed.
+ANJALI: The conventional phase goes from four weeks to about ninety-four days. They lose about six hundred and thirty soldiers in it. We lose about seven thousand two hundred and fifty. Then it depends on the people. Slide seven.
+ANJALI: A low uprising: they leave forty-seven percent of the time. High: fifty-seven. Fanatical: eighty-three. And about forty-seven thousand of us dead.
+MARGO: That's my whole parish.
+PRUDEN: So Montreal is.
+MARGO: Montreal is a very brave way to do the expensive thing the hard way. Fabian, Barry. We hold Montreal by not making it a tomb.
+JONAH: And winter?
+ANJALI: A winter start stretches their advance from twenty-seven to thirty-six days, raises their deaths in it by about a third, and adds about nine hundred and forty cold casualties. It barely changes who wins.
+ANJALI: And we tried a fighting season. Quiet December to April, peak in July and August. It changes outcomes by less than a point.
+MARGO: Why?
+ANJALI: Because in the model, American opinion reacts to the total dead so far. Not to a bad week. It's a known gap. Real people react to bad weeks.
+JONAH: Up here we don't have a fighting season. We have a season. It's winter. Then there's two weeks of mosquitoes.
+JONAH: That's because you put the weather in Toronto.
+ANJALI: Yes.
+JONAH: What do they actually want? The oil sands. The minerals. The dams up north. None of that is in Toronto. Fort McMurray in January is not a Leafs game.
+ANJALI: Version zero point one point two point one. Cold-weather capability, weighted by what they're actually after, not by where people live.
+PRUDEN: And can it go the other way? More of theirs than ours?
+ANJALI: Not across the whole war. Every insurgency in history kills far more of the occupied than the occupier. Locally, maybe. Winter War conditions. Northern objectives in winter. Defenders who know the cold. No air advantage for them. Long supply lines.
+JONAH: So, here.
+ANJALI: So, there.
+MARGO: Doctor. Bottom line. The parameter you set at two in the morning.
+ANJALI: Whether our government signs. It's the most important number in the model and the least known. Everything we just built, the government in exile, the non-cooperation, is about pushing that number to zero.
+MARGO: So the war plan is mostly. Just don't sign.
+ANJALI: The war plan is: don't sign, don't die, don't do a Montana, and make it expensive for a long time.
+BETHANY: That's four mugs.
+FENWICK: And what's not in the model?
+ANJALI: Escalation and nuclear signalling. American repression of civilians. Provinces and Indigenous nations as their own actors. America split into the White House, Congress, the courts and the states. And named bases and terrain.
+JONAH: And the bears.
+ANJALI: And the bears.
+FENWICK: And what comes next? For the deck. Decks like a roadmap.
+ANJALI: A test harness, because we're heading for about a thousand variables. Cold-weather capability by region and objective, and a scenario where they just go for the northern resources. Then the oil patch. Hydro. Equipment wear. Named bases and orders of battle, including the Rangers.
+JONAH: Finally.
+ANJALI: Infrastructure. Narrative warfare. And American repression policy, which nobody wants to model and somebody has to.
+JONAH: And the version with the bears.
+ANJALI: Zero point one point two point one point one. Arctic wildlife. It's right after cold weather.
+JONAH: It should be first. The bears were here first.
+BETHANY: "Bears: were here first."
+MARGO: Deputy Prime Minister. Three decisions. Fund the mobilization plan for real, including the fifty thousand. Plan for a government that never signs. And put someone in charge of discipline, so nobody does a Montana.
+DPM: Done, done, and who's in charge of discipline?
+PRUDEN: Me?
+MARGO: You were the idiot, Barry. Now you're the idiot who knows.
+PRUDEN: I'll need new tabs.
+FENWICK: I'll need a deck.
+ANJALI: I'll need a test harness. We're about to add a thousand variables.
+JONAH: I need the bears.
+MARGO: And somebody write it down.
+FENWICK: We don't write things down.
+MARGO: Then use a napkin. Both official languages.
+BETHANY: And Inuinnaqtun.
+JONAH: Shorter.
+MARGO: Meeting adjourned.
+JONAH: Oh. Hey. There's a bear by my snowmobile.
+ANJALI: Is it a real number?
+JONAH: It's a real bear. Version zero point one point two point one point one.
+ANJALI: I know.
+DPM: Is the cake for anyone?
+PRUDEN: We are Anonymous.
+ANJALI: We are Legion.
+FENWICK: We do not forgive.
+BETHANY: We do not forget.
+MARGO: Expect us. Conditional on the war starting.

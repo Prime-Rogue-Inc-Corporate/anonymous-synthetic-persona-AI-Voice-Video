@@ -1,0 +1,16 @@
+{
+  "output": "the_addresses.mp4",
+  "renderer_version": "0.17.0",
+  "renderer_commit": "34779c2",
+  "rendered_at": "2026-11-09T20:53:51+00:00",
+  "duration_s": 520.5,
+  "lines": 87,
+  "mask": null,
+  "cast": {
+    "CLERK": "mandarin",
+    "MARGARET": "deputyclerk",
+    "DOREEN": "atipcoord",
+    "NATHAN": "pcoanalyst"
+  },
+  "resolution": "1280x720@30"
+}

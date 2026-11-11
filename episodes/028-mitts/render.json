@@ -1,0 +1,23 @@
+{
+  "output": "mitts.mp4",
+  "renderer_version": "0.18.0",
+  "renderer_commit": "0e245d8-dirty",
+  "rendered_at": "2026-11-10T01:47:44+00:00",
+  "duration_s": 654.96,
+  "lines": 112,
+  "mask": null,
+  "cast": {
+    "VIC": "vicparka",
+    "RAVEN": "raven",
+    "LUKE": "villagekid",
+    "FOX": "arcticfox",
+    "ISAAC": "elderisaac",
+    "MUSKOX": "muskox",
+    "NELLIE": "nellie",
+    "DOUG": "rangerdoug",
+    "JOSIE": "rangerjosie",
+    "MARY": "rangersgt",
+    "JONAH": "rangerjonah"
+  },
+  "resolution": "1280x720@30"
+}

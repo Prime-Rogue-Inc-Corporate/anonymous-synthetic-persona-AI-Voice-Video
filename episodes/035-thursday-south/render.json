@@ -1,0 +1,16 @@
+{
+  "output": "thursday_south.mp4",
+  "renderer_version": "0.18.0",
+  "renderer_commit": "fbfe1f4",
+  "rendered_at": "2026-11-11T03:35:55+00:00",
+  "duration_s": 468.15,
+  "lines": 98,
+  "mask": null,
+  "cast": {
+    "EARL": "farmerearl",
+    "GARY": "farmergary",
+    "VIC": "vicparka",
+    "LINCOLN": "lincoln"
+  },
+  "resolution": "1280x720@30"
+}

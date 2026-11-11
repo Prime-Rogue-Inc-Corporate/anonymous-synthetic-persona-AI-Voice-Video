@@ -1,0 +1,217 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "crimson",
+  "cast": {
+    "WHITLOCK": {
+      "mask": "usmaj",
+      "name": "Maj. Kendra Whitlock, Joint Staff J-5 (fictional)",
+      "x": 0.38,
+      "scale": 0.5,
+      "top": 228,
+      "color": [
+        230,
+        210,
+        170
+      ],
+      "voice": {
+        "voice": "en-us+f3",
+        "speed": 158,
+        "pitch": 44,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.031,highpass=f=90,lowpass=f=6500,volume=0.75"
+      }
+    },
+    "OWEN": {
+      "mask": "diaanalyst",
+      "name": "Owen, DIA analyst (fictional)",
+      "x": 0.6,
+      "scale": 0.5,
+      "top": 228,
+      "color": [
+        200,
+        220,
+        250
+      ],
+      "voice": {
+        "voice": "en-us+m4",
+        "speed": 168,
+        "pitch": 48,
+        "filter": "asetrate=22050*1.0,aresample=44100,atempo=1.0,highpass=f=90,lowpass=f=6500,volume=0.75"
+      }
+    },
+    "PINKNEY": {
+      "mask": "historian",
+      "name": "Dr. Harold Pinkney, Army War College historian (fictional)",
+      "x": 0.16,
+      "scale": 0.5,
+      "top": 228,
+      "color": [
+        220,
+        200,
+        240
+      ],
+      "voice": {
+        "voice": "en-gb+m7",
+        "speed": 140,
+        "pitch": 30,
+        "filter": "asetrate=22050*0.9,aresample=44100,atempo=1.111,highpass=f=90,lowpass=f=6500,volume=0.75"
+      }
+    },
+    "DARCY": {
+      "mask": "truckerdarcy",
+      "voice": {
+        "voice": "en-us+f3",
+        "speed": 168,
+        "pitch": 52,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.4:30:0.2,highpass=f=130,lowpass=f=6000,volume=1.6"
+      },
+      "color": [
+        230,
+        200,
+        140
+      ],
+      "name": "Darcy, owner-operator from Alberta, still here for some reason (fictional, from 015)",
+      "x": 0.86,
+      "scale": 0.5,
+      "top": 228
+    }
+  },
+  "set": {
+    "scif": {
+      "clocks": [
+        "DC",
+        "OTTAWA",
+        "CALGARY",
+        "ZULU"
+      ]
+    },
+    "slides": {
+      "x": 0.5,
+      "y": 96,
+      "w": 420,
+      "h": 180,
+      "banner": "RG 407 · DECLASSIFIED 1974 · PUBLIC RECORD",
+      "first": "WAR PLAN RED\nJoint Army and Navy\napproved May 1930",
+      "cues": [
+        [
+          "Red for the British Empire.",
+          "COLOUR PLANS\nORANGE: Japan  BLACK: Germany\nGREEN: Mexico  RED: British Empire\nCRIMSON: Canada"
+        ],
+        [
+          "Step one. Halifax.",
+          "STEP ONE: HALIFAX\njoint Army-Navy attack\ncut the cable to Britain"
+        ],
+        [
+          "In nineteen thirty-four it was amended.",
+          "1934 AMENDMENT\nimmediate first use\nof poison gas: Halifax"
+        ],
+        [
+          "In nineteen thirty-five they picked the roads.",
+          "1935\nroutes chosen\n$57M: three border airfields\nleaked to the press"
+        ],
+        [
+          "Declassified in nineteen seventy-four.",
+          "SHELVED 1939\nDECLASSIFIED 1974"
+        ],
+        [
+          "First World War. The Canadian Corps.",
+          "1914-1918 CANADIAN CORPS\ntrench raids · \"shock troops\"\nVimy Ridge, April 1917"
+        ],
+        [
+          "The First Special Service Force.",
+          "1942-44 FIRST SPECIAL SERVICE FORCE\nhalf U.S., half Canadian\n\"Das dicke Ende kommt noch\""
+        ],
+        [
+          "Ortona.",
+          "ORTONA, DEC 1943\nhouse to house\nthrough the walls"
+        ],
+        [
+          "Korea. Kapyong.",
+          "KAPYONG, 1951\nsurrounded; held"
+        ],
+        [
+          "Croatia, nineteen ninety-three.",
+          "MEDAK POCKET, 1993\npeacekeepers; held the line"
+        ],
+        [
+          "And a sniper record.",
+          "2017 · IRAQ\n3,540 m"
+        ],
+        [
+          "And of course, eighteen fourteen.",
+          "1814 · WASHINGTON\n(technically British)"
+        ],
+        [
+          "And it's cold.",
+          "MAP"
+        ],
+        [
+          "One line for the Chairman.",
+          "WAR PLAN RED:\na plan for the first week.\nNo plan for the second winter."
+        ]
+      ]
+    },
+    "chyron": {
+      "title": "MEANWHILE, A SECURE ROOM IN THE PENTAGON",
+      "sub": "HISTORICAL REVIEW: WAR PLAN RED (1930)  ·  AND WHAT CANADIANS ACTUALLY DO IN A WAR"
+    }
+  },
+  "layout": {
+    "top": 228,
+    "scale": 0.5
+  },
+  "pronounce": {
+    "Pinkney": "Pinkney",
+    "Vimy": "Vee-mee",
+    "Anzio": "Ant-zee-o",
+    "Ortona": "Or-toe-na",
+    "Kapyong": "Kah-pyong",
+    "Medak": "Meh-dak",
+    "Das dicke Ende kommt noch": "Dass dikka Enda kommt nokh",
+    "Fort McMurray": "Fort McMurray"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.42,
+    "after_greeting": 0.4,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "Locker.": 0.9,
+      "Why is he still here?": 0.6,
+      "Morning.": 0.9,
+      "He's not cleared to sign it.": 0.9,
+      "I'm on the softball team.": 1.0,
+      "That's rude.": 1.0,
+      "Wait. What?": 1.2,
+      "Nobody believed it.": 0.9,
+      "Everyone forgot it.": 0.8,
+      "We didn't forget it.": 1.2,
+      "That was the weak part of the plan.": 1.2,
+      "It is not short.": 1.0,
+      "Grenades.": 1.2,
+      "At Christmas.": 1.0,
+      "Usually.": 1.0,
+      "It's not a secret one either.": 1.2,
+      "Half of them were ours.": 0.9,
+      "What is it with Christmas?": 1.1,
+      "And held the line.": 1.0,
+      "Ma'am, that's the flight time of a coffee order.": 1.0,
+      "On the money.": 1.0,
+      "After.": 1.2,
+      "Nobody's apologized to me since April.": 0.9,
+      "Thank you.": 1.0,
+      "You wouldn't get it.": 1.2,
+      "Nobody ever wrote the plan for the second winter.": 1.4,
+      "Half of it was ours.": 1.4
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "credits": [
+    "An original sketch. Whitlock, Owen, Pinkney and Darcy are fictional.",
+    "History as recorded: War Plan Red, approved 1930, amended 1934 to authorize first use of poison gas against Halifax, shelved 1939, declassified 1974. Canadian Corps trench raids and their reputation in WWI; the U.S.-Canadian First Special Service Force at Anzio, 1944; Ortona, 1943; Kapyong, 1951; Medak Pocket, 1993; a 3,540 m sniper shot reported in 2017; Washington burned by British regulars, 1814.",
+    "Previously: 015 Truck Stop, 016 Range Day, 031 The Chain, 036 Conditional"
+  ],
+  "output": "crimson.mp4"
+}

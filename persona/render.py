@@ -34,7 +34,7 @@ DEFAULTS = {
     "cast": {},
     "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
             "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None,
-            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None},
+            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None, "cabinet": None, "zoom": None, "longtable": None, "forest": None, "park": None, "fetch": None, "drone": None, "stubble": None, "classroom": None, "basement": None, "scif": None},
     "layout": {},
     "credits": [],
     "end_title": "EXPECT US.",
@@ -60,15 +60,24 @@ def merge(a, b):
 
 # ---------------------------------------------------------------- script
 SPEAKER = re.compile(r"^([A-Z][A-Z0-9 .'-]{0,24}):\s+(.*)$")
-CUE = re.compile(r"\[(gavel|bark|cackle|hear|cheer|slam|shot|ding|laugh|jet)\]\s*", re.I)
+CUE = re.compile(r"\[(gavel|bark|cackle|hear|cheer|slam|shot|ding|laugh|jet|ring|kick)\]\s*", re.I)
 CUE_LEAD = 0.55          # seconds of room left before a gavelled line (kept for compatibility)
-CUE_LEN = {"gavel": 0.55, "bark": 0.75, "cackle": 1.45, "hear": 1.6, "cheer": 2.4, "slam": 0.7, "shot": 0.9, "ding": 0.6, "laugh": 1.7, "jet": 2.6}   # room each sound effect takes on the timeline
-CUE_OWNER = {"gavel": None, "bark": "_dog", "cackle": "speaker", "hear": None, "cheer": None, "slam": None, "shot": None, "ding": None, "laugh": None, "jet": None}   # whose mouth moves with it
+CUE_LEN = {"gavel": 0.55, "bark": 0.75, "cackle": 1.45, "hear": 1.6, "cheer": 2.4, "slam": 0.7, "shot": 0.9, "ding": 0.6, "laugh": 1.7, "jet": 2.6, "ring": 2.2, "kick": 0.35}   # room each sound effect takes on the timeline
+CUE_OWNER = {"gavel": None, "bark": "_dog", "cackle": "speaker", "hear": None, "cheer": None, "slam": None, "shot": None, "ding": None, "laugh": None, "jet": None, "ring": None, "kick": None}   # whose mouth moves with it
+
+
+TRANS = re.compile(r"\s*\{=\s*(.*?)\s*\}\s*$")
 
 
 def strip_cues(text):
-    """Remove inline sound cues like [gavel] from a line (for voice and captions)."""
-    return CUE.sub("", text).strip()
+    """Remove inline sound cues like [gavel] and any trailing {= translation} from a line (for voice and captions)."""
+    return TRANS.sub("", CUE.sub("", text)).strip()
+
+
+def translation(text):
+    """The subtitle translation of a line written as `Bonjour. {= Hello.}`, or None."""
+    m = TRANS.search(CUE.sub("", text))
+    return m.group(1) if m else None
 
 
 def has_cue(text, name="gavel"):
@@ -287,6 +296,27 @@ def hear_hear():
     return out / (np.abs(out).max() + 1e-6) * 0.5
 
 
+def phone_ring():
+    """A phone ringing: the North American 440 + 480 Hz pair, two short bursts, with a cheap-speaker buzz."""
+    n = int((CUE_LEN["ring"] - 0.05) * SR); tt = np.arange(n) / SR
+    tone = (np.sin(2 * np.pi * 440 * tt) + np.sin(2 * np.pi * 480 * tt)) * 0.5
+    gate = (((tt % 1.0) < 0.4) & (tt < 1.9)).astype(np.float32)
+    buzz = np.sign(np.sin(2 * np.pi * 20 * tt)) * 0.15 + 0.85
+    out = (tone * gate * buzz).astype(np.float32)
+    return gaussian_filter(out, 0.6) * 0.3
+
+
+def ball_kick():
+    """A rubber ball kicked off a boot: a short low thump with a little hollow ring."""
+    rng = np.random.default_rng(32)
+    n = int((CUE_LEN["kick"] - 0.05) * SR); tt = np.arange(n) / SR
+    thump = np.sin(2 * np.pi * (90 + 60 * np.exp(-tt * 40)) * tt) * np.exp(-tt * 28)
+    ring = np.sin(2 * np.pi * 420 * tt) * np.exp(-tt * 22) * 0.25
+    snap = rng.standard_normal(n) * np.exp(-tt * 120) * 0.3
+    out = (thump + ring + snap).astype(np.float32)
+    return out / np.abs(out).max() * 0.5
+
+
 def jet_pass():
     """A fighter passing low overhead: filtered roar swelling and falling, with a Doppler-ish drop in the whine."""
     rng = np.random.default_rng(71)
@@ -371,7 +401,7 @@ def cheer():
 SFX = {"gavel": lambda: gavel_knock(), "bark": lambda: bark(), "cackle": lambda: cackle(), "hear": lambda: hear_hear(),
        "cheer": lambda: cheer(), "slam": lambda: door_slam(),
        "shot": lambda: gunshot(), "ding": lambda: steel_ding(), "laugh": lambda: group_laugh(),
-       "jet": lambda: jet_pass()}
+       "jet": lambda: jet_pass(), "ring": lambda: phone_ring(), "kick": lambda: ball_kick()}
 
 
 def mix_audio(path, clips, starts, total, speakers=None, lines=None, block_s=60):
@@ -491,12 +521,19 @@ class Renderer:
         self.fig_top = lay.get("top", {1: 40, 2: 78, 3: 130}.get(n, 165))
         if cfg["set"].get("corridor"):
             self.corridor = Corridor(cfg["set"]["corridor"])
+        sp = cfg["set"].get("split")
+        if sp:                                                     # split screen: right side is a static set
+            self.split_x = int(sp.get("x", 0.5) * W)
+            self.split_bg = {"barn": barn_backdrop, "boardroom": boardroom_backdrop, "hall": hall_backdrop,
+                             "arctic": arctic_backdrop}[sp.get("right", "barn")](sp.get("conf", {}))
         self.gavels = [t for t, c, _ in cue_events(lines, starts, durs) if c == "gavel"]
         self.cheers = [t for t, c, _ in cue_events(lines, starts, durs) if c == "cheer"]
         evs = cue_events(lines, starts, durs)
         self.shots = [(t, speakers[i]) for t, c, i in evs if c == "shot"]
         self.dings = [t for t, c, _ in evs if c == "ding"]
         self.jets = [t for t, c, _ in evs if c == "jet"]
+        self.kicks = [(t, speakers[i]) for t, c, i in evs if c == "kick"]
+        self.barks = [t for t, c, _ in evs if c == "bark"]
         sl = cfg["set"].get("slides")
         self.slides = [(self.phrase_time(p), txt) for p, txt in sl["cues"]] if sl else []
         if cfg["set"].get("chamber"):
@@ -505,6 +542,24 @@ class Renderer:
             self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
         if cfg["set"].get("boardroom"):
             self.chamber_bg = boardroom_backdrop(cfg["set"]["boardroom"])
+        if cfg["set"].get("scif"):
+            self.chamber_bg = scif_backdrop(cfg["set"]["scif"])
+        if cfg["set"].get("basement"):
+            self.chamber_bg = basement_backdrop(cfg["set"]["basement"])
+        if cfg["set"].get("classroom"):
+            self.chamber_bg = classroom_backdrop(cfg["set"]["classroom"])
+        if cfg["set"].get("stubble"):
+            self.chamber_bg = stubble_backdrop(cfg["set"]["stubble"])
+        if cfg["set"].get("park"):
+            self.chamber_bg = park_backdrop(cfg["set"]["park"])
+        if cfg["set"].get("forest"):
+            self.chamber_bg = forest_backdrop(cfg["set"]["forest"])
+        if cfg["set"].get("longtable"):
+            self.chamber_bg = longtable_backdrop(cfg["set"]["longtable"])
+        if cfg["set"].get("zoom"):
+            self.chamber_bg = zoom_backdrop(cfg["set"]["zoom"])
+        if cfg["set"].get("cabinet"):
+            self.chamber_bg = cabinet_backdrop(cfg["set"]["cabinet"])
         if cfg["set"].get("hall"):
             self.chamber_bg = hall_backdrop(cfg["set"]["hall"])
         if cfg["set"].get("prairie"):
@@ -596,13 +651,16 @@ class Renderer:
         if not self.jets:
             return
         d = ImageDraw.Draw(im)
+        n = int(self.cfg["set"].get("jetcount", 1))                       # a formation: lead and wingmen, stepped
         for jt in self.jets:
-            p = (t - jt) / 2.4
+          for j in range(n):
+            p = (t - jt - 0.18 * j) / float(self.cfg["set"].get("jetdur", 2.4))
             if 0 <= p <= 1:
-                x, y = -120 + p * (W + 240), 70 + 20 * p
-                d.line([(x - 260, y + 6), (x - 20, y + 1)], fill=(230, 232, 236), width=2)      # contrail
-                d.polygon([(x, y), (x - 46, y - 4), (x - 60, y - 16), (x - 54, y), (x - 60, y + 8), (x - 46, y + 4)], fill=(80, 86, 96))
-                d.polygon([(x - 30, y), (x - 40, y - 14), (x - 34, y)], fill=(70, 76, 86))
+                k = float(self.cfg["set"].get("jetsize", 1.0)); y0 = float(self.cfg["set"].get("jety", 70))
+                x, y = -120 * k + p * (W + 240 * k) - 90 * k * j, y0 + 20 * p + 30 * k * j * (1 if j % 2 else -0.4)
+                d.line([(x - 260 * k, y + 6 * k), (x - 20 * k, y + 1)], fill=(230, 232, 236), width=max(2, int(2 * k)))      # contrail
+                d.polygon([(x, y), (x - 46 * k, y - 4 * k), (x - 60 * k, y - 16 * k), (x - 54 * k, y), (x - 60 * k, y + 8 * k), (x - 46 * k, y + 4 * k)], fill=(52, 58, 68))
+                d.polygon([(x - 30 * k, y), (x - 40 * k, y - 14 * k), (x - 34 * k, y)], fill=(44, 50, 60))
 
     def draw_breath(self, im, fi, t):
         """Puffs of breath from whoever is speaking (cold sets)."""
@@ -720,6 +778,20 @@ class Renderer:
                 d.text((cx - 50, 276), "NO SIGNAL", font=self.card_font, fill=(150, 60, 60, 200))
         im.paste(layer, (0, 0), layer)
 
+    def wrap_font(self, text, font, width=None):
+        """Greedy word wrap for any font."""
+        width = width or W - 160
+        rows, cur = [], ""
+        for word in text.split():
+            trial = (cur + " " + word).strip()
+            if font.getlength(trial) > width and cur:
+                rows.append(cur); cur = word
+            else:
+                cur = trial
+        if cur:
+            rows.append(cur)
+        return rows
+
     def wrap(self, text):
         out, cur = [], ""
         for w_ in text.split():
@@ -759,6 +831,15 @@ class Renderer:
                     cur.append(b)
             if cur: groups.append(cur)
             out[sp] = [(self.starts[g[0]] - 0.9, self.starts[g[-1]] + self.durs[g[-1]] + 1.1) for g in groups]
+            if c.get("tail"):                                         # listeners stay a little after they speak
+                out[sp] = [(a, b + float(c["tail"])) for a, b in out[sp]]
+            if c.get("since") is not None and out[sp]:               # already on screen from this time (e.g. 0)
+                a, b = out[sp][0]; out[sp][0] = (min(a, float(c["since"])), b)
+            if c.get("until"):                                       # stay on screen until a later phrase lands
+                for ph in ([c["until"]] if isinstance(c["until"], str) else c["until"]):
+                    tu = self.phrase_time(ph)
+                    out[sp] = [(a, max(b, tu + 0.4) if a <= tu and (k + 1 == len(out[sp]) or out[sp][k + 1][0] > tu) else b)
+                               for k, (a, b) in enumerate(out[sp])]
         return out
 
     def presence(self, sp, t):
@@ -812,10 +893,28 @@ class Renderer:
             return
         d = ImageDraw.Draw(im)
         cx, y, w = dk.get("x", 0.4) * W, dk.get("y", 520), dk.get("w", 620)
-        d.polygon([(cx - w / 2, y), (cx + w / 2, y), (cx + w / 2 + 30, H), (cx - w / 2 - 30, H)], fill=(96, 66, 42))
-        for k in range(1, 4):                                       # plank seams
+        if not dk.get("ornate"):
+          d.polygon([(cx - w / 2, y), (cx + w / 2, y), (cx + w / 2 + 30, H), (cx - w / 2 - 30, H)], fill=(96, 66, 42))
+        for k in (range(1, 4) if not dk.get("ornate") else ()):                                       # plank seams
             d.line([(cx - w / 2 - 10 * k, y + 50 * k), (cx + w / 2 + 10 * k, y + 50 * k)], fill=(70, 48, 30), width=3)
-        d.rectangle([cx - w / 2 - 12, y - 14, cx + w / 2 + 12, y + 4], fill=(120, 86, 56))
+        if not dk.get("ornate"):
+            d.rectangle([cx - w / 2 - 12, y - 14, cx + w / 2 + 12, y + 4], fill=(120, 86, 56))
+        if dk.get("ornate"):                                        # the Resolute-adjacent: mahogany, gilt, a banker's lamp
+            d.polygon([(cx - w / 2, y), (cx + w / 2, y), (cx + w / 2 + 30, H), (cx - w / 2 - 30, H)], fill=(84, 34, 22))
+            for k in range(3):
+                px = cx - w / 2 + 20 + k * (w - 40) / 3
+                d.rectangle([px + 10, y + 30, px + (w - 40) / 3 - 10, H - 10], outline=(200, 160, 70), width=4)
+                d.ellipse([px + (w - 40) / 6 - 26, y + 60, px + (w - 40) / 6 + 26, y + 112], outline=(200, 160, 70), width=4)
+                d.ellipse([px + (w - 40) / 6 - 8, y + 78, px + (w - 40) / 6 + 8, y + 94], fill=(220, 180, 80))
+            d.rectangle([cx - w / 2 - 16, y - 16, cx + w / 2 + 16, y + 6], fill=(110, 46, 28), outline=(220, 180, 80), width=3)
+            lx = cx + w / 2 - 70                                    # banker's lamp
+            d.rectangle([lx - 4, y - 70, lx + 4, y - 16], fill=(200, 160, 70)); d.rectangle([lx - 26, y - 22, lx + 26, y - 14], fill=(200, 160, 70))
+            d.chord([lx - 46, y - 96, lx + 46, y - 46], 180, 360, fill=(30, 110, 60)); d.line([(lx - 46, y - 71), (lx + 46, y - 71)], fill=(200, 160, 70), width=3)
+            fx = cx - w / 2 + 120                                   # a little desk flag, stripes only
+            d.line([(fx, y - 16), (fx, y - 110)], fill=(200, 160, 70), width=3)
+            for k in range(7):
+                d.rectangle([fx + 2, y - 110 + k * 6, fx + 62, y - 104 + k * 6], fill=(190, 30, 40) if k % 2 == 0 else (240, 240, 240))
+            d.rectangle([fx + 2, y - 110, fx + 26, y - 86], fill=(30, 40, 100))
         if dk.get("mic"):                                           # boom arm + broadcast mic + pop filter
             mx, my = dk.get("mic_x", cx + 70), dk.get("mic_y", y - 120)
             d.line([(cx + w / 2 - 20, y - 14), (cx + w / 2 - 60, y - 200), (mx + 40, my - 30)], fill=(26, 26, 28), width=8)
@@ -848,6 +947,108 @@ class Renderer:
             d.ellipse(P([(side * 28 - 8, -18 + bob), (side * 28 + 8, -2 + bob)]), fill=(24, 18, 14))
         if amp > 0.08:
             d.ellipse(P([(-24, 52 + bob), (24, 70 + bob + 26 * amp)]), fill=(120, 30, 40))
+
+    def draw_drone(self, im, t):
+        """A small quadcopter holding station in the sky, drifting, its light blinking."""
+        dr = self.cfg["set"].get("drone")
+        if not dr:
+            return
+        d = ImageDraw.Draw(im)
+        x = dr.get("x", 0.62) * W + 30 * math.sin(t * 0.21) + 12 * math.sin(t * 0.9)
+        y = dr.get("y", 110) + 10 * math.sin(t * 0.37)
+        k = dr.get("scale", 1.0)
+        d.rectangle([x - 14 * k, y - 5 * k, x + 14 * k, y + 5 * k], fill=(30, 32, 36))
+        for s_ in (-1, 1):
+            d.line([(x + s_ * 12 * k, y), (x + s_ * 28 * k, y - 6 * k)], fill=(30, 32, 36), width=max(1, int(3 * k)))
+            sp = 10 * k * abs(math.sin(t * 40 + s_))
+            d.line([(x + s_ * 28 * k - sp, y - 8 * k), (x + s_ * 28 * k + sp, y - 8 * k)], fill=(90, 90, 96), width=2)
+        if int(t * 2) % 2 == 0:
+            d.ellipse([x - 3 * k, y + 4 * k, x + 3 * k, y + 10 * k], fill=(255, 60, 50))
+
+    def draw_fetch(self, im, t):
+        """A big white dog and an orange ball. On each [kick] the ball sails off right; the dog runs it down and
+        brings it back to the walker's feet. On [bark] she opens her mouth (rarely)."""
+        fc = self.cfg["set"].get("fetch")
+        if not fc:
+            return
+        d = ImageDraw.Draw(im)
+        home, gy, k = fc.get("x", 0.46) * W, fc.get("y", 600), fc.get("scale", 1.0)
+        foot = fc.get("foot", 0.38) * W
+        handler = fc.get("handler", "GUY")
+        if not hasattr(self, "_runs"):
+            self._runs = sorted([kt for kt, sp in self.kicks if sp == handler] + [self.phrase_time(g) for g in fc.get("go", [])])
+        lastk = max([kt for kt, sp in self.kicks if kt <= t], default=None)
+        lastr = max([r for r in self._runs if r <= t], default=None)
+        ball = (foot + 30, gy + 22 * k)                                         # resting at his feet
+        dx, facing, run, mouth_ball = home, -1, 0.0, False
+        if lastk is not None and t - lastk < 1.4:                                # ball in flight, whoever kicked it
+            p = (t - lastk) / 1.4
+            ball = (foot + p * (W + 200 - foot), gy + 22 * k - 260 * 4 * p * (1 - p))
+        elif lastk is not None and (lastr is None or lastr < lastk - 0.01):
+            ball = None                                                          # kicked by someone she ignores
+        if lastr is not None:
+            e = t - lastr
+            if e >= 1.4 and e < 5.2:
+                ball = None
+            if 0.25 <= e < 1.9:                                                  # she's off
+                p = (e - 0.25) / 1.65; dx, facing, run = home + p * (W + 260 - home), 1, 1.0
+            elif 1.9 <= e < 3.4:
+                dx = W + 400                                                     # off screen, finding it
+            elif 3.4 <= e < 5.2:                                                 # coming back with it
+                p = (e - 3.4) / 1.8; dx, facing, run, mouth_ball = W + 260 - p * (W + 260 - home), -1, 1.0, True
+        bob = (6 * abs(math.sin(t * 9)) if run else 2 * math.sin(t * 1.6)) * k
+        if -300 < dx < W + 300:
+            fur, dark, white = (128, 92, 60), (62, 44, 30), (240, 238, 232)
+            P = lambda x, y: (dx + facing * x * k, gy + y * k - bob)
+            def E(x0, y0, x1, y1, **kw):
+                (ax, ay), (bx_, by_) = P(x0, y0), P(x1, y1)
+                d.ellipse([min(ax, bx_), min(ay, by_), max(ax, bx_), max(ay, by_)], **kw)
+            for lx, ph in ((-62, 0), (-42, 1.6), (40, 0.8), (60, 2.4)):          # legs, white socks
+                sw = (18 * math.sin(t * 14 + ph) if run else 0) * k
+                top_ = P(lx, 0); foot_ = (top_[0] + sw, gy + 46 * k)
+                d.line([top_, foot_], fill=fur, width=int(13 * k))
+                d.line([((top_[0] + foot_[0]) / 2 + sw * 0.3, gy + 30 * k), foot_], fill=white, width=int(13 * k))
+            E(-92, -42, 92, 30, fill=fur)                                        # body
+            for j in range(9):                                                   # brindle stripes
+                x = -80 + j * 19
+                a0, b0 = P(x, -38); a1, b1 = P(x + 8 * facing, 24)
+                d.line([(a0, b0), (a1, b1)], fill=dark, width=max(2, int(5 * k)))
+            E(40, -20, 92, 30, fill=white)                                       # white chest
+            hx = -30                                                             # the harness, coyote tan
+            (h0x, h0y), (h1x, h1y) = P(hx - 44, -44), P(hx + 50, 10)
+            d.rounded_rectangle([min(h0x, h1x), h0y, max(h0x, h1x), h1y], radius=int(8 * k), fill=(150, 130, 92), outline=(110, 94, 64), width=2)
+            (q0x, q0y), (q1x, q1y) = P(hx - 26, -34), P(hx + 30, -16)
+            d.rectangle([min(q0x, q1x), q0y, max(q0x, q1x), q1y], fill=(30, 30, 30))
+            fnt = getattr(self, "_patch_font", None) or ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", max(8, int(13 * k)))
+            self._patch_font = fnt
+            d.text(((q0x + q1x) / 2, (q0y + q1y) / 2), "WILCO", font=fnt, fill=(235, 235, 235), anchor="mm")
+            for yy in (-6, 2):
+                a0 = P(hx - 40, yy); a1 = P(hx + 46, yy); d.line([a0, a1], fill=(110, 94, 64), width=2)
+            tx = -96; wag = 14 * math.sin(t * (16 if run or mouth_ball else 6))
+            d.line([P(tx, -20), P(tx - 44, -64 + wag)], fill=fur, width=int(12 * k))
+            E(70, -74, 140, 2, fill=fur)                                         # head
+            for j in range(3):
+                a0 = P(80 + j * 14, -70); a1 = P(84 + j * 14, -40); d.line([a0, a1], fill=dark, width=max(2, int(4 * k)))
+            E(74, -78, 104, -20, fill=dark)                                      # floppy ear
+            E(116, -42, 162, -8, fill=fur)                                       # muzzle
+            E(126, -30, 160, -6, fill=white)
+            a0 = P(96, -72); a1 = P(150, -30); d.line([a0, a1], fill=white, width=max(3, int(9 * k)))   # the blaze
+            nx, ny = P(158, -34); d.ellipse([nx - 6 * k, ny - 5 * k, nx + 6 * k, ny + 5 * k], fill=(26, 22, 20))
+            ix, iy = P(118, -52); d.ellipse([ix - 4 * k, iy - 4 * k, ix + 4 * k, iy + 4 * k], fill=(26, 22, 20))
+            barking = any(0 <= t - b < 0.5 for b in self.barks)
+            if barking:
+                ox, oy = P(150, -10); d.ellipse([ox - 10 * k, oy - 4 * k, ox + 10 * k, oy + 14 * k], fill=(120, 30, 40))
+            if mouth_ball:
+                bx, by = P(162, -14); self._ball(d, bx, by, k)
+        if ball:
+            self._ball(d, ball[0], ball[1], k)
+
+    def _ball(self, d, x, y, k):
+        """The orange ball with the blue band."""
+        r = 15 * k
+        d.ellipse([x - r, y - r, x + r, y + r], fill=(255, 112, 24), outline=(190, 80, 10), width=2)
+        d.chord([x - r, y - r * 0.45, x + r, y + r * 0.45], 0, 360, fill=(40, 90, 200))
+        d.chord([x - r, y - r * 0.25, x + r, y + r * 0.25], 0, 360, fill=(255, 112, 24))
 
     def draw_lectern(self, im):
         lc = self.cfg["set"].get("lectern")
@@ -952,6 +1153,10 @@ class Renderer:
             if getattr(self, "swap_t", None) is not None and t >= self.swap_t:
                 m = min(1.0, (t - self.swap_t) / 0.8)
                 hall = hall * (1 - m) + self.swap_bg * m
+            pan = (cfg["set"].get("arctic") or {}).get("pan") if isinstance(cfg["set"].get("arctic"), dict) else None
+            pan = cfg["set"].get("pan") or pan
+            if pan:                                                  # walking: the land slides past
+                hall = np.roll(hall, -int(t * pan) % W, axis=1)
             img = hall * (0.86 + 0.14 * sky[..., None])
             if hasattr(self, "aur_grid") and (cfg["set"].get("arctic") or {}).get("aurora", True):
                 img = img + self.aurora(t)
@@ -959,6 +1164,10 @@ class Renderer:
                 img = img + glow * np.stack([tr * self.beam, tg * self.beam, tb * self.beam], -1)
         elif hasattr(self, "corridor"):
             hall = self.corridor.draw(t)
+            if hasattr(self, "split_bg"):
+                hall = hall.copy(); sx = self.split_x
+                hall[:, sx:] = self.split_bg[:, sx:]
+                hall[:, sx - 3:sx + 3] = 0.02
             base3 = hall * (0.82 + 0.18 * sky[..., None])
             img = base3 + glow * np.stack([tr * self.beam, tg * self.beam, tb * self.beam], -1)
         else:
@@ -1025,6 +1234,8 @@ class Renderer:
             self.draw_commons_table(im)
             self.draw_range(im, t)
             self.draw_jets(im, t)
+            self.draw_drone(im, t)
+            self.draw_fetch(im, t)
             self.draw_breath(im, fi, t)
             if hasattr(self, "crowd"):
                 hype = max([max(0.0, 1 - abs(t - c - 1.0) / 1.6) for c in self.cheers] + [0.0])
@@ -1036,9 +1247,11 @@ class Renderer:
             ci = self.caption(t)
             if ci is not None:
                 rows = self.wrap(strip_cues(self.lines[ci]))
+                tr = translation(self.lines[ci])
+                trows = self.wrap_font(tr, self.small) if tr else []
                 sp = self.speakers[ci]
                 name = cfg["cast"][sp].get("name", sp) if duo and sp else None
-                yb = H - 40 - len(rows) * 40
+                yb = H - 40 - len(rows) * 40 - len(trows) * 28 - (8 if trows else 0)
                 band = Image.new("RGBA", (W, H), (0, 0, 0, 0))
                 ImageDraw.Draw(band).rectangle([0, yb - (46 if name else 18), W, H], fill=(0, 0, 0, 150))
                 im.paste(band, (0, 0), band)
@@ -1049,6 +1262,9 @@ class Renderer:
                     d.text(((W - self.label.getlength(label)) / 2, yb - 34), label, font=self.label, fill=col)
                 for k, row in enumerate(rows):
                     d.text(((W - self.mono.getlength(row)) / 2, yb + k * 40), row, font=self.mono, fill=(238, 238, 238))
+                ty = yb + len(rows) * 40 + 8
+                for k, row in enumerate(trows):                          # subtitle translation, smaller and dimmer
+                    d.text(((W - self.small.getlength(row)) / 2, ty + k * 28), row, font=self.small, fill=(250, 214, 120))
             if t > self.total - 4.2:
                 a = int(255 * min(1, (t - (self.total - 4.2)) / 0.5) * min(1, (self.total - t) / 0.6))
                 layer = Image.new("RGBA", (W, H), (0, 0, 0, 0)); ld = ImageDraw.Draw(layer)
@@ -1208,6 +1424,428 @@ def boardroom_backdrop(conf):
     d.rectangle([fx + 2, 90, fx + 82, 130], fill=(240, 240, 236))
     d.rectangle([fx + 2, 90, fx + 22, 130], fill=(200, 30, 40)); d.rectangle([fx + 62, 90, fx + 82, 130], fill=(200, 30, 40))
     d.rectangle([0, 420, W, H], fill=(40, 30, 26))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def scif_backdrop(conf):
+    """Static secure room somewhere in the Pentagon: grey acoustic wall panels, a vault door with a spin dial, a
+    rack of phone lockers by the door, a red light marked SECURE AREA, a wall clock showing four time zones, and a
+    gray archive box on a side table labelled RG 407 / WAR PLAN RED."""
+    conf = conf if isinstance(conf, dict) else {}
+    im = Image.new("RGB", (W, H), (120, 126, 134)); d = ImageDraw.Draw(im)
+    for x in range(0, W, 80):                                                   # acoustic panels
+        for y in range(0, 470, 80):
+            d.rectangle([x + 3, y + 3, x + 77, y + 77], fill=(132, 138, 146), outline=(108, 114, 122))
+    f = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 14)
+    fb = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 18)
+    vx = int(W * 0.04)                                                          # vault door
+    d.rectangle([vx, 90, vx + 180, 470], fill=(170, 172, 176), outline=(90, 92, 96), width=6)
+    d.ellipse([vx + 60, 220, vx + 120, 280], fill=(60, 62, 66)); d.ellipse([vx + 72, 232, vx + 108, 268], fill=(200, 200, 204))
+    for k in range(12):
+        a = k / 12 * 2 * math.pi
+        d.line([(vx + 90 + 26 * math.cos(a), 250 + 26 * math.sin(a)), (vx + 90 + 30 * math.cos(a), 250 + 30 * math.sin(a))], fill=(20, 20, 20), width=2)
+    d.rectangle([vx + 30, 60, vx + 150, 84], fill=(180, 30, 30)); d.text((vx + 90, 72), "SECURE AREA", font=f, fill=(255, 230, 230), anchor="mm")
+    for r in range(3):                                                          # phone lockers
+        for c in range(4):
+            x = vx + 200 + c * 34; y = 300 + r * 40
+            d.rectangle([x, y, x + 30, y + 36], fill=(96, 100, 108), outline=(60, 62, 66)); d.ellipse([x + 22, y + 15, x + 27, y + 20], fill=(200, 200, 200))
+    cxs = int(W * 0.72)                                                         # clocks
+    for k, lab in enumerate(conf.get("clocks", ["DC", "OTTAWA", "CALGARY", "ZULU"])):
+        x = cxs + k * 80
+        d.ellipse([x, 90, x + 60, 150], fill=(240, 240, 236), outline=(40, 40, 40), width=3)
+        a = -math.pi / 2 + k * 0.9; d.line([(x + 30, 120), (x + 30 + 20 * math.cos(a), 120 + 20 * math.sin(a))], fill=(20, 20, 20), width=3)
+        d.text((x + 30, 162), lab, font=f, fill=(230, 230, 230), anchor="mm")
+    bx = int(W * 0.82)                                                          # the archive box
+    d.rectangle([bx, 360, bx + 180, 380], fill=(110, 90, 70))
+    d.rectangle([bx + 20, 300, bx + 160, 360], fill=(150, 150, 146), outline=(100, 100, 96), width=2)
+    d.text((bx + 90, 318), "RG 407", font=f, fill=(30, 30, 30), anchor="mm"); d.text((bx + 90, 340), "WAR PLAN RED", font=fb, fill=(150, 20, 20), anchor="mm")
+    d.rectangle([0, 470, W, H], fill=(70, 74, 82))
+    d.polygon([(int(W * 0.06), 490), (int(W * 0.94), 490), (W, 570), (0, 570)], fill=(40, 42, 48))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def basement_backdrop(conf):
+    """Static windowless basement room under an Ottawa office building: a drop ceiling with one fluorescent tube
+    dead, beige walls with a scuff line at chair height, a side table with half a sheet cake that says HAPPY
+    RETIREMENT BRIAN, a whiteboard that says HOW WE DON'T DIE, a long laminate table."""
+    conf = conf if isinstance(conf, dict) else {}
+    im = Image.new("RGB", (W, H), (214, 206, 186)); d = ImageDraw.Draw(im)
+    for x in range(0, W, 120):                                                  # drop ceiling
+        d.line([(x, 0), (x, 60)], fill=(170, 166, 156), width=2)
+    d.rectangle([0, 0, W, 60], outline=(170, 166, 156), width=2)
+    for k, x in enumerate(range(80, W, 320)):
+        lit = k != 2
+        d.rectangle([x, 14, x + 200, 40], fill=(250, 250, 240) if lit else (150, 150, 146), outline=(140, 140, 136))
+    d.rectangle([0, 60, W, 66], fill=(170, 160, 140))
+    d.line([(0, 300), (W, 300)], fill=(190, 180, 160), width=3)                 # chair-scuff line
+    f = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 22)
+    fs = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 13)
+    wx = int(W * 0.03)                                                          # whiteboard
+    d.rectangle([wx, 90, wx + 270, 260], fill=(246, 246, 244), outline=(160, 160, 160), width=4)
+    d.text((wx + 14, 104), conf.get("whiteboard", "HOW WE DON'T DIE"), font=f, fill=(30, 60, 160))
+    for k, ln in enumerate(conf.get("wb_lines", ["1. don't sign", "2. don't die", "3. don't do a Montana", "4. be expensive (+ boring)"])):
+        d.text((wx + 18, 144 + k * 24), ln, font=fs, fill=(40, 40, 40))
+    cx0 = int(W * 0.8)                                                          # the cake
+    d.rectangle([cx0, 250, cx0 + 200, 300], fill=(120, 100, 80))
+    d.rectangle([cx0 + 10, 222, cx0 + 150, 252], fill=(250, 248, 240), outline=(220, 210, 200))
+    d.rectangle([cx0 + 150, 230, cx0 + 190, 252], fill=(240, 236, 226))
+    d.text((cx0 + 18, 226), "HAPPY RETIREMENT", font=fs, fill=(40, 90, 180)); d.text((cx0 + 50, 238), "BRIAN", font=fs, fill=(200, 60, 80))
+    d.rectangle([0, 420, W, H], fill=(140, 130, 116))                           # carpet tile
+    d.polygon([(int(W * 0.04), 470), (int(W * 0.96), 470), (W, 560), (0, 560)], fill=(196, 186, 166))   # the long table
+    d.rectangle([0, 560, W, 576], fill=(150, 140, 120))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def classroom_backdrop(conf):
+    """Static meeting room at a county extension office: cinder-block walls painted cream, a green chalkboard with
+    N-P-K and a big K on it, a window onto flat black fields and a water tower, a county fair ribbon board, a wall
+    phone with a long cord, and a stack of fertilizer bags in the corner for show-and-tell."""
+    conf = conf if isinstance(conf, dict) else {}
+    im = Image.new("RGB", (W, H), (226, 218, 196)); d = ImageDraw.Draw(im)
+    for y in range(0, 470, 26):                                                 # cinder block
+        off = 0 if (y // 26) % 2 == 0 else 40
+        for x in range(-40 + off, W, 80):
+            d.rectangle([x, y, x + 78, y + 24], outline=(206, 198, 176))
+    f = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 34)
+    fs = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 18)
+    bx0, bx1 = int(W * 0.3), int(W * 0.7)                                       # the chalkboard
+    d.rectangle([bx0 - 10, 60, bx1 + 10, 330], fill=(120, 84, 50))
+    d.rectangle([bx0, 70, bx1, 320], fill=(40, 74, 56))
+    for txt, y in conf.get("board", [("N  -  P  -  K", 90), ("NITROGEN  PHOSPHORUS  POTASSIUM", 150), ("K = POTASH", 200), ("WHERE DOES IT COME FROM?", 262)]):
+        fnt = f if txt.startswith("N  -") or txt.startswith("K =") else fs
+        d.text(((bx0 + bx1) // 2, y), txt, font=fnt, fill=(236, 236, 228), anchor="mt")
+    d.rectangle([bx0, 320, bx1, 330], fill=(150, 120, 80))
+    wx = int(W * 0.04)                                                          # window on the fields
+    d.rectangle([wx, 70, wx + 260, 300], fill=(170, 196, 220))
+    d.rectangle([wx, 210, wx + 260, 300], fill=(40, 30, 24))
+    for k in range(9):
+        d.line([(wx + 130, 210), (wx + k * 32, 300)], fill=(70, 56, 40), width=2)
+    d.line([(wx + 200, 210), (wx + 200, 140)], fill=(150, 150, 156), width=4); d.ellipse([wx + 180, 120, wx + 220, 150], fill=(200, 200, 206))
+    d.rectangle([wx, 70, wx + 260, 300], outline=(240, 240, 236), width=8); d.line([(wx + 130, 70), (wx + 130, 300)], fill=(240, 240, 236), width=6)
+    rx = int(W * 0.76)                                                          # ribbon board
+    d.rectangle([rx, 80, rx + 200, 260], fill=(200, 160, 100), outline=(140, 100, 60), width=4)
+    for k, c in enumerate([(30, 70, 180), (200, 30, 40), (240, 240, 240), (30, 70, 180), (220, 180, 40), (120, 40, 160)]):
+        x = rx + 30 + (k % 3) * 60; y = 110 + (k // 3) * 80
+        d.ellipse([x - 18, y - 18, x + 18, y + 18], fill=c); d.polygon([(x - 10, y + 14), (x - 18, y + 50), (x - 2, y + 40)], fill=c); d.polygon([(x + 10, y + 14), (x + 18, y + 50), (x + 2, y + 40)], fill=c)
+    px = int(W * 0.95)                                                          # wall phone, long cord
+    d.rounded_rectangle([px - 24, 170, px + 24, 260], radius=6, fill=(236, 230, 210), outline=(170, 160, 140), width=2)
+    d.rounded_rectangle([px - 30, 160, px - 10, 250], radius=8, fill=(220, 214, 196), outline=(150, 140, 120), width=2)
+    for k in range(14):
+        d.arc([px - 40, 250 + k * 12, px - 20, 262 + k * 12], 0, 360, fill=(200, 194, 176), width=2)
+    for k in range(4):                                                          # fertilizer bags
+        d.rounded_rectangle([int(W * 0.88) - 10, 470 - 40 * (k + 1), int(W * 0.88) + 110, 470 - 40 * k], radius=8, fill=(236, 232, 220), outline=(170, 160, 140), width=2)
+        d.text((int(W * 0.88) + 50, 470 - 40 * k - 20), "0-0-60", font=fs, fill=(200, 60, 60), anchor="mm")
+    d.rectangle([0, 470, W, H], fill=(150, 140, 120))                           # linoleum
+    for x in range(0, W, 60):
+        d.line([(x, 470), (x - 60, H)], fill=(140, 130, 110))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def stubble_backdrop(conf):
+    """Static harvested cornfield in the Corn Belt, November, late afternoon: a huge flat sky going orange, a row of
+    grain bins and an elevator on the horizon, corn stubble in rows running to the vanishing point, a pickup with
+    the tailgate down, and a red fertilizer tender with a spinner spreader, half full of pink-grey potash."""
+    conf = conf if isinstance(conf, dict) else {}
+    rng = np.random.default_rng(33)
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    hz = 390
+    for y in range(hz):
+        f = y / hz; d.line([(0, y), (W, y)], fill=(int(110 + 140 * f), int(140 + 70 * f), int(190 - 60 * f)))
+    for k in range(6):                                                          # long flat clouds
+        y = int(rng.integers(60, 260)); x = int(rng.integers(-200, W)); w = int(rng.integers(200, 520))
+        d.ellipse([x, y, x + w, y + 18], fill=(236, 200, 180))
+    bx = int(W * conf.get("bins_x", 0.7))                                       # bins and an elevator
+    for k in range(4):
+        x = bx + k * 46
+        d.rectangle([x, hz - 70, x + 40, hz], fill=(190, 194, 200)); d.polygon([(x - 2, hz - 70), (x + 20, hz - 92), (x + 42, hz - 70)], fill=(176, 180, 186))
+        for j in range(5):
+            d.line([(x, hz - 64 + j * 13), (x + 40, hz - 64 + j * 13)], fill=(160, 164, 170))
+    d.rectangle([bx + 196, hz - 150, bx + 236, hz], fill=(214, 210, 200)); d.rectangle([bx + 190, hz - 162, bx + 242, hz - 150], fill=(200, 196, 186))
+    d.line([(bx + 216, hz - 150), (bx + 140, hz - 92)], fill=(150, 150, 150), width=3)
+    d.rectangle([0, hz - 6, W, hz], fill=(70, 80, 60))                          # treeline at the section line
+    d.rectangle([0, hz, W, H], fill=(124, 96, 64))
+    vx = W // 2
+    for k in range(-40, 41):                                                    # stubble rows to the vanishing point
+        xb = vx + k * 46
+        d.line([(vx + k * 2, hz), (xb, H)], fill=(150, 124, 84), width=2)
+    for _ in range(1800):
+        x, y = int(rng.integers(0, W)), int(rng.integers(hz + 4, H))
+        h = 2 + int(8 * (y - hz) / (H - hz))
+        d.line([(x, y), (x + 1, y - h)], fill=(200, 176, 120))
+    tx = int(W * conf.get("tender_x", 0.62))                                    # the fertilizer tender
+    d.polygon([(tx, 360), (tx + 230, 360), (tx + 210, 430), (tx + 20, 430)], fill=(180, 34, 30))
+    d.polygon([(tx + 8, 364), (tx + 222, 364), (tx + 214, 380), (tx + 16, 380)], fill=(196, 170, 168))
+    d.rectangle([tx + 14, 430, tx + 216, 440], fill=(60, 60, 60))
+    for wx in (tx + 40, tx + 190):
+        d.ellipse([wx - 24, 424, wx + 24, 472], fill=(24, 24, 24)); d.ellipse([wx - 9, 439, wx + 9, 457], fill=(150, 150, 150))
+    d.ellipse([tx + 226, 428, tx + 262, 444], fill=(160, 160, 160))
+    px = int(W * conf.get("truck_x", 0.04))                                     # the pickup, tailgate down
+    d.rounded_rectangle([px, 372, px + 260, 450], radius=10, fill=(150, 156, 164))
+    d.polygon([(px + 150, 372), (px + 172, 330), (px + 248, 330), (px + 260, 372)], fill=(150, 156, 164))
+    d.polygon([(px + 160, 372), (px + 178, 338), (px + 242, 338), (px + 252, 372)], fill=(90, 110, 130))
+    d.rectangle([px - 40, 420, px + 4, 428], fill=(120, 126, 134))
+    for wx in (px + 50, px + 210):
+        d.ellipse([wx - 28, 428, wx + 28, 484], fill=(20, 20, 20)); d.ellipse([wx - 10, 446, wx + 10, 466], fill=(150, 150, 150))
+    d.rectangle([px + 20, 356, px + 70, 374], fill=(240, 240, 240))           # a thermos and a seed bag on the bed
+    d.rectangle([px + 84, 346, px + 100, 374], fill=(40, 90, 60))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def park_backdrop(conf):
+    """Static off-leash dog park in Calgary, November: a big pale sky with a chinook arch, the tall pod tower just
+    over the treeline, blue spruce and bare poplars, a chain-link fence, a wide gravel run, a green bench, and a dark
+    unmarked sedan parked on the road beyond the fence with two shapes inside."""
+    conf = conf if isinstance(conf, dict) else {}
+    rng = np.random.default_rng(32)
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    for y in range(0, 400):
+        f = y / 400; d.line([(0, y), (W, y)], fill=(int(130 + 70 * f), int(166 + 50 * f), int(206 + 30 * f)))
+    if conf.get("chinook", True):
+        d.chord([-200, 90, W + 200, 520], 180, 360, fill=(176, 204, 230))
+        d.chord([-160, 120, W + 160, 560], 180, 360, fill=(146, 180, 216))
+    tx = int(W * conf.get("tower_x", 0.7))                                      # the tower, over the trees
+    d.polygon([(tx - 6, 330), (tx + 6, 330), (tx + 3, 196), (tx - 3, 196)], fill=(150, 154, 164))
+    d.ellipse([tx - 15, 182, tx + 15, 204], fill=(190, 60, 50)); d.line([(tx, 182), (tx, 160)], fill=(150, 154, 164), width=2)
+    for _ in range(26):                                                         # bare poplars
+        x = int(rng.integers(0, W)); h = int(rng.integers(120, 200))
+        d.line([(x, 380), (x, 380 - h)], fill=(96, 84, 72), width=4)
+        for j in range(7):
+            yy = 380 - h + j * h // 8; ln = int(rng.integers(14, 40)); sd = 1 if j % 2 else -1
+            d.line([(x, yy + 10), (x + sd * ln, yy - ln // 2)], fill=(110, 98, 84), width=2)
+    for _ in range(18):                                                         # blue spruce
+        x = int(rng.integers(-20, W + 20)); h = int(rng.integers(110, 190))
+        for j in range(5):
+            w_ = int(h * 0.32 * (j + 1) / 5)
+            d.polygon([(x, 380 - h + j * h // 6), (x - w_, 380 - h + (j + 2) * h // 6), (x + w_, 380 - h + (j + 2) * h // 6)], fill=(58 + j * 4, 84 + j * 3, 88))
+    d.rectangle([0, 372, W, 392], fill=(96, 92, 84))                            # the road beyond
+    cx0 = int(W * conf.get("car_x", 0.16))                                      # the unmarked car
+    d.rounded_rectangle([cx0, 348, cx0 + 150, 388], radius=10, fill=(28, 30, 36))
+    d.polygon([(cx0 + 32, 348), (cx0 + 50, 326), (cx0 + 108, 326), (cx0 + 128, 348)], fill=(28, 30, 36))
+    d.polygon([(cx0 + 40, 348), (cx0 + 54, 331), (cx0 + 104, 331), (cx0 + 120, 348)], fill=(70, 84, 100))
+    for hx in (cx0 + 68, cx0 + 96):
+        d.ellipse([hx - 8, 332, hx + 8, 348], fill=(20, 20, 24))
+    for wx in (cx0 + 30, cx0 + 120):
+        d.ellipse([wx - 14, 376, wx + 14, 400], fill=(14, 14, 16))
+    d.rectangle([0, 392, W, H], fill=(178, 170, 156))                           # the gravel run
+    for _ in range(4000):
+        x, y = int(rng.integers(0, W)), int(rng.integers(392, H))
+        v = int(rng.integers(120, 210)); d.point((x, y), fill=(v, v - 6, v - 16))
+    for _ in range(30):                                                         # fallen leaves, pine cones
+        x, y = int(rng.integers(0, W)), int(rng.integers(400, H))
+        d.ellipse([x - 4, y - 2, x + 4, y + 2], fill=(150, 120, 60))
+    for x in range(0, W, 120):                                                  # chain-link fence
+        d.rectangle([x, 330, x + 4, 410], fill=(120, 124, 128))
+    d.line([(0, 332), (W, 332)], fill=(130, 134, 138), width=3)
+    for x in range(-80, W + 80, 10):
+        d.line([(x, 334), (x + 40, 408)], fill=(150, 154, 158)); d.line([(x + 40, 334), (x, 408)], fill=(150, 154, 158))
+    bx = int(W * conf.get("bench_x", 0.86))                                     # the bench
+    d.rectangle([bx, 440, bx + 150, 452], fill=(70, 110, 60)); d.rectangle([bx, 410, bx + 150, 422], fill=(70, 110, 60))
+    for lx in (bx + 10, bx + 136):
+        d.rectangle([lx, 452, lx + 6, 490], fill=(40, 40, 40))
+    px = int(W * 0.05)
+    d.rectangle([px, 360, px + 6, 450], fill=(80, 80, 80))
+    d.rectangle([px - 50, 340, px + 56, 380], fill=(30, 110, 60))
+    f = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 12)
+    d.text((px - 44, 345), "OFF-LEASH", font=f, fill=(250, 250, 250)); d.text((px - 44, 361), "AREA", font=f, fill=(250, 250, 250))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def forest_backdrop(conf):
+    """Static November forest position in eastern Latvia: low grey sky, spruce and birch, wet snow, a trench line
+    with sandbags, a camouflage net over a parked armoured vehicle, a signpost pointing east."""
+    conf = conf if isinstance(conf, dict) else {}
+    rng = np.random.default_rng(31)
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    for y in range(0, 360):
+        g = int(150 - y * 0.12); d.line([(0, y), (W, y)], fill=(g, g + 4, g + 10))
+    for layer, (col, base, hmax, n) in enumerate((((70, 82, 76), 330, 200, 34), ((44, 56, 48), 380, 260, 26), ((28, 38, 32), 430, 320, 16))):
+        for _ in range(n):
+            x = int(rng.integers(-40, W + 40)); h = int(rng.integers(hmax // 2, hmax))
+            d.polygon([(x, base - h), (x - h // 5, base), (x + h // 5, base)], fill=col)
+    for _ in range(10):                                                         # birches
+        x = int(rng.integers(0, W)); h = int(rng.integers(200, 340))
+        d.rectangle([x, 430 - h, x + 10, 430], fill=(226, 226, 220))
+        for k in range(6):
+            yy = 430 - h + k * h // 6 + 10; d.rectangle([x, yy, x + 6, yy + 4], fill=(40, 40, 40))
+    d.rectangle([0, 420, W, H], fill=(200, 200, 196))
+    for _ in range(500):
+        x, y = int(rng.integers(0, W)), int(rng.integers(420, H))
+        d.point((x, y), fill=(150, 140, 120))
+    vx = int(W * 0.66)                                                          # LAV under a net
+    d.rounded_rectangle([vx, 330, vx + 260, 410], radius=14, fill=(70, 78, 60))
+    for k in range(4):
+        d.ellipse([vx + 14 + k * 62, 392, vx + 58 + k * 62, 436], fill=(30, 30, 30))
+    d.rectangle([vx + 90, 300, vx + 170, 334], fill=(64, 72, 54)); d.line([(vx + 170, 314), (vx + 260, 306)], fill=(40, 46, 34), width=6)
+    d.polygon([(vx - 30, 300), (vx + 300, 290), (vx + 320, 400), (vx - 50, 410)], fill=(78, 90, 60))
+    for _ in range(80):
+        x, y = int(rng.integers(vx - 40, vx + 310)), int(rng.integers(292, 404))
+        d.ellipse([x - 6, y - 4, x + 6, y + 4], fill=(56, 66, 44))
+    for x in range(0, W, 46):                                                   # sandbags along the trench lip
+        d.rounded_rectangle([x, 470, x + 44, 492], radius=8, fill=(150, 138, 104), outline=(110, 100, 74))
+    d.rectangle([0, 492, W, H], fill=(70, 60, 48))
+    sx = int(W * 0.08)                                                          # the signpost
+    d.rectangle([sx, 300, sx + 8, 470], fill=(90, 70, 50))
+    d.polygon([(sx - 10, 310), (sx + 120, 310), (sx + 140, 326), (sx + 120, 342), (sx - 10, 342)], fill=(230, 220, 190))
+    f = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 16)
+    d.text((sx, 317), conf.get("sign", "AUSTRUMI  →"), font=f, fill=(40, 30, 20))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def longtable_backdrop(conf):
+    """Static state hall with an absurdly long white table in one-point perspective: white walls and gold pilasters,
+    receding chandeliers, tall doors at the far end. In the foreground, the back of a head: generic, thinning, still.
+    It never moves and never speaks. The briefers stand at the far end, very small."""
+    conf = conf if isinstance(conf, dict) else {}
+    im = Image.new("RGB", (W, H), (236, 230, 216)); d = ImageDraw.Draw(im)
+    vx, vy = W // 2, int(conf.get("vy", 250))
+    for k in range(H - vy):                                                      # parquet floor
+        y = vy + k; g = 120 + int(40 * k / (H - vy))
+        d.line([(0, y), (W, y)], fill=(g, int(g * 0.72), int(g * 0.46)))
+    d.polygon([(0, 0), (vx - 170, vy - 170), (vx - 170, vy + 10), (0, H)], fill=(226, 220, 204))   # left wall
+    d.polygon([(W, 0), (vx + 170, vy - 170), (vx + 170, vy + 10), (W, H)], fill=(220, 214, 198))   # right wall
+    d.rectangle([vx - 170, vy - 170, vx + 170, vy + 10], fill=(244, 240, 228))                     # far wall
+    d.rectangle([vx - 60, vy - 140, vx + 60, vy + 10], fill=(250, 248, 240), outline=(200, 170, 80), width=4)   # doors
+    d.line([(vx, vy - 140), (vx, vy + 10)], fill=(200, 170, 80), width=3)
+    for k in range(7):                                                          # gold pilasters, receding
+        f = 0.12 + k * 0.13; f = min(f, 0.95)
+        for s in (-1, 1):
+            x = vx + s * (170 + (W / 2 - 170) * (1 - f)); w = max(3, int(30 * (1 - f)))
+            ytop = vy - 170 - (vy - 170) * (1 - f); ybot = vy + 10 + (H - vy - 10) * (1 - f)
+            d.rectangle([x - w / 2, ytop, x + w / 2, ybot], fill=(206, 172, 90))
+    for k, f in enumerate((0.85, 0.55, 0.3)):                                   # chandeliers
+        cy = vy - 150 - 60 * (1 - f); r = int(70 * (1 - f) + 14)
+        d.line([(vx, 0), (vx, cy - r)], fill=(180, 150, 70), width=2)
+        d.chord([vx - r, cy - r, vx + r, cy + r], 0, 180, fill=(250, 244, 210))
+        for j in range(9):
+            jx = vx - r + j * 2 * r / 8
+            d.line([(jx, cy), (jx, cy + r * 0.8)], fill=(255, 250, 220), width=2)
+    nl, nr = int(W * 0.1), int(W * 0.9)                                         # the table, forever
+    d.polygon([(nl, H), (vx - 34, vy + 40), (vx + 34, vy + 40), (nr, H)], fill=(248, 248, 246))
+    d.line([(nl, H), (vx - 34, vy + 40)], fill=(190, 186, 176), width=3); d.line([(nr, H), (vx + 34, vy + 40)], fill=(190, 186, 176), width=3)
+    d.polygon([(nl, H), (vx - 34, vy + 40), (vx - 34, vy + 48), (nl - 20, H)], fill=(212, 208, 198))
+    for k in range(1, 12):                                                      # chairs down both sides, receding
+        f = (k / 12) ** 0.6
+        y = H - (H - vy - 40) * f; half = (nr - vx) * (1 - f) + 34 * f
+        sz = max(4, int(46 * (1 - f)))
+        for s in (-1, 1):
+            x = vx + s * (half + sz * 0.8)
+            d.rounded_rectangle([x - sz / 2, y - sz * 2.2, x + sz / 2, y], radius=max(1, sz // 4), fill=(236, 226, 200), outline=(200, 170, 80))
+    hs = float(conf.get("head_scale", 0.7))                                     # the back of a head
+    hx, hy = vx, int(conf.get("head_y", 420))
+    def B(a, b, c, e): return [hx + a * hs, hy + b * hs, hx + c * hs, hy + e * hs]
+    d.polygon([(hx - 300 * hs, H), (hx - 200 * hs, hy + 200 * hs), (hx + 200 * hs, hy + 200 * hs), (hx + 300 * hs, H)], fill=(28, 30, 38))
+    d.rectangle(B(-60, 150, 60, 210), fill=(214, 180, 160))
+    d.polygon([(hx - 70 * hs, hy + 200 * hs), (hx, hy + 260 * hs), (hx + 70 * hs, hy + 200 * hs)], fill=(240, 240, 240))
+    for s in (-1, 1):
+        d.ellipse(B(s * 100 - 18, 60, s * 100 + 18, 120), fill=(214, 178, 158))
+    d.ellipse(B(-100, -20, 100, 190), fill=(222, 188, 168))
+    d.chord(B(-100, 40, 100, 190), 0, 180, fill=(190, 172, 150))
+    for k in range(14):
+        d.arc(B(-96 + k * 4, 30 + k * 3, 96 - k * 4, 180), 20, 160, fill=(200, 182, 160), width=1)
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def zoom_backdrop(conf):
+    """Static video-call grid: tiles side by side, each its own room. Kinds: "sigint" (a dark ops floor with green
+    waveforms), "geoint" (a grey room with a map wall), "feed" (overhead satellite imagery of a snowy hamlet: the hall
+    roof with its patch, a snowmobile wearing a rotor, two figures, a heat bloom shaped like a teapot)."""
+    conf = conf if isinstance(conf, dict) else {}
+    rng = np.random.default_rng(27)
+    im = Image.new("RGB", (W, H), (12, 12, 14)); d = ImageDraw.Draw(im)
+    f = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 15)
+    for tile in conf.get("tiles", []):
+        x0, x1 = int(tile["x0"] * W), int(tile["x1"] * W); y0, y1 = 20, 520
+        kind = tile.get("kind")
+        if kind == "sigint":
+            d.rectangle([x0, y0, x1, y1], fill=(18, 22, 26))
+            for k in range(3):
+                sx = x0 + 20 + k * (x1 - x0 - 40) // 3; sw = (x1 - x0 - 60) // 3
+                d.rectangle([sx, 50, sx + sw, 150], fill=(6, 20, 10), outline=(60, 70, 60), width=3)
+                pts = [(sx + i, 100 + 30 * np.sin(i / (5 + k)) * rng.random()) for i in range(0, sw, 3)]
+                d.line(pts, fill=(80, 230, 120), width=2)
+            d.rectangle([x0 + 20, 170, x0 + 170, 196], fill=(150, 20, 24)); d.text((x0 + 28, 175), "TS//SI//NOFORN", font=f, fill=(255, 230, 230))
+        elif kind == "geoint":
+            d.rectangle([x0, y0, x1, y1], fill=(54, 58, 64))
+            d.rectangle([x0 + 20, 46, x1 - 20, 200], fill=(20, 40, 60), outline=(90, 96, 104), width=4)
+            for _ in range(40):
+                gx, gy = int(rng.integers(x0 + 30, x1 - 30)), int(rng.integers(56, 190))
+                d.ellipse([gx - 8, gy - 4, gx + 8, gy + 4], fill=(200, 210, 220))
+            d.line([(x0 + 20, 120), (x1 - 20, 120)], fill=(60, 90, 120)); d.line([((x0 + x1) // 2, 46), ((x0 + x1) // 2, 200)], fill=(60, 90, 120))
+        elif kind == "feed":
+            d.rectangle([x0, y0, x1, y1], fill=(206, 210, 212))
+            for _ in range(900):
+                gx, gy = int(rng.integers(x0, x1)), int(rng.integers(y0, y1))
+                v = int(rng.integers(180, 230)); d.point((gx, gy), fill=(v, v, v + 4))
+            cx, cy = (x0 + x1) // 2, 250
+            d.rectangle([cx - 120, cy - 150, cx + 40, cy - 40], fill=(110, 110, 116))             # hall roof
+            d.rectangle([cx - 70, cy - 110, cx - 40, cy - 86], fill=(150, 120, 80))              # the patch
+            d.line([(cx - 160, cy + 10), (x1 - 10, cy + 10)], fill=(150, 150, 150), width=10)   # road
+            sx, sy = cx + 40, cy + 110                                                           # the snowmobile
+            d.polygon([(sx - 50, sy - 14), (sx + 40, sy - 14), (sx + 56, sy), (sx + 40, sy + 14), (sx - 50, sy + 14)], fill=(40, 40, 46))
+            d.line([(sx - 70, sy - 70), (sx + 70, sy + 70)], fill=(20, 20, 24), width=5)
+            d.line([(sx - 70, sy + 70), (sx + 70, sy - 70)], fill=(20, 20, 24), width=5)
+            for px, py, c in ((sx - 110, sy - 30, (200, 90, 30)), (sx - 100, sy + 40, (40, 40, 40))):   # two figures from above
+                d.ellipse([px - 12, py - 12, px + 12, py + 12], fill=c); d.ellipse([px - 4, py + 12, px + 30, py + 22], fill=(170, 172, 176))
+            d.ellipse([sx - 150, sy - 70, sx - 120, sy - 46], fill=(250, 150, 60)); d.ellipse([sx - 142, sy - 64, sx - 128, sy - 52], fill=(255, 230, 120))
+            d.rectangle([sx - 160, sy - 92, sx - 108, sy - 76], fill=(0, 0, 0)); d.text((sx - 156, sy - 92), "TEA?", font=f, fill=(255, 210, 90))
+            for r in (60, 90):
+                d.ellipse([sx - r, sy - r, sx + r, sy + r], outline=(220, 40, 40), width=2)
+            d.text((x0 + 10, y1 - 64), conf.get("feed_text", "69.11N 105.06W"), font=f, fill=(20, 20, 20))
+        d.rectangle([x0, y0, x1, y1], outline=(70, 70, 76), width=3)
+        lab = tile.get("label", "")
+        if lab:
+            tw = f.getlength(lab)
+            d.rectangle([x0 + 8, y1 - 34, x0 + 20 + tw, y1 - 8], fill=(0, 0, 0)); d.text((x0 + 14, y1 - 31), lab, font=f, fill=(240, 240, 240))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def cabinet_backdrop(conf):
+    """Static Cabinet Room: green silk walls over oak wainscot, two tall curtained windows on snow, an original
+    northern landscape in a gilt frame, and the big red leather chair at the middle of the table, empty."""
+    conf = conf if isinstance(conf, dict) else {}
+    rng = np.random.default_rng(26)
+    im = Image.new("RGB", (W, H)); d = ImageDraw.Draw(im)
+    wall = tuple(conf.get("wall", (46, 78, 62)))
+    for x in range(0, W, 6):
+        d.line([(x, 0), (x, 300)], fill=(wall[0] + (x // 6) % 3 * 3, wall[1], wall[2]))
+    d.rectangle([0, 300, W, 430], fill=(96, 66, 40))
+    for x in range(0, W, 120):
+        d.rectangle([x + 10, 312, x + 110, 420], outline=(70, 46, 28), width=4)
+    for wx in (60, W - 300):                                                    # windows, snow
+        d.rectangle([wx, 40, wx + 240, 290], fill=(70, 86, 120))
+        for _ in range(90):
+            x, y = int(rng.integers(wx, wx + 240)), int(rng.integers(40, 290))
+            d.ellipse([x - 1, y - 1, x + 1, y + 1], fill=(235, 235, 240))
+        d.rectangle([wx, 40, wx + 240, 290], outline=(220, 214, 196), width=8)
+        d.line([(wx + 120, 40), (wx + 120, 290)], fill=(220, 214, 196), width=5)
+        for s in (-1, 1):
+            cx = wx + 120 + s * 140
+            d.polygon([(cx - 26, 20), (cx + 26, 20), (cx + 34, 300), (cx - 34, 300)], fill=(120, 30, 36))
+    px0, px1 = int(W * 0.36), int(W * 0.64)                                    # an original landscape
+    d.rectangle([px0, 46, px1, 196], fill=(190, 150, 70))
+    d.rectangle([px0 + 10, 56, px1 - 10, 186], fill=(230, 160, 90))
+    d.polygon([(px0 + 10, 186), (px0 + 90, 100), (px0 + 170, 150), (px0 + 260, 80), (px1 - 10, 140), (px1 - 10, 186)], fill=(40, 60, 90))
+    d.rectangle([px0 + 10, 160, px1 - 10, 186], fill=(70, 110, 140))
+    tx = int(W * 0.5) + 40                                                      # one wind-bent pine
+    d.line([(tx, 186), (tx + 6, 80)], fill=(30, 30, 30), width=5)
+    for k in range(5):
+        d.line([(tx + 3, 100 + k * 16), (tx + 40 - k * 4, 94 + k * 16)], fill=(30, 50, 34), width=6)
+    if conf.get("flag") == "quebec":                                            # the fleurdelisé on a pole
+        fx = int(W * 0.31)
+        d.line([(fx, 60), (fx, 300)], fill=(200, 180, 120), width=6)
+        d.rectangle([fx + 3, 70, fx + 123, 150], fill=(0, 62, 165))
+        d.rectangle([fx + 57, 70, fx + 69, 150], fill=(255, 255, 255)); d.rectangle([fx + 3, 104, fx + 123, 116], fill=(255, 255, 255))
+        for qx, qy in ((fx + 30, 87), (fx + 96, 87), (fx + 30, 133), (fx + 96, 133)):
+            d.polygon([(qx, qy - 11), (qx + 4, qy), (qx, qy + 9), (qx - 4, qy)], fill=(255, 255, 255))
+            d.ellipse([qx - 11, qy - 5, qx - 3, qy + 3], fill=(255, 255, 255)); d.ellipse([qx + 3, qy - 5, qx + 11, qy + 3], fill=(255, 255, 255))
+            d.rectangle([qx - 9, qy + 3, qx + 9, qy + 5], fill=(255, 255, 255))
+    cx = W // 2                                                                 # the chair, empty
+    if conf.get("chair", True):
+      d.rounded_rectangle([cx - 70, 200, cx + 70, 440], radius=30, fill=(130, 24, 30), outline=(80, 14, 18), width=6)
+    for k in (range(4) if conf.get("chair", True) else ()):
+        for j in range(3):
+            d.ellipse([cx - 48 + j * 48 - 4, 236 + k * 44 - 4, cx - 48 + j * 48 + 4, 236 + k * 44 + 4], fill=(90, 14, 20))
+    d.rectangle([0, 430, W, H], fill=(40, 30, 26))
     return np.asarray(im).astype(np.float32) / 255
 
 

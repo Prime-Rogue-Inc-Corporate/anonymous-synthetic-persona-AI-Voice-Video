@@ -1,0 +1,162 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "pendant ce temps",
+  "cast": {
+    "ANNIE": {
+      "mask": "annie",
+      "name": "Annie Côté, efficacité gouvernementale (fictive)",
+      "voice": {
+        "voice": "fr-ch+f3",
+        "speed": 172,
+        "pitch": 54,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.5:40:0.2,highpass=f=130,lowpass=f=6000,volume=1.6"
+      },
+      "color": [
+        200,
+        230,
+        190
+      ],
+      "x": 0.12,
+      "scale": 0.5,
+      "top": 200
+    },
+    "NORMAND": {
+      "mask": "normand",
+      "name": "Normand Thibodeau, fonctionnaire depuis 1994 (fictif)",
+      "voice": {
+        "voice": "fr-be+m7",
+        "speed": 132,
+        "pitch": 20,
+        "filter": "asetrate=22050*0.88,aresample=44100,atempo=1.07,aecho=0.8:0.5:40:0.2,highpass=f=80,lowpass=f=6000,volume=1.6"
+      },
+      "color": [
+        230,
+        200,
+        160
+      ],
+      "x": 0.33,
+      "scale": 0.5,
+      "top": 200
+    },
+    "SM": {
+      "mask": "sousministre",
+      "name": "Hélène Brassard, sous-ministre, Conseil exécutif (fictive)",
+      "voice": {
+        "voice": "fr-fr+f2",
+        "speed": 140,
+        "pitch": 42,
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.04,aecho=0.8:0.5:40:0.2,highpass=f=120,lowpass=f=6000,volume=1.6"
+      },
+      "color": [
+        180,
+        200,
+        250
+      ],
+      "x": 0.62,
+      "scale": 0.5,
+      "top": 200
+    },
+    "FELIX": {
+      "mask": "felix",
+      "name": "Félix Beaulieu-Nguyen, attaché politique (fictif)",
+      "voice": {
+        "voice": "fr-fr+m4",
+        "speed": 176,
+        "pitch": 60,
+        "filter": "asetrate=22050*0.98,aresample=44100,atempo=1.03,aecho=0.8:0.5:40:0.2,highpass=f=110,lowpass=f=6000,volume=1.6"
+      },
+      "color": [
+        170,
+        220,
+        250
+      ],
+      "x": 0.86,
+      "scale": 0.5,
+      "top": 200
+    },
+    "TRIPP": {
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 166,
+        "pitch": 64,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.35:20:0.12,highpass=f=110,lowpass=f=6500,volume=1.6"
+      },
+      "color": [
+        150,
+        200,
+        130
+      ],
+      "mask": null,
+      "name": "Tripp Halloran, on the speakerphone from Maine (fictional)"
+    }
+  },
+  "set": {
+    "cabinet": {
+      "wall": [
+        34,
+        56,
+        104
+      ],
+      "chair": false,
+      "flag": "quebec"
+    },
+    "table": true,
+    "chyron": {
+      "title": "PENDANT CE TEMPS, À QUÉBEC  ·  MEANWHILE, IN QUEBEC CITY",
+      "sub": "MINISTÈRE DU CONSEIL EXÉCUTIF  ·  RÉUNION DE TRANSITION  ·  JOUR 20"
+    }
+  },
+  "layout": {
+    "top": 200,
+    "scale": 0.5
+  },
+  "pronounce": {
+    "Kahnawà:ke": "Ganawagué",
+    "inuinnaqtun": "inou-inaktoun",
+    "Nunavik": "Nounavik",
+    "Newhook": "Niouhouk",
+    "Fowler": "Faoleur",
+    "Minnesota": "Minnésota",
+    "Tripp Halloran": "Tripp Halloran",
+    "Thibodeau": "Tibodo",
+    "Cambridge Bay": "Kêmbridje Bé",
+    "Fréchette": "Fréchette",
+    "Anonymous": "Anonymousse",
+    "Côté": "Côté"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.38,
+    "after_greeting": 0.4,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "Plus un.": 0.7,
+      "Ça, je l'ai entendu aussi.": 1.0,
+      "Elle aussi, elle attend.": 1.2,
+      "Zéro.": 0.9,
+      "Zéro?": 0.6,
+      "Efficacité.": 0.9,
+      "Un dans chaque langue officielle.": 1.0,
+      "C'est stratégique.": 0.6,
+      "Depuis quatre-vingt.": 1.0,
+      "\"Pas tout de suite.\"": 1.2,
+      "Il y avait de l'inuinnaqtun.": 1.0,
+      "Ça aussi, c'était à la radio.": 1.0,
+      "Le nôtre.": 0.9,
+      "Bonne soirée.": 1.2,
+      "On n'est pas Ottawa.": 0.9,
+      "C'est ça qui est beau avec le hockey.": 1.0,
+      "Tout le monde a un jeudi, maintenant.": 1.0
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "credits": [
+    "An original sketch. Every public servant here is fictional. The premier and his ministers are not portrayed and say nothing.",
+    "Facts as reported: PQ minority elected Oct 5, 2026; premier sworn in Oct 21 with a 23-member cabinet; CAQ shut out; Conservatives 19 seats; Liberals official opposition; referendum promised for a first mandate, not before Jan 20, 2029.",
+    "Previously: 022 En français, 024 Two Oh Seven, 026 Cabinet"
+  ],
+  "output": "pendant_ce_temps.mp4"
+}

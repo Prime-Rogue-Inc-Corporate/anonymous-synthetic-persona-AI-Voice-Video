@@ -1,0 +1,386 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "the corridor",
+  "cast": {
+    "CLERK": {
+      "name": "The Clerk of the Privy Council (fictional; followed from behind)",
+      "mask": "mandarin_back",
+      "x": 0.42,
+      "scale": 0.95,
+      "top": 140,
+      "color": [
+        230,
+        210,
+        160
+      ],
+      "voice": {
+        "voice": "en-gb+m3",
+        "speed": 140,
+        "pitch": 24,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.5:40:0.2,highpass=f=80,lowpass=f=6000,volume=1.6"
+      },
+      "walk": true,
+      "cadence": 1.9
+    },
+    "OFFICIAL": {
+      "name": "A senior official (name withheld; fictional)",
+      "mask": "official_back",
+      "x": 0.6,
+      "walk": true,
+      "cadence": 2.0,
+      "color": [
+        190,
+        190,
+        190
+      ],
+      "voice": {
+        "voice": "en-us+m6",
+        "speed": 146,
+        "pitch": 14,
+        "filter": "asetrate=22050*0.82,aresample=44100,atempo=1.12,aecho=0.8:0.4:25:0.15,highpass=f=70,lowpass=f=6000,volume=1.6"
+      },
+      "scale": 1.0,
+      "top": 128
+    },
+    "MARGARET": {
+      "name": "Margaret, Deputy Secretary to the Cabinet (fictional)",
+      "mask": "deputyclerk",
+      "x": 0.88,
+      "scale": 0.82,
+      "top": 180,
+      "color": [
+        200,
+        190,
+        240
+      ],
+      "voice": {
+        "voice": "en-gb+f2",
+        "speed": 150,
+        "pitch": 40,
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.04,aecho=0.8:0.5:40:0.2,highpass=f=120,lowpass=f=6000,volume=1.6"
+      },
+      "walk": true,
+      "cadence": 2.3,
+      "enter": "right",
+      "linger": 1.5
+    },
+    "DESMOND": {
+      "name": "Desmond, communications (fictional)",
+      "mask": "comms",
+      "x": 0.12,
+      "scale": 0.82,
+      "top": 180,
+      "color": [
+        150,
+        220,
+        240
+      ],
+      "voice": {
+        "voice": "en-us+m5",
+        "speed": 176,
+        "pitch": 40,
+        "filter": "asetrate=22050*0.94,aresample=44100,atempo=1.05,aecho=0.8:0.5:40:0.2,highpass=f=100,lowpass=f=6000,volume=1.6"
+      },
+      "walk": true,
+      "cadence": 2.3,
+      "enter": "left",
+      "linger": 1.5
+    },
+    "NATHAN": {
+      "name": "Nathan, analyst (fictional)",
+      "mask": "pcoanalyst",
+      "x": 0.88,
+      "scale": 0.82,
+      "top": 180,
+      "color": [
+        180,
+        230,
+        170
+      ],
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 176,
+        "pitch": 62,
+        "filter": "asetrate=22050*0.98,aresample=44100,atempo=1.03,aecho=0.8:0.5:40:0.2,highpass=f=110,lowpass=f=6000,volume=1.6"
+      },
+      "walk": true,
+      "cadence": 2.3,
+      "enter": "right",
+      "linger": 1.5
+    },
+    "TREVOR": {
+      "name": "Trevor, signals liaison (fictional)",
+      "mask": "cseliaison",
+      "color": [
+        170,
+        200,
+        230
+      ],
+      "voice": {
+        "voice": "en-us+m3",
+        "speed": 170,
+        "pitch": 36,
+        "filter": "asetrate=22050*0.93,aresample=44100,atempo=1.05,aecho=0.8:0.4:25:0.15,highpass=f=90,lowpass=f=6000,volume=1.6"
+      },
+      "x": 0.12,
+      "walk": true,
+      "cadence": 2.3,
+      "enter": "left",
+      "scale": 0.82,
+      "top": 180,
+      "linger": 4
+    },
+    "BOTH": {
+      "name": "The Clerk and the official, at the same time",
+      "mask": null,
+      "duet": [
+        "CLERK",
+        "OFFICIAL"
+      ],
+      "color": [
+        230,
+        230,
+        230
+      ]
+    },
+    "LOUISE": {
+      "walk": true,
+      "cadence": 2.3,
+      "scale": 0.82,
+      "top": 180,
+      "linger": 1.5,
+      "name": "Louise, Treasury Board (fictional)",
+      "mask": "tbsanalyst",
+      "x": 0.88,
+      "enter": "right",
+      "color": [
+        200,
+        230,
+        200
+      ],
+      "voice": {
+        "voice": "en-us+f5",
+        "speed": 176,
+        "pitch": 58,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.4:25:0.15,highpass=f=130,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "PAULINE": {
+      "walk": true,
+      "cadence": 2.3,
+      "scale": 0.82,
+      "top": 180,
+      "linger": 1.5,
+      "name": "Pauline, Crown-Indigenous Relations (fictional)",
+      "mask": "cirnac",
+      "x": 0.12,
+      "enter": "left",
+      "color": [
+        230,
+        170,
+        180
+      ],
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 168,
+        "pitch": 46,
+        "filter": "asetrate=22050*0.96,aresample=44100,atempo=1.03,aecho=0.8:0.4:25:0.15,highpass=f=120,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "MARCANDRE": {
+      "walk": true,
+      "cadence": 2.3,
+      "scale": 0.82,
+      "top": 180,
+      "linger": 1.5,
+      "name": "Marc-André, Canadian Heritage (fictional)",
+      "mask": "heritage",
+      "x": 0.12,
+      "enter": "left",
+      "color": [
+        240,
+        200,
+        170
+      ],
+      "voice": {
+        "voice": "fr-fr+m3",
+        "speed": 160,
+        "pitch": 40,
+        "filter": "asetrate=22050*0.93,aresample=44100,atempo=1.05,aecho=0.8:0.4:25:0.15,highpass=f=90,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "KWAME": {
+      "walk": true,
+      "cadence": 2.3,
+      "scale": 0.82,
+      "top": 180,
+      "linger": 1.5,
+      "name": "Kwame, Global Affairs (fictional)",
+      "mask": "diplomat",
+      "x": 0.88,
+      "enter": "right",
+      "color": [
+        230,
+        210,
+        140
+      ],
+      "voice": {
+        "voice": "en-gb+m7",
+        "speed": 162,
+        "pitch": 30,
+        "filter": "asetrate=22050*0.9,aresample=44100,atempo=1.05,aecho=0.8:0.4:25:0.15,highpass=f=80,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "GERRY": {
+      "walk": true,
+      "cadence": 2.3,
+      "scale": 0.82,
+      "top": 180,
+      "linger": 1.5,
+      "name": "Gerry, Finance (fictional)",
+      "mask": "finance",
+      "x": 0.12,
+      "enter": "left",
+      "color": [
+        220,
+        200,
+        180
+      ],
+      "voice": {
+        "voice": "en-us+m4",
+        "speed": 176,
+        "pitch": 42,
+        "filter": "asetrate=22050*0.93,aresample=44100,atempo=1.05,aecho=0.8:0.4:25:0.15,highpass=f=90,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "TANYA": {
+      "walk": true,
+      "cadence": 2.3,
+      "scale": 0.82,
+      "top": 180,
+      "linger": 1.5,
+      "name": "Tanya, Natural Resources (fictional)",
+      "mask": "nrcan",
+      "x": 0.88,
+      "enter": "right",
+      "color": [
+        240,
+        230,
+        120
+      ],
+      "voice": {
+        "voice": "en-us+f2",
+        "speed": 170,
+        "pitch": 50,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.4:25:0.15,highpass=f=130,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "DALTON": {
+      "walk": true,
+      "cadence": 2.3,
+      "scale": 0.82,
+      "top": 180,
+      "linger": 1.5,
+      "name": "Dalton, Public Safety (fictional)",
+      "mask": "pubsafety",
+      "x": 0.12,
+      "enter": "left",
+      "color": [
+        180,
+        200,
+        230
+      ],
+      "voice": {
+        "voice": "en-us+m7",
+        "speed": 164,
+        "pitch": 28,
+        "filter": "asetrate=22050*0.9,aresample=44100,atempo=1.05,aecho=0.8:0.4:25:0.15,highpass=f=80,lowpass=f=6000,volume=1.6"
+      }
+    }
+  },
+  "layout": {
+    "scale": 1.0,
+    "top": 128
+  },
+  "set": {
+    "corridor": {
+      "speed": -1.4,
+      "plaques": [
+        "80 WELLINGTON",
+        "CABINET OPERATIONS",
+        "ROOM 340-S",
+        "SECURITY & INTELLIGENCE",
+        "STAIRS B",
+        "PRESS (DO NOT)",
+        "ROOM 344",
+        "EXIT →"
+      ]
+    },
+    "chyron": {
+      "title": "PRIVY COUNCIL OFFICE  ·  OTTAWA",
+      "sub": "A CORRIDOR  ·  FOLLOWED FROM BEHIND  ·  ORAL ONLY"
+    }
+  },
+  "pronounce": {
+    "Inuinnaqtun": "In-oo-in-nak-tun",
+    "Slafkovský": "Slaf-kov-ski",
+    "Rusyn": "Roo-sin",
+    "Carpatho-Rusyn": "Car-pa-tho Roo-sin",
+    "Gatineau": "Gat-in-oh",
+    "Wilco": "Wil-co",
+    "Coutts": "Coots",
+    "Kwame": "Kwah-mee"
+  },
+  "signoff_lines": 0,
+  "gaps": {
+    "default": 0.25,
+    "after_greeting": 0.4,
+    "after_intro": 0.5,
+    "after": {
+      "That's the format.": 0.6,
+      "Everybody hates the smoke detector.": 0.8,
+      "The long one.": 0.7,
+      "They didn't believe me.": 0.7,
+      "Of course.": 0.6,
+      "It's a whole culture.": 0.6,
+      "it still sounded wrong.": 0.6,
+      "Don't ask how they know.": 0.6,
+      "Only on the Slovak side.": 0.8,
+      "That's not nothing.": 1.0,
+      "Expect us.": 0.8,
+      "Hello?": 1.5,
+      "He has a dog.": 0.8,
+      "There is a template for requesting a template.": 0.8,
+      "We'll need the napkin in both official languages.": 1.0,
+      "We don't have any helicopters either.": 1.0,
+      "Everything is on the radio.": 0.8,
+      "And Wilco.": 1.0,
+      "We have no fucking clue, sir.": 1.1,
+      "Don't tell Official Languages.": 0.6,
+      "We'll come around to it. Everyone does.": 0.8,
+      "They're reorganizing the trays.": 0.8,
+      "Then they'll be very happy here.": 0.8,
+      "We're walking slowly.": 1.0,
+      "They have a very large couch.": 0.8,
+      "That's the new standard.": 1.0,
+      "That's the point.": 0.6,
+      "you've passed this water fountain three times.": 1.0,
+      "Biscuit has a podcast.": 0.8,
+      "Toronto won't notice.": 1.0,
+      "She has a bot, sir.": 1.0,
+      "In both official languages.": 0.8,
+      "Who the fuck knows where Canada is going, Margaret.": 1.2,
+      "It's the format.": 1.2
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "end_title": "EXPECT US.",
+  "credits": [
+    "An original sketch. Everyone in this corridor is fictional.",
+    "Area codes: 207 is Maine; 867 is Yukon, the Northwest Territories and Nunavut.",
+    "To be continued. Previously: 018 The Call, 021 The Addresses, 022 En français"
+  ],
+  "output": "the_corridor.mp4"
+}

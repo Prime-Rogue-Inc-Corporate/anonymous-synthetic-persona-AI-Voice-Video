@@ -1,0 +1,182 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "en français",
+  "cast": {
+    "MARGARET": {
+      "name": "Margaret, Deputy Secretary to the Cabinet (fictional)",
+      "mask": "deputyclerk",
+      "x": 0.1,
+      "scale": 0.48,
+      "top": 236,
+      "color": [
+        200,
+        190,
+        240
+      ],
+      "voice": {
+        "voice": "fr-fr+f2",
+        "speed": 140,
+        "pitch": 42,
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.04,aecho=0.8:0.5:40:0.2,highpass=f=120,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "CLERK": {
+      "name": "The Clerk of the Privy Council (fictional)",
+      "mask": "mandarin",
+      "x": 0.27,
+      "scale": 0.48,
+      "top": 236,
+      "color": [
+        230,
+        210,
+        160
+      ],
+      "voice": {
+        "voice": "fr-fr+m3",
+        "speed": 136,
+        "pitch": 26,
+        "filter": "asetrate=22050*0.88,aresample=44100,atempo=1.07,aecho=0.8:0.5:40:0.2,highpass=f=80,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "DESMOND": {
+      "name": "Desmond, communications (fictional)",
+      "mask": "comms",
+      "x": 0.44,
+      "scale": 0.48,
+      "top": 236,
+      "color": [
+        150,
+        220,
+        240
+      ],
+      "voice": {
+        "voice": "fr-fr+m5",
+        "speed": 178,
+        "pitch": 44,
+        "filter": "asetrate=22050*0.94,aresample=44100,atempo=1.05,aecho=0.8:0.5:40:0.2,highpass=f=100,lowpass=f=6000,volume=1.6"
+      },
+      "enter": "right",
+      "linger": 60
+    },
+    "OCOL": {
+      "name": "Sophie Lacasse, Official Languages compliance (fictional)",
+      "mask": "deputy",
+      "x": 0.56,
+      "enter": "right",
+      "linger": 120,
+      "color": [
+        170,
+        220,
+        250
+      ],
+      "voice": {
+        "voice": "fr-fr+f4",
+        "speed": 150,
+        "pitch": 50,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.5:40:0.2,highpass=f=130,lowpass=f=6000,volume=1.6"
+      },
+      "scale": 0.48,
+      "top": 236
+    },
+    "DOREEN": {
+      "name": "Doreen, access to information (fictional)",
+      "mask": "atipcoord",
+      "x": 0.73,
+      "scale": 0.48,
+      "top": 236,
+      "color": [
+        240,
+        180,
+        200
+      ],
+      "voice": {
+        "voice": "fr-fr+f3",
+        "speed": 156,
+        "pitch": 54,
+        "filter": "asetrate=22050*0.97,aresample=44100,atempo=1.03,aecho=0.8:0.5:40:0.2,highpass=f=130,lowpass=f=6000,volume=1.6"
+      }
+    },
+    "NATHAN": {
+      "name": "Nathan, analyst (fictional)",
+      "mask": "pcoanalyst",
+      "x": 0.9,
+      "scale": 0.48,
+      "top": 236,
+      "color": [
+        180,
+        230,
+        170
+      ],
+      "voice": {
+        "voice": "fr-fr+m2",
+        "speed": 182,
+        "pitch": 60,
+        "filter": "asetrate=22050*0.98,aresample=44100,atempo=1.03,aecho=0.8:0.5:40:0.2,highpass=f=110,lowpass=f=6000,volume=1.6"
+      }
+    }
+  },
+  "set": {
+    "boardroom": {
+      "on": true
+    },
+    "table": true,
+    "chyron": {
+      "title": "BUREAU DU CONSEIL PRIVÉ  ·  OTTAWA",
+      "sub": "LA MÊME RÉUNION  ·  DEUXIÈME PRISE  ·  EN FRANÇAIS"
+    }
+  },
+  "layout": {
+    "top": 236
+  },
+  "pronounce": {
+    "LinkedIn": "Linkt-inn",
+    "Python": "Paï-tonne",
+    "Anonymous": "Anonimous",
+    "bot": "botte",
+    "Calgary": "Calgary",
+    "gccaedits": "G C C A edits",
+    "Slafkovský": "Slaf-kov-ski",
+    "Newhook": "Niou-houk",
+    "Kreider": "Kraï-deur",
+    "Danault": "Danault",
+    "Fowler": "Faou-leur"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.42,
+    "after_greeting": 0.4,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "Ah. Lui.": 1.0,
+      "Parfois dans la même phrase.": 1.0,
+      "J'parle pas le français de France, tsé.": 0.9,
+      "Ça cache juste.": 1.0,
+      "Chu là.": 0.9,
+      "Vous me niaisez.": 0.6,
+      "On ne vous niaise pas.": 0.8,
+      "C'est ben trop canadien, ça.": 1.0,
+      "Le bot, y'est en Python, madame.": 0.8,
+      "Je prends note.": 1.0,
+      "Tabarnouche.": 1.1,
+      "ce n'est pas un compliment.": 0.9,
+      "Ou elle innocente quelqu'un.": 1.0,
+      "Il la cache.": 1.2,
+      "la commissaire peut ordonner la communication.": 1.0,
+      "J'pensais jamais dire ça de ma vie.": 0.8,
+      "Je ne suis pas une amatrice.": 1.0,
+      "Moi, je suis une fan des Sénateurs.": 1.0,
+      "On se reparle le six décembre, madame.": 1.1
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "end_title": "ATTENDEZ-VOUS À NOUS.",
+  "credits": [
+    "Un sketch original. Tous les personnages sont fictifs. / An original sketch. All characters are fictional.",
+    "Loi sur les langues officielles, partie V : langue de travail dans les régions bilingues. / OLA Part V: language of work.",
+    "Hockey: MTL 4, TOR 2, Nov. 7, 2026. Précédemment / Previously: 021 The Addresses"
+  ],
+  "output": "en_francais.mp4"
+}

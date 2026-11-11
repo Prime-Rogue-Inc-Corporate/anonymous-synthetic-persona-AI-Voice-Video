@@ -1,0 +1,158 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "thursday south",
+  "cast": {
+    "EARL": {
+      "mask": "farmerearl",
+      "name": "Earl, corn and beans, McLean County, Illinois (fictional)",
+      "x": 0.28,
+      "scale": 0.62,
+      "top": 176,
+      "color": [
+        230,
+        200,
+        150
+      ],
+      "voice": {
+        "voice": "en-us+m7",
+        "speed": 132,
+        "pitch": 24,
+        "filter": "asetrate=22050*0.88,aresample=44100,atempo=1.136,highpass=f=90,lowpass=f=6500,volume=0.7"
+      }
+    },
+    "GARY": {
+      "mask": "farmergary",
+      "name": "Gary, his neighbour, also corn and beans (fictional)",
+      "x": 0.6,
+      "scale": 0.62,
+      "top": 176,
+      "color": [
+        200,
+        220,
+        250
+      ],
+      "voice": {
+        "voice": "en-us+m3",
+        "speed": 150,
+        "pitch": 36,
+        "filter": "asetrate=22050*0.95,aresample=44100,atempo=1.053,highpass=f=90,lowpass=f=6500,volume=0.7"
+      },
+      "enter": "right",
+      "linger": 120
+    },
+    "VIC": {
+      "mask": "vicparka",
+      "color": [
+        240,
+        200,
+        120
+      ],
+      "voice": {
+        "voice": "en-us+m1",
+        "speed": 172,
+        "pitch": 24,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.1,aecho=0.6:0.3:20:0.1,highpass=f=80,lowpass=f=6500,volume=1.6"
+      },
+      "name": "Vic, retired, on the phone from Cambridge Bay (fictional)",
+      "x": 0.84,
+      "scale": 0.3,
+      "top": 60,
+      "screen": true,
+      "screen_label": "867 · CAMBRIDGE BAY"
+    },
+    "LINCOLN": {
+      "mask": "lincoln",
+      "name": "Abraham Lincoln, Lyceum Address, Springfield, Illinois, January 27, 1838 (on Vic's tape)",
+      "voice": {
+        "voice": "en-us+m3",
+        "speed": 136,
+        "pitch": 22,
+        "filter": "asetrate=22050*0.86,aresample=44100,atempo=1.08,aecho=0.8:0.6:40:0.25,highpass=f=300,lowpass=f=3200,volume=1.3"
+      },
+      "color": [
+        200,
+        220,
+        255
+      ],
+      "x": 0.84,
+      "scale": 0.3,
+      "top": 60,
+      "screen": true,
+      "screen_label": "TAPE · SPRINGFIELD, 1838",
+      "enter": "right",
+      "linger": 20
+    }
+  },
+  "set": {
+    "stubble": {
+      "bins_x": 0.66,
+      "tender_x": 0.42,
+      "truck_x": 0.02
+    },
+    "chyron": {
+      "title": "ONE WEEK LATER  ·  McLEAN COUNTY, ILLINOIS",
+      "sub": "INCOMING  ·  867 → 309  ·  TUESDAY, NOVEMBER 17"
+    }
+  },
+  "layout": {
+    "top": 176,
+    "scale": 0.62
+  },
+  "pronounce": {
+    "Nunavut": "Noona-voot",
+    "Darlene": "Darleen",
+    "Moose Jaw": "Moose Jaw",
+    "Langley": "Langley",
+    "Buonaparte": "Bonaparte"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.42,
+    "after_greeting": 0.4,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "I don't know a Vic.": 0.8,
+      "Darlene.": 0.8,
+      "Of course.": 1.0,
+      "She told Canada about my colonoscopy.": 1.0,
+      "Congratulations.": 1.0,
+      "It's Tuesday.": 0.8,
+      "That's why it works.": 1.0,
+      "Thursday South.": 0.9,
+      "Vic. Is this a cult?": 0.8,
+      "It's a casserole.": 1.0,
+      "It's called church.": 0.9,
+      "I'm only asking you to do it on purpose.": 1.0,
+      "It went stupid.": 0.9,
+      "She was right.": 1.2,
+      "Oh. We have that.": 1.0,
+      "I know some people.": 1.0,
+      "Latvia.": 0.9,
+      "Those are different things.": 1.2,
+      "Till she was ninety-one.": 1.1,
+      "Everything else always comes north.": 1.2,
+      "Potash knows where it's going.": 1.2,
+      "They're going to need a bigger satellite.": 1.2,
+      "That's the point.": 1.2,
+      "Shoot at who?": 0.8,
+      "Not the scared one with the loud one.": 1.0,
+      "Everybody had him. Here. Listen.": 1.0,
+      "As a nation of freemen, we must live through all time, or die by suicide.": 1.6,
+      "That's the tape.": 1.0,
+      "So the danger's us.": 0.9,
+      "The casserole is so it doesn't start inside.": 1.2,
+      "Everybody goes home.": 1.0,
+      "Now you're Thursday.": 1.2
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "credits": [
+    "An original sketch. Earl, Gary, Darlene and Vic are fictional. Lincoln's words: the Lyceum Address, Springfield, Illinois, January 27, 1838 (public domain), as in episode 002.",
+    "309 is a central Illinois area code. 867 is the territories.",
+    "Previously: 014 Thursday, 028 Mitts, 031 The Chain, 033 Potash, 034 N-P-K"
+  ],
+  "output": "thursday_south.mp4"
+}
