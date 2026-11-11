@@ -1,0 +1,19 @@
+{
+  "output": "n_p_k.mp4",
+  "renderer_version": "0.18.0",
+  "renderer_commit": "eb33477-dirty",
+  "rendered_at": "2026-11-11T03:02:41+00:00",
+  "duration_s": 336.56,
+  "lines": 83,
+  "mask": null,
+  "cast": {
+    "JAN": "leaderjan",
+    "MADDIE": "kidmaddie",
+    "TYLER": "kidtyler",
+    "JOSH": "kidjosh",
+    "JONAH": null,
+    "MARY": null,
+    "JOSIE": null
+  },
+  "resolution": "1280x720@30"
+}

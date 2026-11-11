@@ -1767,3 +1767,63 @@ def farmergary(d, amp, t):
         d.line([(cx - 60 + k * 10, 110), (cx - 66 + k * 10, 148)], fill=(120, 120, 120, 255))
     d.rectangle([cx - 66, 146, cx + 66, 152], fill=(200, 60, 40, 255))
     d.chord([cx - 70, 136, cx + 110, 176], 180, 360, fill=(200, 60, 40, 255))
+
+
+@mask("leaderjan", tie=None)
+def leaderjan(d, amp, t):
+    """Jan, a volunteer club leader for thirty years: a tight grey perm, a fleece vest over a green polo,
+    a lanyard of fair badges, reading glasses pushed up, the energy of someone who has run a lot of bake sales."""
+    cx = CX; jaw = 6 * amp
+    skin = (240, 206, 186, 255)
+    d.polygon([(cx - 200, 520), (cx - 180, 330), (cx - 90, 294), (cx + 90, 294), (cx + 180, 330), (cx + 200, 520)], fill=(60, 130, 70, 255))
+    d.polygon([(cx - 200, 520), (cx - 180, 330), (cx - 70, 300), (cx - 50, 520)], fill=(70, 74, 90, 255))
+    d.polygon([(cx + 200, 520), (cx + 180, 330), (cx + 70, 300), (cx + 50, 520)], fill=(70, 74, 90, 255))
+    d.line([(cx - 40, 300), (cx, 390)], fill=(30, 90, 160, 255), width=4); d.line([(cx + 40, 300), (cx, 390)], fill=(30, 90, 160, 255), width=4)
+    for k, c in enumerate([(240, 200, 60), (220, 60, 60), (60, 120, 200)]):
+        d.rectangle([cx - 20 + k * 6, 390 + k * 8, cx + 20 + k * 6, 414 + k * 8], fill=c + (255,), outline=(60, 60, 60, 255))
+    for k in range(16):                                                          # the perm
+        a = k / 15 * math.pi
+        x = cx - 70 * math.cos(a); y = 160 - 52 * math.sin(a)
+        d.ellipse([x - 22, y - 22, x + 22, y + 22], fill=(190, 186, 184, 255))
+    d.ellipse([cx - 58, 122, cx + 58, 292 + jaw], fill=skin)
+    for k in range(7):
+        x = cx - 48 + k * 16; d.ellipse([x - 12, 116, x + 12, 146], fill=(196, 192, 190, 255))
+    for s in (-1, 1):
+        d.ellipse([cx + s * 24 - 16, 104, cx + s * 24 + 16, 124], outline=(140, 60, 120, 255), width=3)
+    _eyes(d, cx, 196, gap=26, socket=(222, 186, 166, 255))
+    d.polygon([(cx - 5, 204), (cx + 5, 204), (cx + 9, 232), (cx - 9, 232)], fill=(222, 186, 166, 255))
+    _mouth(d, cx, 258 + jaw * 0.5, amp, w=15, lip=(180, 80, 100, 255))
+
+
+def _kid(name, skin, shirt, hair, style, doc):
+    @mask(name, tie=None)
+    def f(d, amp, t):
+        cx = CX; jaw = 5 * amp
+        d.rounded_rectangle([cx - 130, 330, cx + 130, 520], radius=40, fill=shirt)
+        if style == "braids":
+            for s in (-1, 1):
+                for k in range(5):
+                    d.ellipse([cx + s * 58 - 10, 220 + k * 22, cx + s * 58 + 10, 244 + k * 22], fill=hair)
+        d.ellipse([cx - 52, 150, cx + 52, 300 + jaw], fill=skin)
+        if style == "braids":
+            d.chord([cx - 56, 136, cx + 56, 220], 180, 360, fill=hair)
+        elif style == "cap":
+            d.chord([cx - 58, 120, cx + 58, 214], 180, 360, fill=(30, 60, 140, 255))
+            d.chord([cx - 60, 160, cx + 100, 196], 180, 360, fill=(30, 60, 140, 255))
+            for k in range(7):
+                d.ellipse([cx - 30 + k * 9, 236 + (k % 2) * 6, cx - 27 + k * 9, 239 + (k % 2) * 6], fill=(190, 110, 80, 255))
+        else:
+            d.chord([cx - 58, 132, cx + 58, 214], 180, 360, fill=hair)
+            d.rounded_rectangle([cx - 40, 190, cx - 6, 214], radius=6, outline=(30, 30, 30, 255), width=3)
+            d.rounded_rectangle([cx + 6, 190, cx + 40, 214], radius=6, outline=(30, 30, 30, 255), width=3)
+            d.line([(cx - 6, 200), (cx + 6, 200)], fill=(30, 30, 30, 255), width=3)
+        sock = tuple(max(0, v - 24) for v in skin[:3]) + (255,)
+        _eyes(d, cx, 204, gap=22, socket=sock)
+        _mouth(d, cx, 262 + jaw * 0.5, amp, w=12)
+    f.__doc__ = doc
+    return f
+
+
+_kid("kidmaddie", (244, 214, 196, 255), (60, 140, 70, 255), (200, 150, 70, 255), "braids", "Maddie, eleven: braids, a green club T-shirt, the answer to everything.")
+_kid("kidtyler", (236, 196, 170, 255), (120, 120, 126, 255), (0, 0, 0, 255), "cap", "Tyler, nine: freckles, a seed cap from his grandpa, mostly thinking about pigs.")
+_kid("kidjosh", (176, 128, 96, 255), (40, 70, 130, 255), (30, 24, 22, 255), "glasses", "Josh, twelve: glasses, a hoodie, has read the whole fertilizer bag.")

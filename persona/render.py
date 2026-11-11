@@ -34,7 +34,7 @@ DEFAULTS = {
     "cast": {},
     "set": {"table": False, "placard": None, "lockbox": False, "corridor": None,
             "chamber": None, "lectern": None, "chyron": None, "barn": None, "desk": None, "dog": None,
-            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None, "cabinet": None, "zoom": None, "longtable": None, "forest": None, "park": None, "fetch": None, "drone": None, "stubble": None},
+            "assembly": None, "commons": None, "rally": None, "arctic": None, "diner": None, "prairie": None, "hall": None, "boardroom": None, "cabinet": None, "zoom": None, "longtable": None, "forest": None, "park": None, "fetch": None, "drone": None, "stubble": None, "classroom": None},
     "layout": {},
     "credits": [],
     "end_title": "EXPECT US.",
@@ -542,6 +542,8 @@ class Renderer:
             self.chamber_bg = barn_backdrop(cfg["set"]["barn"])          # same static-backdrop path
         if cfg["set"].get("boardroom"):
             self.chamber_bg = boardroom_backdrop(cfg["set"]["boardroom"])
+        if cfg["set"].get("classroom"):
+            self.chamber_bg = classroom_backdrop(cfg["set"]["classroom"])
         if cfg["set"].get("stubble"):
             self.chamber_bg = stubble_backdrop(cfg["set"]["stubble"])
         if cfg["set"].get("park"):
@@ -1418,6 +1420,51 @@ def boardroom_backdrop(conf):
     d.rectangle([fx + 2, 90, fx + 82, 130], fill=(240, 240, 236))
     d.rectangle([fx + 2, 90, fx + 22, 130], fill=(200, 30, 40)); d.rectangle([fx + 62, 90, fx + 82, 130], fill=(200, 30, 40))
     d.rectangle([0, 420, W, H], fill=(40, 30, 26))
+    return np.asarray(im).astype(np.float32) / 255
+
+
+def classroom_backdrop(conf):
+    """Static meeting room at a county extension office: cinder-block walls painted cream, a green chalkboard with
+    N-P-K and a big K on it, a window onto flat black fields and a water tower, a county fair ribbon board, a wall
+    phone with a long cord, and a stack of fertilizer bags in the corner for show-and-tell."""
+    conf = conf if isinstance(conf, dict) else {}
+    im = Image.new("RGB", (W, H), (226, 218, 196)); d = ImageDraw.Draw(im)
+    for y in range(0, 470, 26):                                                 # cinder block
+        off = 0 if (y // 26) % 2 == 0 else 40
+        for x in range(-40 + off, W, 80):
+            d.rectangle([x, y, x + 78, y + 24], outline=(206, 198, 176))
+    f = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 34)
+    fs = ImageFont.truetype(f"{FONT_DIR}/DejaVuSansMono-Bold.ttf", 18)
+    bx0, bx1 = int(W * 0.3), int(W * 0.7)                                       # the chalkboard
+    d.rectangle([bx0 - 10, 60, bx1 + 10, 330], fill=(120, 84, 50))
+    d.rectangle([bx0, 70, bx1, 320], fill=(40, 74, 56))
+    for txt, y in conf.get("board", [("N  -  P  -  K", 90), ("NITROGEN  PHOSPHORUS  POTASSIUM", 150), ("K = POTASH", 200), ("WHERE DOES IT COME FROM?", 262)]):
+        fnt = f if txt.startswith("N  -") or txt.startswith("K =") else fs
+        d.text(((bx0 + bx1) // 2, y), txt, font=fnt, fill=(236, 236, 228), anchor="mt")
+    d.rectangle([bx0, 320, bx1, 330], fill=(150, 120, 80))
+    wx = int(W * 0.04)                                                          # window on the fields
+    d.rectangle([wx, 70, wx + 260, 300], fill=(170, 196, 220))
+    d.rectangle([wx, 210, wx + 260, 300], fill=(40, 30, 24))
+    for k in range(9):
+        d.line([(wx + 130, 210), (wx + k * 32, 300)], fill=(70, 56, 40), width=2)
+    d.line([(wx + 200, 210), (wx + 200, 140)], fill=(150, 150, 156), width=4); d.ellipse([wx + 180, 120, wx + 220, 150], fill=(200, 200, 206))
+    d.rectangle([wx, 70, wx + 260, 300], outline=(240, 240, 236), width=8); d.line([(wx + 130, 70), (wx + 130, 300)], fill=(240, 240, 236), width=6)
+    rx = int(W * 0.76)                                                          # ribbon board
+    d.rectangle([rx, 80, rx + 200, 260], fill=(200, 160, 100), outline=(140, 100, 60), width=4)
+    for k, c in enumerate([(30, 70, 180), (200, 30, 40), (240, 240, 240), (30, 70, 180), (220, 180, 40), (120, 40, 160)]):
+        x = rx + 30 + (k % 3) * 60; y = 110 + (k // 3) * 80
+        d.ellipse([x - 18, y - 18, x + 18, y + 18], fill=c); d.polygon([(x - 10, y + 14), (x - 18, y + 50), (x - 2, y + 40)], fill=c); d.polygon([(x + 10, y + 14), (x + 18, y + 50), (x + 2, y + 40)], fill=c)
+    px = int(W * 0.95)                                                          # wall phone, long cord
+    d.rounded_rectangle([px - 24, 170, px + 24, 260], radius=6, fill=(236, 230, 210), outline=(170, 160, 140), width=2)
+    d.rounded_rectangle([px - 30, 160, px - 10, 250], radius=8, fill=(220, 214, 196), outline=(150, 140, 120), width=2)
+    for k in range(14):
+        d.arc([px - 40, 250 + k * 12, px - 20, 262 + k * 12], 0, 360, fill=(200, 194, 176), width=2)
+    for k in range(4):                                                          # fertilizer bags
+        d.rounded_rectangle([int(W * 0.88) - 10, 470 - 40 * (k + 1), int(W * 0.88) + 110, 470 - 40 * k], radius=8, fill=(236, 232, 220), outline=(170, 160, 140), width=2)
+        d.text((int(W * 0.88) + 50, 470 - 40 * k - 20), "0-0-60", font=fs, fill=(200, 60, 60), anchor="mm")
+    d.rectangle([0, 470, W, H], fill=(150, 140, 120))                           # linoleum
+    for x in range(0, W, 60):
+        d.line([(x, 470), (x - 60, H)], fill=(140, 130, 110))
     return np.asarray(im).astype(np.float32) / 255
 
 

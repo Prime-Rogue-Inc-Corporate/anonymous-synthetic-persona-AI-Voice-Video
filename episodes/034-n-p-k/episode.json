@@ -1,0 +1,178 @@
+{
+  "title": "ANONYMOUS",
+  "subtitle": "n-p-k",
+  "cast": {
+    "JAN": {
+      "mask": "leaderjan",
+      "name": "Jan Dahlquist, volunteer club leader, thirty years (fictional)",
+      "x": 0.56,
+      "scale": 0.5,
+      "top": 190,
+      "color": [
+        200,
+        240,
+        200
+      ],
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 168,
+        "pitch": 56,
+        "filter": "asetrate=22050*1.0,aresample=44100,atempo=1.0,highpass=f=100,lowpass=f=7000,volume=0.7"
+      }
+    },
+    "MADDIE": {
+      "mask": "kidmaddie",
+      "name": "Maddie, 11 (fictional)",
+      "x": 0.12,
+      "scale": 0.44,
+      "top": 290,
+      "color": [
+        250,
+        220,
+        160
+      ],
+      "voice": {
+        "voice": "en-us+f2",
+        "speed": 176,
+        "pitch": 92,
+        "filter": "asetrate=22050*1.06,aresample=44100,atempo=0.943,highpass=f=100,lowpass=f=7000,volume=0.7"
+      }
+    },
+    "TYLER": {
+      "mask": "kidtyler",
+      "name": "Tyler, 9 (fictional)",
+      "x": 0.28,
+      "scale": 0.44,
+      "top": 290,
+      "color": [
+        200,
+        220,
+        250
+      ],
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 168,
+        "pitch": 94,
+        "filter": "asetrate=22050*1.1,aresample=44100,atempo=0.909,highpass=f=100,lowpass=f=7000,volume=0.7"
+      }
+    },
+    "JOSH": {
+      "mask": "kidjosh",
+      "name": "Josh, 12 (fictional)",
+      "x": 0.8,
+      "scale": 0.44,
+      "top": 290,
+      "color": [
+        220,
+        200,
+        250
+      ],
+      "voice": {
+        "voice": "en-us+m4",
+        "speed": 170,
+        "pitch": 80,
+        "filter": "asetrate=22050*1.04,aresample=44100,atempo=0.962,highpass=f=100,lowpass=f=7000,volume=0.7"
+      }
+    },
+    "JONAH": {
+      "mask": null,
+      "name": "Jonah, on the Cambridge Bay community radio (fictional)",
+      "voice": {
+        "voice": "en-us+m2",
+        "speed": 150,
+        "pitch": 48,
+        "filter": "asetrate=22050*0.96,aresample=44100,atempo=1.03,aecho=0.6:0.3:20:0.1,highpass=f=100,lowpass=f=6500,volume=1.6,highpass=f=300,lowpass=f=3400"
+      },
+      "color": [
+        200,
+        170,
+        240
+      ]
+    },
+    "MARY": {
+      "mask": null,
+      "name": "Mary, Ranger sergeant, on the radio (fictional)",
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 150,
+        "pitch": 44,
+        "filter": "asetrate=22050*0.96,aresample=44100,atempo=1.03,aecho=0.6:0.3:20:0.1,highpass=f=120,lowpass=f=6500,volume=1.6,highpass=f=300,lowpass=f=3400"
+      },
+      "color": [
+        240,
+        140,
+        140
+      ]
+    },
+    "JOSIE": {
+      "mask": null,
+      "name": "Josie, elder, on the radio (fictional)",
+      "voice": {
+        "voice": "en-us+f4",
+        "speed": 136,
+        "pitch": 36,
+        "filter": "asetrate=22050*0.93,aresample=44100,atempo=1.02,aecho=0.8:0.5:40:0.2,highpass=f=110,lowpass=f=6000,volume=1.6,highpass=f=300,lowpass=f=3400"
+      },
+      "color": [
+        240,
+        170,
+        150
+      ]
+    }
+  },
+  "set": {
+    "classroom": {
+      "on": true
+    },
+    "chyron": {
+      "title": "MEANWHILE, A COUNTY EXTENSION OFFICE, IOWA",
+      "sub": "YOUTH AG CLUB  ·  TUESDAY NIGHT  ·  TODAY: N-P-K"
+    }
+  },
+  "layout": {
+    "top": 160
+  },
+  "pronounce": {
+    "Dahlquist": "Doll-kwist",
+    "Saskatchewan": "Saskatchewan",
+    "Iowan": "Eye-owan",
+    "muriate": "mure-ee-ate"
+  },
+  "signoff_lines": 5,
+  "gaps": {
+    "default": 0.42,
+    "after_greeting": 0.4,
+    "after_intro": 0.5,
+    "signoff": 0.55,
+    "after": {
+      "Kansas.": 1.0,
+      "With the radio on.": 0.9,
+      "Canada.": 0.9,
+      "That bag's been in the corner since the fair.": 0.8,
+      "An old ocean. In Canada.": 0.9,
+      "Everything's in Canada, Mrs. Dahlquist.": 1.0,
+      "I'm breathing.": 1.0,
+      "Like the stems.": 1.0,
+      "Everybody knows, Mrs. Dahlquist.": 1.0,
+      "Oh my gosh.": 1.0,
+      "I am calling Canada.": 0.9,
+      "Mostly.": 0.9,
+      "It's another one about the potash.": 1.0,
+      "We mostly have rocks.": 1.0,
+      "That's what neighbours are.": 1.2,
+      "It's about everything.": 1.2,
+      "Somebody called in to say your stems are very strong.": 1.0,
+      "Mrs. Dahlquist is fine.": 1.0,
+      "That's most things.": 1.0
+    }
+  },
+  "light": {
+    "line": null
+  },
+  "credits": [
+    "An original sketch. Jan, Maddie, Tyler, Josh, and everyone on the radio are fictional.",
+    "Potash: muriate of potash is sold as 0-0-60. Most U.S. potash imports come from Saskatchewan, mined from ancient seabeds about a kilometre or more down.",
+    "Previously: 019 The Hall, 025 Eight Six Seven, 033 Potash"
+  ],
+  "output": "n_p_k.mp4"
+}

@@ -60,6 +60,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Set `stubble`: a harvested Corn Belt field at dusk with bins, an elevator, a pickup and a red fertilizer tender.
 - Masks: `farmerearl`, `farmergary`.
 - Episode 033, *Potash*.
+- Set `classroom`: a county extension office with a chalkboard, ribbon board, wall phone and fertilizer bags.
+- Masks: `leaderjan`, `kidmaddie`, `kidtyler`, `kidjosh`.
+- Episode 034, *N-P-K*.
 
 ## [0.16.0] - 2026-11-09
 
